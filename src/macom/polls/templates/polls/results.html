@@ -1,0 +1,11 @@
+<h2>{{ object.question }}</h2>
+
+<ul>
+{% for choice in object.choice_set.all %}
+    <li>{{ choice.choice }}: {{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="/polls/{{ object.id }}/">Votar de nuevo</a>
+<br/>
+<a href="/polls">Lista de Votaciones</a>

@@ -1,0 +1,10 @@
+{% if object_list %}
+	<h2>Lista de Votaciones</h2>
+    <ul>
+    {% for poll in object_list %}
+        <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a> (<a href="/polls/{{ poll.id }}/results">resultados</a>)</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay votaciones cargadas.</p>
+{% endif %}
