@@ -25,14 +25,19 @@ class ExposedInterfaceInline(admin.TabularInline):
             "all": ("/static-media/css/prueba.css",)
         }
         
-
+class SystemAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+    fields = ['name', 'description']
+    list_display = ('name', 'description')
+    list_display_links = ('name', 'description')
+    
 class ModuleAdmin(admin.ModelAdmin):
     fields = ['name', 'system', 'goal', 'external']
-    inlines = [ExposedInterfaceInline, ConsumedInterfaceInline]
     list_display = ('name', 'system', 'external')
     list_display_links = ('name', 'system', 'external')
     search_fields = ['name']
     prepopulated_fields = {"goal": ("name",)}
+    inlines = [ExposedInterfaceInline, ConsumedInterfaceInline]
 
-admin.site.register(models.System)
+admin.site.register(models.System, SystemAdmin)
 admin.site.register(models.Module, ModuleAdmin)

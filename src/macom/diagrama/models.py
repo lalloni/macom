@@ -4,7 +4,7 @@ from django.db import models
 
 class System(models.Model):
     name = models.CharField(u'Nombre', max_length=100)
-    description = models.TextField(u'Derscripción')
+    description = models.CharField(u'Derscripción', max_length=200)
 
     class Meta:
         verbose_name = 'Sistema'
@@ -15,7 +15,7 @@ class System(models.Model):
 
 class Module(models.Model):
     name = models.CharField(u'Nombre', max_length=100)
-    goal = models.TextField(u'Objetivo')
+    goal = models.CharField(u'Objetivo', max_length=200)
     system = models.ForeignKey(System, verbose_name=u'Sistema')
     external = models.BooleanField(u'Externo')
 
