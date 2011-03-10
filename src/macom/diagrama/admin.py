@@ -22,7 +22,7 @@ class ExposedInterfaceInline(admin.TabularInline):
     
     class Media:
         css = {
-            "all": ("/static-media/css/prueba.css",)
+            "all": ("/static-media/css/custom.css",)
         }
         
 class SystemAdmin(admin.ModelAdmin):
