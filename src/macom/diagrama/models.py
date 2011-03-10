@@ -4,8 +4,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 class System(models.Model):
-    name = models.CharField(_('name'), max_length=100)
-    description = models.CharField(_('description'), max_length=200)
+    name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
+    description = models.CharField(_('description'), help_text=_('description-help'), max_length=200)
 
     class Meta:
         verbose_name = _('system')
@@ -15,10 +15,19 @@ class System(models.Model):
         return self.name
 
 class Module(models.Model):
-    name = models.CharField(_('name'), max_length=100)
-    goal = models.CharField(_('goal'), max_length=200)
-    system = models.ForeignKey(System, verbose_name=_('system'))
+    CRITICITY = (
+        (u'H', _('high')),
+        (u'M', _('medium')),
+        (u'L', _('low')),
+    )
+    
+    name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
+    goal = models.CharField(_('goal'), help_text=_('goal-help'), max_length=200, blank=True)
+    system = models.ForeignKey(System, verbose_name=_('system'), null=True, blank=True)
     external = models.BooleanField(_('external'))
+    consumed = models.ManyToManyField('Interface', verbose_name = 'Interfaces Consumidas', blank=True, related_name='consumed')
+    exposed = models.ManyToManyField('Interface', verbose_name = 'Interfaces Expuestas', blank=True, related_name='exposed')
+    criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
 
     class Meta:
         verbose_name = _('module')
@@ -28,32 +37,13 @@ class Module(models.Model):
         return self.name
 
 class Interface(models.Model):
-    CRITICITY = (
-        (u'H', _('high')),
-        (u'M', _('medium')),
-        (u'L', _('low')),
-    )
+    name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
+    goal = models.CharField(_('goal'), help_text=_('goal-help'), max_length=200)
+    technology = models.CharField(_('technology'), help_text=_('technology-help'), max_length=200)
 
-    name = models.CharField(_('name'), max_length=100)
-    goal = models.CharField(_('goal'), max_length=200)
-    technology = models.CharField(_('technology'), max_length=200)
-    volume = models.CharField(_('volume'), max_length=100)
-    module = models.ForeignKey(Module, verbose_name=_('module'))
-    criticity = models.CharField(_('criticity'), max_length=2, choices=CRITICITY)
-
+    class Meta:
+        verbose_name = _('interface')
+        verbose_name_plural = _('interfaces')
+        
     def __unicode__(self):
         return self.name
-
-class ExposedInterface(Interface):
-    clients = models.ManyToManyField(Module, verbose_name = 'Clientes')
-    
-    class Meta:
-        verbose_name = _('exposed-interface')
-        verbose_name_plural = _('exposed-interfaces')
-
-class ConsumedInterface(Interface):
-    contrapart = models.OneToOneField(Module, verbose_name = 'Contraparte')
-    
-    class Meta:
-        verbose_name = _('consumed-interface')
-        verbose_name_plural = _('consumed-interfaces')

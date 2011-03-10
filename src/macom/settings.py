@@ -2,7 +2,7 @@
 
 # Django settings for macom project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -91,6 +91,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'polls',
+    #'polls',
     'diagrama',
 )

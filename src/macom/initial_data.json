@@ -1,281 +1,988 @@
-[ {
-	"pk" : 5,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "contenttype",
-		"name" : "content type",
-		"app_label" : "contenttypes"
-	}
-}, {
-	"pk" : 2,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "group",
-		"name" : "group",
-		"app_label" : "auth"
-	}
-}, {
-	"pk" : 8,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "logentry",
-		"name" : "log entry",
-		"app_label" : "admin"
-	}
-}, {
-	"pk" : 4,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "message",
-		"name" : "message",
-		"app_label" : "auth"
-	}
-}, {
-	"pk" : 1,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "permission",
-		"name" : "permission",
-		"app_label" : "auth"
-	}
-}, {
-	"pk" : 6,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "session",
-		"name" : "session",
-		"app_label" : "sessions"
-	}
-}, {
-	"pk" : 7,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "site",
-		"name" : "site",
-		"app_label" : "sites"
-	}
-}, {
-	"pk" : 3,
-	"model" : "contenttypes.contenttype",
-	"fields" : {
-		"model" : "user",
-		"name" : "user",
-		"app_label" : "auth"
-	}
-}, {
-	"pk" : 1,
-	"model" : "sites.site",
-	"fields" : {
-		"domain" : "example.com",
-		"name" : "example.com"
-	}
-}, {
-	"pk" : 22,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_logentry",
-		"name" : "Can add log entry",
-		"content_type" : 8
-	}
-}, {
-	"pk" : 23,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_logentry",
-		"name" : "Can change log entry",
-		"content_type" : 8
-	}
-}, {
-	"pk" : 24,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_logentry",
-		"name" : "Can delete log entry",
-		"content_type" : 8
-	}
-}, {
-	"pk" : 4,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_group",
-		"name" : "Can add group",
-		"content_type" : 2
-	}
-}, {
-	"pk" : 5,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_group",
-		"name" : "Can change group",
-		"content_type" : 2
-	}
-}, {
-	"pk" : 6,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_group",
-		"name" : "Can delete group",
-		"content_type" : 2
-	}
-}, {
-	"pk" : 10,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_message",
-		"name" : "Can add message",
-		"content_type" : 4
-	}
-}, {
-	"pk" : 11,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_message",
-		"name" : "Can change message",
-		"content_type" : 4
-	}
-}, {
-	"pk" : 12,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_message",
-		"name" : "Can delete message",
-		"content_type" : 4
-	}
-}, {
-	"pk" : 1,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_permission",
-		"name" : "Can add permission",
-		"content_type" : 1
-	}
-}, {
-	"pk" : 2,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_permission",
-		"name" : "Can change permission",
-		"content_type" : 1
-	}
-}, {
-	"pk" : 3,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_permission",
-		"name" : "Can delete permission",
-		"content_type" : 1
-	}
-}, {
-	"pk" : 7,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_user",
-		"name" : "Can add user",
-		"content_type" : 3
-	}
-}, {
-	"pk" : 8,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_user",
-		"name" : "Can change user",
-		"content_type" : 3
-	}
-}, {
-	"pk" : 9,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_user",
-		"name" : "Can delete user",
-		"content_type" : 3
-	}
-}, {
-	"pk" : 13,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_contenttype",
-		"name" : "Can add content type",
-		"content_type" : 5
-	}
-}, {
-	"pk" : 14,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_contenttype",
-		"name" : "Can change content type",
-		"content_type" : 5
-	}
-}, {
-	"pk" : 15,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_contenttype",
-		"name" : "Can delete content type",
-		"content_type" : 5
-	}
-}, {
-	"pk" : 16,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_session",
-		"name" : "Can add session",
-		"content_type" : 6
-	}
-}, {
-	"pk" : 17,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_session",
-		"name" : "Can change session",
-		"content_type" : 6
-	}
-}, {
-	"pk" : 18,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_session",
-		"name" : "Can delete session",
-		"content_type" : 6
-	}
-}, {
-	"pk" : 19,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "add_site",
-		"name" : "Can add site",
-		"content_type" : 7
-	}
-}, {
-	"pk" : 20,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "change_site",
-		"name" : "Can change site",
-		"content_type" : 7
-	}
-}, {
-	"pk" : 21,
-	"model" : "auth.permission",
-	"fields" : {
-		"codename" : "delete_site",
-		"name" : "Can delete site",
-		"content_type" : 7
-	}
-}, {
-	"pk" : 1,
-	"model" : "auth.user",
-	"fields" : {
-		"username" : "sebas",
-		"first_name" : "",
-		"last_name" : "",
-		"is_active" : true,
-		"is_superuser" : true,
-		"is_staff" : true,
-		"last_login" : "2011-03-09 11:12:16",
-		"groups" : [],
-		"user_permissions" : [],
-		"password" : "sha1$13259$fc2409a94437ed75a452770f10dd6a72ce466bc3",
-		"email" : "sebas@zaffarano.com.ar",
-		"date_joined" : "2011-03-09 11:12:16"
-	}
-} ]
+[
+		{
+			"pk" : 10,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "choice",
+				"name" : "choice",
+				"app_label" : "polls"
+			}
+		},
+		{
+			"pk" : 5,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "contenttype",
+				"name" : "content type",
+				"app_label" : "contenttypes"
+			}
+		},
+		{
+			"pk" : 2,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "group",
+				"name" : "group",
+				"app_label" : "auth"
+			}
+		},
+		{
+			"pk" : 13,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "interface",
+				"name" : "interface",
+				"app_label" : "diagrama"
+			}
+		},
+		{
+			"pk" : 8,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "logentry",
+				"name" : "log entry",
+				"app_label" : "admin"
+			}
+		},
+		{
+			"pk" : 4,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "message",
+				"name" : "message",
+				"app_label" : "auth"
+			}
+		},
+		{
+			"pk" : 12,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "module",
+				"name" : "module",
+				"app_label" : "diagrama"
+			}
+		},
+		{
+			"pk" : 1,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "permission",
+				"name" : "permission",
+				"app_label" : "auth"
+			}
+		},
+		{
+			"pk" : 9,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "poll",
+				"name" : "poll",
+				"app_label" : "polls"
+			}
+		},
+		{
+			"pk" : 6,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "session",
+				"name" : "session",
+				"app_label" : "sessions"
+			}
+		},
+		{
+			"pk" : 7,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "site",
+				"name" : "site",
+				"app_label" : "sites"
+			}
+		},
+		{
+			"pk" : 11,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "system",
+				"name" : "system",
+				"app_label" : "diagrama"
+			}
+		},
+		{
+			"pk" : 3,
+			"model" : "contenttypes.contenttype",
+			"fields" : {
+				"model" : "user",
+				"name" : "user",
+				"app_label" : "auth"
+			}
+		},
+		{
+			"pk" : "196ee640f8845b9cca96ea5630f7b336",
+			"model" : "sessions.session",
+			"fields" : {
+				"expire_date" : "2011-03-24 16:58:14",
+				"session_data" : "gAJ9cQEuNDNiZTZlYzgwN2FjNzAxODc3NDkxMGY2YTYxYWRjZWI=\n"
+			}
+		},
+		{
+			"pk" : 1,
+			"model" : "sites.site",
+			"fields" : {
+				"domain" : "example.com",
+				"name" : "example.com"
+			}
+		},
+		{
+			"pk" : 27,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:57:25",
+				"object_repr" : "hmazzoni",
+				"object_id" : "8",
+				"change_message" : "Modifica first_name, last_name y email.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 26,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:57:11",
+				"object_repr" : "hmazzoni",
+				"object_id" : "8",
+				"change_message" : "Modifica is_staff y is_superuser.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 25,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:57:05",
+				"object_repr" : "hmazzoni",
+				"object_id" : "8",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 24,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:56:53",
+				"object_repr" : "sebas",
+				"object_id" : "1",
+				"change_message" : "Modifica first_name y last_name.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 23,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:56:35",
+				"object_repr" : "plalloni",
+				"object_id" : "2",
+				"change_message" : "Modifica is_staff.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 22,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:56:30",
+				"object_repr" : "gdelacruz",
+				"object_id" : "6",
+				"change_message" : "Modifica is_staff.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 21,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:56:24",
+				"object_repr" : "faguero",
+				"object_id" : "3",
+				"change_message" : "Modifica is_staff.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 20,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:56:19",
+				"object_repr" : "cmiranda",
+				"object_id" : "7",
+				"change_message" : "Modifica is_staff.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 19,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:56:13",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "Modifica user_permissions.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 18,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:55:48",
+				"object_repr" : "ccoletta",
+				"object_id" : "5",
+				"change_message" : "Modifica is_staff.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 17,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:55:42",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "Modifica is_staff.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 16,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:55:00",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "Modifica password.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 15,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:54:32",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "No ha modificado ning\u00fan campo.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 14,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:53:54",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "Modifica user_permissions.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 13,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:50:40",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 12,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:50:25",
+				"object_repr" : "ccoletta",
+				"object_id" : "5",
+				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 11,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:50:09",
+				"object_repr" : "cmiranda",
+				"object_id" : "7",
+				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 10,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:49:54",
+				"object_repr" : "faguero",
+				"object_id" : "3",
+				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 9,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:49:40",
+				"object_repr" : "gdelacruz",
+				"object_id" : "6",
+				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 8,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 2,
+				"action_time" : "2011-03-10 16:49:20",
+				"object_repr" : "plalloni",
+				"object_id" : "2",
+				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 7,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:48:16",
+				"object_repr" : "cmiranda",
+				"object_id" : "7",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 6,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:48:08",
+				"object_repr" : "gdelacruz",
+				"object_id" : "6",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 5,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:47:54",
+				"object_repr" : "ccoletta",
+				"object_id" : "5",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 4,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:47:46",
+				"object_repr" : "amoro",
+				"object_id" : "4",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 3,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:47:37",
+				"object_repr" : "faguero",
+				"object_id" : "3",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 2,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:47:29",
+				"object_repr" : "plalloni",
+				"object_id" : "2",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 1,
+			"model" : "admin.logentry",
+			"fields" : {
+				"action_flag" : 1,
+				"action_time" : "2011-03-10 16:46:42",
+				"object_repr" : "editores",
+				"object_id" : "1",
+				"change_message" : "",
+				"user" : 1,
+				"content_type" : 2
+			}
+		},
+		{
+			"pk" : 22,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_logentry",
+				"name" : "Can add log entry",
+				"content_type" : 8
+			}
+		},
+		{
+			"pk" : 23,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_logentry",
+				"name" : "Can change log entry",
+				"content_type" : 8
+			}
+		},
+		{
+			"pk" : 24,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_logentry",
+				"name" : "Can delete log entry",
+				"content_type" : 8
+			}
+		},
+		{
+			"pk" : 4,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_group",
+				"name" : "Can add group",
+				"content_type" : 2
+			}
+		},
+		{
+			"pk" : 5,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_group",
+				"name" : "Can change group",
+				"content_type" : 2
+			}
+		},
+		{
+			"pk" : 6,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_group",
+				"name" : "Can delete group",
+				"content_type" : 2
+			}
+		},
+		{
+			"pk" : 10,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_message",
+				"name" : "Can add message",
+				"content_type" : 4
+			}
+		},
+		{
+			"pk" : 11,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_message",
+				"name" : "Can change message",
+				"content_type" : 4
+			}
+		},
+		{
+			"pk" : 12,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_message",
+				"name" : "Can delete message",
+				"content_type" : 4
+			}
+		},
+		{
+			"pk" : 1,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_permission",
+				"name" : "Can add permission",
+				"content_type" : 1
+			}
+		},
+		{
+			"pk" : 2,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_permission",
+				"name" : "Can change permission",
+				"content_type" : 1
+			}
+		},
+		{
+			"pk" : 3,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_permission",
+				"name" : "Can delete permission",
+				"content_type" : 1
+			}
+		},
+		{
+			"pk" : 7,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_user",
+				"name" : "Can add user",
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 8,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_user",
+				"name" : "Can change user",
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 9,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_user",
+				"name" : "Can delete user",
+				"content_type" : 3
+			}
+		},
+		{
+			"pk" : 13,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_contenttype",
+				"name" : "Can add content type",
+				"content_type" : 5
+			}
+		},
+		{
+			"pk" : 14,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_contenttype",
+				"name" : "Can change content type",
+				"content_type" : 5
+			}
+		},
+		{
+			"pk" : 15,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_contenttype",
+				"name" : "Can delete content type",
+				"content_type" : 5
+			}
+		},
+		{
+			"pk" : 37,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_interface",
+				"name" : "Can add interface",
+				"content_type" : 13
+			}
+		},
+		{
+			"pk" : 38,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_interface",
+				"name" : "Can change interface",
+				"content_type" : 13
+			}
+		},
+		{
+			"pk" : 39,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_interface",
+				"name" : "Can delete interface",
+				"content_type" : 13
+			}
+		},
+		{
+			"pk" : 34,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_module",
+				"name" : "Can add module",
+				"content_type" : 12
+			}
+		},
+		{
+			"pk" : 35,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_module",
+				"name" : "Can change module",
+				"content_type" : 12
+			}
+		},
+		{
+			"pk" : 36,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_module",
+				"name" : "Can delete module",
+				"content_type" : 12
+			}
+		},
+		{
+			"pk" : 31,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_system",
+				"name" : "Can add system",
+				"content_type" : 11
+			}
+		},
+		{
+			"pk" : 32,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_system",
+				"name" : "Can change system",
+				"content_type" : 11
+			}
+		},
+		{
+			"pk" : 33,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_system",
+				"name" : "Can delete system",
+				"content_type" : 11
+			}
+		},
+		{
+			"pk" : 28,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_choice",
+				"name" : "Can add choice",
+				"content_type" : 10
+			}
+		},
+		{
+			"pk" : 29,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_choice",
+				"name" : "Can change choice",
+				"content_type" : 10
+			}
+		},
+		{
+			"pk" : 30,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_choice",
+				"name" : "Can delete choice",
+				"content_type" : 10
+			}
+		},
+		{
+			"pk" : 25,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_poll",
+				"name" : "Can add poll",
+				"content_type" : 9
+			}
+		},
+		{
+			"pk" : 26,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_poll",
+				"name" : "Can change poll",
+				"content_type" : 9
+			}
+		},
+		{
+			"pk" : 27,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_poll",
+				"name" : "Can delete poll",
+				"content_type" : 9
+			}
+		},
+		{
+			"pk" : 16,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_session",
+				"name" : "Can add session",
+				"content_type" : 6
+			}
+		},
+		{
+			"pk" : 17,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_session",
+				"name" : "Can change session",
+				"content_type" : 6
+			}
+		},
+		{
+			"pk" : 18,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_session",
+				"name" : "Can delete session",
+				"content_type" : 6
+			}
+		},
+		{
+			"pk" : 19,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "add_site",
+				"name" : "Can add site",
+				"content_type" : 7
+			}
+		},
+		{
+			"pk" : 20,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "change_site",
+				"name" : "Can change site",
+				"content_type" : 7
+			}
+		},
+		{
+			"pk" : 21,
+			"model" : "auth.permission",
+			"fields" : {
+				"codename" : "delete_site",
+				"name" : "Can delete site",
+				"content_type" : 7
+			}
+		},
+		{
+			"pk" : 1,
+			"model" : "auth.group",
+			"fields" : {
+				"name" : "editores",
+				"permissions" : [ 37, 38, 39, 34, 35, 36, 31, 32, 33 ]
+			}
+		},
+		{
+			"pk" : 1,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "sebas",
+				"first_name" : "Sebasti\u00e1n",
+				"last_name" : "Zaffarano",
+				"is_active" : true,
+				"is_superuser" : true,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:57:59",
+				"groups" : [],
+				"user_permissions" : [],
+				"password" : "sha1$13259$fc2409a94437ed75a452770f10dd6a72ce466bc3",
+				"email" : "sebas@zaffarano.com.ar",
+				"date_joined" : "2011-03-09 11:12:16"
+			}
+		},
+		{
+			"pk" : 2,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "plalloni",
+				"first_name" : "Pablo",
+				"last_name" : "Lalloni",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:47:29",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$fe02b$c06acf24f41a8d2ddc57bc014a28a32a59b1ad51",
+				"email" : "plalloni@afip.gob.ar",
+				"date_joined" : "2011-03-10 16:47:29"
+			}
+		},
+		{
+			"pk" : 3,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "faguero",
+				"first_name" : "Fabi\u00e1n",
+				"last_name" : "Aguero",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:47:37",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$65183$4be8125b7213ce42e50337d2bac36003cb3db504",
+				"email" : "faguero@afip.gob.ar",
+				"date_joined" : "2011-03-10 16:47:37"
+			}
+		},
+		{
+			"pk" : 4,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "amoro",
+				"first_name" : "Alejandro",
+				"last_name" : "Moro",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:57:32",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$49581$1cbbe1af2aba9d368ab3d5830b80554df1980622",
+				"email" : "amoro@afip.gob.ar",
+				"date_joined" : "2011-03-10 16:47:46"
+			}
+		},
+		{
+			"pk" : 5,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "ccoletta",
+				"first_name" : "Carmelo",
+				"last_name" : "Coletta",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:47:54",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$1cfac$fcb4c300b9b324495b8ba135e66ba7c1bdb717e4",
+				"email" : "ccoletta@afip.gob.ar",
+				"date_joined" : "2011-03-10 16:47:54"
+			}
+		},
+		{
+			"pk" : 6,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "gdelacruz",
+				"first_name" : "Germ\u00e1n",
+				"last_name" : "De la Cruz",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:48:08",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$40dd4$620da95711ec0933847555dc1305afce6ac7cc2d",
+				"email" : "gdelacruz@afip.gob.ar",
+				"date_joined" : "2011-03-10 16:48:08"
+			}
+		},
+		{
+			"pk" : 7,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "cmiranda",
+				"first_name" : "Carlos",
+				"last_name" : "Miranda",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:48:16",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$fe770$8892d094e5237a503d9572285b5735017599274f",
+				"email" : "cmiranda@afip.gob.ar",
+				"date_joined" : "2011-03-10 16:48:16"
+			}
+		},
+		{
+			"pk" : 8,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "hmazzoni",
+				"first_name" : "Hernan",
+				"last_name" : "Mazzoni",
+				"is_active" : true,
+				"is_superuser" : true,
+				"is_staff" : true,
+				"last_login" : "2011-03-10 16:57:05",
+				"groups" : [],
+				"user_permissions" : [],
+				"password" : "sha1$026ff$fc63bda8311dac1f3d11ec639da2be5627c02515",
+				"email" : "hemazzoni@afip.gov.ar",
+				"date_joined" : "2011-03-10 16:57:05"
+			}
+		} ]

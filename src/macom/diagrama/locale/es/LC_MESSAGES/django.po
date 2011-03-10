@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-10 10:32-0300\n"
+"POT-Creation-Date: 2011-03-10 16:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:7 models.py:18 models.py:37
+#: models.py:7 models.py:24 models.py:40
 msgid "name"
 msgstr "Nombre"
+
+#: models.py:7 models.py:24 models.py:40
+msgid "name-help"
+msgstr "El nombre de la entidad"
 
 #: models.py:8
 msgid "description"
 msgstr "Descripción"
 
-#: models.py:11 models.py:20
+#: models.py:8
+msgid "description-help"
+msgstr "La descripción de la entidad"
+
+#: models.py:11 models.py:26
 msgid "system"
 msgstr "Sistema"
 
@@ -34,58 +42,58 @@ msgstr "Sistema"
 msgid "systems"
 msgstr "Sistemas"
 
-#: models.py:19 models.py:38
-msgid "goal"
-msgstr "Objetivo"
-
-#: models.py:21
-msgid "external"
-msgstr "Externo"
-
-#: models.py:24 models.py:41
-msgid "module"
-msgstr "Módulo"
-
-#: models.py:25
-msgid "modules"
-msgstr "Módulos"
-
-#: models.py:32
+#: models.py:19
 msgid "high"
 msgstr "Alta"
 
-#: models.py:33
+#: models.py:20
 msgid "medium"
 msgstr "Media"
 
-#: models.py:34
+#: models.py:21
 msgid "low"
 msgstr "Baja"
 
-#: models.py:39
-msgid "technology"
-msgstr "Tecnología"
+#: models.py:25 models.py:41
+msgid "goal"
+msgstr "Objetivo"
 
-#: models.py:40
-msgid "volume"
-msgstr "Volúmen"
+#: models.py:25 models.py:41
+msgid "goal-help"
+msgstr "El objetivo"
 
-#: models.py:42
+#: models.py:27
+msgid "external"
+msgstr "¿Es externo el módulo?"
+
+#: models.py:30
 msgid "criticity"
 msgstr "Criticidad"
 
-#: models.py:51
-msgid "exposed-interface"
-msgstr "Interfaz Expuesta"
+#: models.py:30
+msgid "criticity-help"
+msgstr "La criticidad del módulo"
 
-#: models.py:52
-msgid "exposed-interfaces"
-msgstr "Interfaces Expuestas"
+#: models.py:33
+msgid "module"
+msgstr "Módulo"
 
-#: models.py:58
-msgid "consumed-interface"
-msgstr "Interfaz Consumida"
+#: models.py:34
+msgid "modules"
+msgstr "Módulos"
 
-#: models.py:59
-msgid "consumed-interfaces"
-msgstr "Interfaces Consumidas"
+#: models.py:42
+msgid "technology"
+msgstr "Tecnología"
+
+#: models.py:42
+msgid "technology-help"
+msgstr "La tecnología utilizada por la interfaz"
+
+#: models.py:45
+msgid "interface"
+msgstr "Interfaz"
+
+#: models.py:46
+msgid "interfaces"
+msgstr "Interfaces"
