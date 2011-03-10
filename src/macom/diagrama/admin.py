@@ -4,16 +4,16 @@ from django.contrib import admin
 from macom.diagrama import models
 
 class ConsumedInterfaceInline(admin.TabularInline):
-    verbose_name = 'Interfaz consumida'
-    verbose_name_plural = 'Interfaces consumidas'
+    #verbose_name = ugettext('consumed-interfase')
+    #verbose_name_plural = ugettext('consumed-interfases')
     model = models.ConsumedInterface
     fk_name = 'module'
     fields = ['name', 'criticity', 'contrapart', 'goal', 'technology', 'volume']
     extra = 0
 
 class ExposedInterfaceInline(admin.TabularInline):
-    verbose_name = 'Interfaz expuesta'
-    verbose_name_plural = 'Interfaces expuestas'
+    #verbose_name = 'Interfaz expuesta'
+    #verbose_name_plural = 'Interfaces expuestas'
     model = models.ExposedInterface
     fk_name = 'module'
     fields = ['name', 'criticity', 'goal', 'technology', 'volume', 'clients']

@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-10 10:32-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: models.py:7 models.py:18 models.py:37
+msgid "name"
+msgstr "Name"
+
+#: models.py:8
+msgid "description"
+msgstr "Description"
+
+#: models.py:11 models.py:20
+msgid "system"
+msgstr "System"
+
+#: models.py:12
+msgid "systems"
+msgstr "Systems"
+
+#: models.py:19 models.py:38
+msgid "goal"
+msgstr "Goal"
+
+#: models.py:21
+msgid "external"
+msgstr "External"
+
+#: models.py:24 models.py:41
+msgid "module"
+msgstr "Modulo"
+
+#: models.py:25
+msgid "modules"
+msgstr "Modules"
+
+#: models.py:32
+msgid "high"
+msgstr "High"
+
+#: models.py:33
+msgid "medium"
+msgstr "Medium"
+
+#: models.py:34
+msgid "low"
+msgstr "Low"
+
+#: models.py:39
+msgid "technology"
+msgstr "Technology"
+
+#: models.py:40
+msgid "volume"
+msgstr "Volume"
+
+#: models.py:42
+msgid "criticity"
+msgstr "Criticity"
+
+#: models.py:51
+msgid "exposed-interface"
+msgstr "Exposed Interface"
+
+#: models.py:52
+msgid "exposed-interfaces"
+msgstr "Exposed Interfaces"
+
+#: models.py:58
+msgid "consumed-interface"
+msgstr "Consumed Interface"
+
+#: models.py:59
+msgid "consumed-interfaces"
+msgstr "Consumed Interfaces"
