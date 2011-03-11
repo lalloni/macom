@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-10 16:40-0300\n"
+"POT-Creation-Date: 2011-03-11 14:48-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:7 models.py:24 models.py:40
+#: admin.py:10
+#, fuzzy
+msgid "Interface expuesta"
+msgstr "Interfaces"
+
+#: admin.py:11
+#, fuzzy
+msgid "Interfaces expuestas"
+msgstr "Interfaces"
+
+#: models.py:7 models.py:24 models.py:39
 msgid "name"
 msgstr "Nombre"
 
-#: models.py:7 models.py:24 models.py:40
+#: models.py:7 models.py:24 models.py:39
 msgid "name-help"
 msgstr "El nombre de la entidad"
 
@@ -54,11 +64,11 @@ msgstr "Media"
 msgid "low"
 msgstr "Baja"
 
-#: models.py:25 models.py:41
+#: models.py:25 models.py:40
 msgid "goal"
 msgstr "Objetivo"
 
-#: models.py:25 models.py:41
+#: models.py:25 models.py:40
 msgid "goal-help"
 msgstr "El objetivo"
 
@@ -66,29 +76,42 @@ msgstr "El objetivo"
 msgid "external"
 msgstr "¿Es externo el módulo?"
 
-#: models.py:30
+#: models.py:28
+msgid "Interfaces Consumidas"
+msgstr ""
+
+#: models.py:29
 msgid "criticity"
 msgstr "Criticidad"
 
-#: models.py:30
+#: models.py:29
 msgid "criticity-help"
 msgstr "La criticidad del módulo"
 
-#: models.py:33
+#: models.py:32
 msgid "module"
 msgstr "Módulo"
 
-#: models.py:34
+#: models.py:33
 msgid "modules"
 msgstr "Módulos"
 
-#: models.py:42
+#: models.py:41
 msgid "technology"
 msgstr "Tecnología"
 
-#: models.py:42
+#: models.py:41
 msgid "technology-help"
 msgstr "La tecnología utilizada por la interfaz"
+
+#: models.py:42
+msgid "exposer"
+msgstr "Módulo"
+
+#: models.py:42
+#, fuzzy
+msgid "exposer-help"
+msgstr "Módulo"
 
 #: models.py:45
 msgid "interface"
