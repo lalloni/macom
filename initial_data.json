@@ -1,14 +1,5 @@
 [
 		{
-			"pk" : 10,
-			"model" : "contenttypes.contenttype",
-			"fields" : {
-				"model" : "choice",
-				"name" : "choice",
-				"app_label" : "polls"
-			}
-		},
-		{
 			"pk" : 5,
 			"model" : "contenttypes.contenttype",
 			"fields" : {
@@ -27,7 +18,7 @@
 			}
 		},
 		{
-			"pk" : 13,
+			"pk" : 11,
 			"model" : "contenttypes.contenttype",
 			"fields" : {
 				"model" : "interface",
@@ -54,7 +45,7 @@
 			}
 		},
 		{
-			"pk" : 12,
+			"pk" : 10,
 			"model" : "contenttypes.contenttype",
 			"fields" : {
 				"model" : "module",
@@ -69,15 +60,6 @@
 				"model" : "permission",
 				"name" : "permission",
 				"app_label" : "auth"
-			}
-		},
-		{
-			"pk" : 9,
-			"model" : "contenttypes.contenttype",
-			"fields" : {
-				"model" : "poll",
-				"name" : "poll",
-				"app_label" : "polls"
 			}
 		},
 		{
@@ -99,7 +81,7 @@
 			}
 		},
 		{
-			"pk" : 11,
+			"pk" : 9,
 			"model" : "contenttypes.contenttype",
 			"fields" : {
 				"model" : "system",
@@ -117,10 +99,10 @@
 			}
 		},
 		{
-			"pk" : "196ee640f8845b9cca96ea5630f7b336",
+			"pk" : "bffef39249bcda18b17388d9815be61f",
 			"model" : "sessions.session",
 			"fields" : {
-				"expire_date" : "2011-03-24 16:58:14",
+				"expire_date" : "2011-03-25 09:46:55",
 				"session_data" : "gAJ9cQEuNDNiZTZlYzgwN2FjNzAxODc3NDkxMGY2YTYxYWRjZWI=\n"
 			}
 		},
@@ -133,157 +115,14 @@
 			}
 		},
 		{
-			"pk" : 27,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:57:25",
-				"object_repr" : "hmazzoni",
-				"object_id" : "8",
-				"change_message" : "Modifica first_name, last_name y email.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 26,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:57:11",
-				"object_repr" : "hmazzoni",
-				"object_id" : "8",
-				"change_message" : "Modifica is_staff y is_superuser.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 25,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:57:05",
-				"object_repr" : "hmazzoni",
-				"object_id" : "8",
-				"change_message" : "",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 24,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:56:53",
-				"object_repr" : "sebas",
-				"object_id" : "1",
-				"change_message" : "Modifica first_name y last_name.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 23,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:56:35",
-				"object_repr" : "plalloni",
-				"object_id" : "2",
-				"change_message" : "Modifica is_staff.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 22,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:56:30",
-				"object_repr" : "gdelacruz",
-				"object_id" : "6",
-				"change_message" : "Modifica is_staff.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 21,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:56:24",
-				"object_repr" : "faguero",
-				"object_id" : "3",
-				"change_message" : "Modifica is_staff.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 20,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:56:19",
-				"object_repr" : "cmiranda",
-				"object_id" : "7",
-				"change_message" : "Modifica is_staff.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 19,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:56:13",
-				"object_repr" : "amoro",
-				"object_id" : "4",
-				"change_message" : "Modifica user_permissions.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 18,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:55:48",
-				"object_repr" : "ccoletta",
-				"object_id" : "5",
-				"change_message" : "Modifica is_staff.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
-			"pk" : 17,
-			"model" : "admin.logentry",
-			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:55:42",
-				"object_repr" : "amoro",
-				"object_id" : "4",
-				"change_message" : "Modifica is_staff.",
-				"user" : 1,
-				"content_type" : 3
-			}
-		},
-		{
 			"pk" : 16,
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:55:00",
-				"object_repr" : "amoro",
-				"object_id" : "4",
-				"change_message" : "Modifica password.",
+				"action_time" : "2011-03-11 09:46:39",
+				"object_repr" : "plalloni",
+				"object_id" : "3",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y is_superuser.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -293,10 +132,10 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:54:32",
-				"object_repr" : "amoro",
-				"object_id" : "4",
-				"change_message" : "No ha modificado ning\u00fan campo.",
+				"action_time" : "2011-03-11 09:46:28",
+				"object_repr" : "hmazzoni",
+				"object_id" : "7",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y groups.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -306,10 +145,10 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:53:54",
-				"object_repr" : "amoro",
+				"action_time" : "2011-03-11 09:46:15",
+				"object_repr" : "gdelacruz",
 				"object_id" : "4",
-				"change_message" : "Modifica user_permissions.",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y groups.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -319,10 +158,10 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:50:40",
-				"object_repr" : "amoro",
-				"object_id" : "4",
-				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"action_time" : "2011-03-11 09:46:05",
+				"object_repr" : "faguero",
+				"object_id" : "5",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y groups.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -332,10 +171,10 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:50:25",
-				"object_repr" : "ccoletta",
-				"object_id" : "5",
-				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"action_time" : "2011-03-11 09:45:49",
+				"object_repr" : "cmiranda",
+				"object_id" : "6",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y groups.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -345,10 +184,10 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:50:09",
-				"object_repr" : "cmiranda",
-				"object_id" : "7",
-				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"action_time" : "2011-03-11 09:45:38",
+				"object_repr" : "ccoletta",
+				"object_id" : "8",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y groups.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -358,10 +197,10 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:49:54",
-				"object_repr" : "faguero",
-				"object_id" : "3",
-				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"action_time" : "2011-03-11 09:45:27",
+				"object_repr" : "amoro",
+				"object_id" : "2",
+				"change_message" : "Modifica first_name, last_name, email, is_staff y groups.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -370,11 +209,11 @@
 			"pk" : 9,
 			"model" : "admin.logentry",
 			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:49:40",
-				"object_repr" : "gdelacruz",
-				"object_id" : "6",
-				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"action_flag" : 1,
+				"action_time" : "2011-03-11 09:44:48",
+				"object_repr" : "ccoletta",
+				"object_id" : "8",
+				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -383,11 +222,11 @@
 			"pk" : 8,
 			"model" : "admin.logentry",
 			"fields" : {
-				"action_flag" : 2,
-				"action_time" : "2011-03-10 16:49:20",
-				"object_repr" : "plalloni",
-				"object_id" : "2",
-				"change_message" : "Modifica first_name, last_name, email y groups.",
+				"action_flag" : 1,
+				"action_time" : "2011-03-11 09:44:38",
+				"object_repr" : "hmazzoni",
+				"object_id" : "7",
+				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -397,9 +236,9 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:48:16",
+				"action_time" : "2011-03-11 09:44:27",
 				"object_repr" : "cmiranda",
-				"object_id" : "7",
+				"object_id" : "6",
 				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
@@ -410,9 +249,9 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:48:08",
-				"object_repr" : "gdelacruz",
-				"object_id" : "6",
+				"action_time" : "2011-03-11 09:44:17",
+				"object_repr" : "faguero",
+				"object_id" : "5",
 				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
@@ -423,9 +262,9 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:47:54",
-				"object_repr" : "ccoletta",
-				"object_id" : "5",
+				"action_time" : "2011-03-11 09:44:08",
+				"object_repr" : "gdelacruz",
+				"object_id" : "4",
 				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
@@ -436,9 +275,9 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:47:46",
-				"object_repr" : "amoro",
-				"object_id" : "4",
+				"action_time" : "2011-03-11 09:44:00",
+				"object_repr" : "plalloni",
+				"object_id" : "3",
 				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
@@ -449,9 +288,9 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:47:37",
-				"object_repr" : "faguero",
-				"object_id" : "3",
+				"action_time" : "2011-03-11 09:43:51",
+				"object_repr" : "amoro",
+				"object_id" : "2",
 				"change_message" : "",
 				"user" : 1,
 				"content_type" : 3
@@ -461,11 +300,11 @@
 			"pk" : 2,
 			"model" : "admin.logentry",
 			"fields" : {
-				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:47:29",
-				"object_repr" : "plalloni",
-				"object_id" : "2",
-				"change_message" : "",
+				"action_flag" : 2,
+				"action_time" : "2011-03-11 09:43:38",
+				"object_repr" : "szaffarano",
+				"object_id" : "1",
+				"change_message" : "Modifica first_name y last_name.",
 				"user" : 1,
 				"content_type" : 3
 			}
@@ -475,7 +314,7 @@
 			"model" : "admin.logentry",
 			"fields" : {
 				"action_flag" : 1,
-				"action_time" : "2011-03-10 16:46:42",
+				"action_time" : "2011-03-11 09:43:18",
 				"object_repr" : "editores",
 				"object_id" : "1",
 				"change_message" : "",
@@ -646,65 +485,11 @@
 			}
 		},
 		{
-			"pk" : 37,
+			"pk" : 31,
 			"model" : "auth.permission",
 			"fields" : {
 				"codename" : "add_interface",
 				"name" : "Can add interface",
-				"content_type" : 13
-			}
-		},
-		{
-			"pk" : 38,
-			"model" : "auth.permission",
-			"fields" : {
-				"codename" : "change_interface",
-				"name" : "Can change interface",
-				"content_type" : 13
-			}
-		},
-		{
-			"pk" : 39,
-			"model" : "auth.permission",
-			"fields" : {
-				"codename" : "delete_interface",
-				"name" : "Can delete interface",
-				"content_type" : 13
-			}
-		},
-		{
-			"pk" : 34,
-			"model" : "auth.permission",
-			"fields" : {
-				"codename" : "add_module",
-				"name" : "Can add module",
-				"content_type" : 12
-			}
-		},
-		{
-			"pk" : 35,
-			"model" : "auth.permission",
-			"fields" : {
-				"codename" : "change_module",
-				"name" : "Can change module",
-				"content_type" : 12
-			}
-		},
-		{
-			"pk" : 36,
-			"model" : "auth.permission",
-			"fields" : {
-				"codename" : "delete_module",
-				"name" : "Can delete module",
-				"content_type" : 12
-			}
-		},
-		{
-			"pk" : 31,
-			"model" : "auth.permission",
-			"fields" : {
-				"codename" : "add_system",
-				"name" : "Can add system",
 				"content_type" : 11
 			}
 		},
@@ -712,8 +497,8 @@
 			"pk" : 32,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "change_system",
-				"name" : "Can change system",
+				"codename" : "change_interface",
+				"name" : "Can change interface",
 				"content_type" : 11
 			}
 		},
@@ -721,8 +506,8 @@
 			"pk" : 33,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "delete_system",
-				"name" : "Can delete system",
+				"codename" : "delete_interface",
+				"name" : "Can delete interface",
 				"content_type" : 11
 			}
 		},
@@ -730,8 +515,8 @@
 			"pk" : 28,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "add_choice",
-				"name" : "Can add choice",
+				"codename" : "add_module",
+				"name" : "Can add module",
 				"content_type" : 10
 			}
 		},
@@ -739,8 +524,8 @@
 			"pk" : 29,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "change_choice",
-				"name" : "Can change choice",
+				"codename" : "change_module",
+				"name" : "Can change module",
 				"content_type" : 10
 			}
 		},
@@ -748,8 +533,8 @@
 			"pk" : 30,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "delete_choice",
-				"name" : "Can delete choice",
+				"codename" : "delete_module",
+				"name" : "Can delete module",
 				"content_type" : 10
 			}
 		},
@@ -757,8 +542,8 @@
 			"pk" : 25,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "add_poll",
-				"name" : "Can add poll",
+				"codename" : "add_system",
+				"name" : "Can add system",
 				"content_type" : 9
 			}
 		},
@@ -766,8 +551,8 @@
 			"pk" : 26,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "change_poll",
-				"name" : "Can change poll",
+				"codename" : "change_system",
+				"name" : "Can change system",
 				"content_type" : 9
 			}
 		},
@@ -775,8 +560,8 @@
 			"pk" : 27,
 			"model" : "auth.permission",
 			"fields" : {
-				"codename" : "delete_poll",
-				"name" : "Can delete poll",
+				"codename" : "delete_system",
+				"name" : "Can delete system",
 				"content_type" : 9
 			}
 		},
@@ -839,65 +624,29 @@
 			"model" : "auth.group",
 			"fields" : {
 				"name" : "editores",
-				"permissions" : [ 37, 38, 39, 34, 35, 36, 31, 32, 33 ]
+				"permissions" : [ 31, 32, 33, 28, 29, 30, 25, 26, 27 ]
 			}
 		},
 		{
 			"pk" : 1,
 			"model" : "auth.user",
 			"fields" : {
-				"username" : "sebas",
+				"username" : "szaffarano",
 				"first_name" : "Sebasti\u00e1n",
 				"last_name" : "Zaffarano",
 				"is_active" : true,
 				"is_superuser" : true,
 				"is_staff" : true,
-				"last_login" : "2011-03-10 16:57:59",
+				"last_login" : "2011-03-11 09:42:57",
 				"groups" : [],
 				"user_permissions" : [],
-				"password" : "sha1$13259$fc2409a94437ed75a452770f10dd6a72ce466bc3",
+				"password" : "sha1$53302$220e421269d7d7f4122245c8c75c0ab1e59199ba",
 				"email" : "sebas@zaffarano.com.ar",
-				"date_joined" : "2011-03-09 11:12:16"
+				"date_joined" : "2011-03-11 09:42:13"
 			}
 		},
 		{
 			"pk" : 2,
-			"model" : "auth.user",
-			"fields" : {
-				"username" : "plalloni",
-				"first_name" : "Pablo",
-				"last_name" : "Lalloni",
-				"is_active" : true,
-				"is_superuser" : false,
-				"is_staff" : true,
-				"last_login" : "2011-03-10 16:47:29",
-				"groups" : [ 1 ],
-				"user_permissions" : [],
-				"password" : "sha1$fe02b$c06acf24f41a8d2ddc57bc014a28a32a59b1ad51",
-				"email" : "plalloni@afip.gob.ar",
-				"date_joined" : "2011-03-10 16:47:29"
-			}
-		},
-		{
-			"pk" : 3,
-			"model" : "auth.user",
-			"fields" : {
-				"username" : "faguero",
-				"first_name" : "Fabi\u00e1n",
-				"last_name" : "Aguero",
-				"is_active" : true,
-				"is_superuser" : false,
-				"is_staff" : true,
-				"last_login" : "2011-03-10 16:47:37",
-				"groups" : [ 1 ],
-				"user_permissions" : [],
-				"password" : "sha1$65183$4be8125b7213ce42e50337d2bac36003cb3db504",
-				"email" : "faguero@afip.gob.ar",
-				"date_joined" : "2011-03-10 16:47:37"
-			}
-		},
-		{
-			"pk" : 4,
 			"model" : "auth.user",
 			"fields" : {
 				"username" : "amoro",
@@ -906,34 +655,34 @@
 				"is_active" : true,
 				"is_superuser" : false,
 				"is_staff" : true,
-				"last_login" : "2011-03-10 16:57:32",
+				"last_login" : "2011-03-11 09:43:51",
 				"groups" : [ 1 ],
 				"user_permissions" : [],
-				"password" : "sha1$49581$1cbbe1af2aba9d368ab3d5830b80554df1980622",
+				"password" : "sha1$0c072$4d431abdb8d0ba928ecd9f96b3b98a1409f62410",
 				"email" : "amoro@afip.gob.ar",
-				"date_joined" : "2011-03-10 16:47:46"
+				"date_joined" : "2011-03-11 09:43:51"
 			}
 		},
 		{
-			"pk" : 5,
+			"pk" : 3,
 			"model" : "auth.user",
 			"fields" : {
-				"username" : "ccoletta",
-				"first_name" : "Carmelo",
-				"last_name" : "Coletta",
+				"username" : "plalloni",
+				"first_name" : "Pablo",
+				"last_name" : "Lalloni",
 				"is_active" : true,
-				"is_superuser" : false,
+				"is_superuser" : true,
 				"is_staff" : true,
-				"last_login" : "2011-03-10 16:47:54",
-				"groups" : [ 1 ],
+				"last_login" : "2011-03-11 09:44:00",
+				"groups" : [],
 				"user_permissions" : [],
-				"password" : "sha1$1cfac$fcb4c300b9b324495b8ba135e66ba7c1bdb717e4",
-				"email" : "ccoletta@afip.gob.ar",
-				"date_joined" : "2011-03-10 16:47:54"
+				"password" : "sha1$96bae$cb5b548026361fce1113b9668ff0063afcf29deb",
+				"email" : "plalloni@afip.gob.ar",
+				"date_joined" : "2011-03-11 09:44:00"
 			}
 		},
 		{
-			"pk" : 6,
+			"pk" : 4,
 			"model" : "auth.user",
 			"fields" : {
 				"username" : "gdelacruz",
@@ -942,16 +691,34 @@
 				"is_active" : true,
 				"is_superuser" : false,
 				"is_staff" : true,
-				"last_login" : "2011-03-10 16:48:08",
+				"last_login" : "2011-03-11 09:44:08",
 				"groups" : [ 1 ],
 				"user_permissions" : [],
-				"password" : "sha1$40dd4$620da95711ec0933847555dc1305afce6ac7cc2d",
+				"password" : "sha1$a0b7a$74ee583f21fb2b4571c4ec116d19949251040abe",
 				"email" : "gdelacruz@afip.gob.ar",
-				"date_joined" : "2011-03-10 16:48:08"
+				"date_joined" : "2011-03-11 09:44:08"
 			}
 		},
 		{
-			"pk" : 7,
+			"pk" : 5,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "faguero",
+				"first_name" : "Fabi\u00e1n",
+				"last_name" : "Aguero",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-11 09:44:17",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$cec94$8c5cf271999493c262615153f1270f47ce7f8cb5",
+				"email" : "faguero@afip.gob.ar",
+				"date_joined" : "2011-03-11 09:44:17"
+			}
+		},
+		{
+			"pk" : 6,
 			"model" : "auth.user",
 			"fields" : {
 				"username" : "cmiranda",
@@ -960,29 +727,47 @@
 				"is_active" : true,
 				"is_superuser" : false,
 				"is_staff" : true,
-				"last_login" : "2011-03-10 16:48:16",
+				"last_login" : "2011-03-11 09:44:27",
 				"groups" : [ 1 ],
 				"user_permissions" : [],
-				"password" : "sha1$fe770$8892d094e5237a503d9572285b5735017599274f",
+				"password" : "sha1$155b7$9d5f7df2f50051b7579bc8456b411897b1f07aa5",
 				"email" : "cmiranda@afip.gob.ar",
-				"date_joined" : "2011-03-10 16:48:16"
+				"date_joined" : "2011-03-11 09:44:27"
 			}
 		},
 		{
-			"pk" : 8,
+			"pk" : 7,
 			"model" : "auth.user",
 			"fields" : {
 				"username" : "hmazzoni",
 				"first_name" : "Hernan",
 				"last_name" : "Mazzoni",
 				"is_active" : true,
-				"is_superuser" : true,
+				"is_superuser" : false,
 				"is_staff" : true,
-				"last_login" : "2011-03-10 16:57:05",
-				"groups" : [],
+				"last_login" : "2011-03-11 09:44:38",
+				"groups" : [ 1 ],
 				"user_permissions" : [],
-				"password" : "sha1$026ff$fc63bda8311dac1f3d11ec639da2be5627c02515",
+				"password" : "sha1$08679$b3dc33c5dbe657e297972c7e14553e2a834fddc1",
 				"email" : "hemazzoni@afip.gov.ar",
-				"date_joined" : "2011-03-10 16:57:05"
+				"date_joined" : "2011-03-11 09:44:38"
+			}
+		},
+		{
+			"pk" : 8,
+			"model" : "auth.user",
+			"fields" : {
+				"username" : "ccoletta",
+				"first_name" : "Carmelo",
+				"last_name" : "Coletta",
+				"is_active" : true,
+				"is_superuser" : false,
+				"is_staff" : true,
+				"last_login" : "2011-03-11 09:44:48",
+				"groups" : [ 1 ],
+				"user_permissions" : [],
+				"password" : "sha1$c4db8$5ee955a1909c2a7e334c572ef7ec304a8114fdd7",
+				"email" : "ccoletta@afip.gob.ar",
+				"date_joined" : "2011-03-11 09:44:48"
 			}
 		} ]
