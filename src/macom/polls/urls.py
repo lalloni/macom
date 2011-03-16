@@ -4,7 +4,7 @@ Created on 09/03/2011
 @author: sebas
 '''
 from django.conf.urls.defaults import patterns, url
-from polls.models import Poll
+from macom.polls.models import Poll
 
 info_dict = {
     'queryset': Poll.objects.all(),

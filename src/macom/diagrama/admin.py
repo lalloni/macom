@@ -20,7 +20,7 @@ class ModuleAdmin(admin.ModelAdmin):
     inlines = [InlineInterface]
 
 class SystemAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    list_display = ['name', 'description', 'external']
     
 class InterfaceAdmin(admin.ModelAdmin):
     list_display = ['exposer', 'name', 'goal']

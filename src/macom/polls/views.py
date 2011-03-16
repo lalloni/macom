@@ -7,7 +7,7 @@ Created on 09/03/2011
 '''
 
 from django.http import HttpResponseRedirect
-from polls.models import Poll, Choice
+from macom.polls.models import Poll, Choice
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.core.urlresolvers import reverse

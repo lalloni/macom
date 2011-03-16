@@ -7,6 +7,7 @@ from django.conf import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^diagrama/', include('diagrama.urls')),
     #(r'^polls/', include('polls.urls')),
     
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),

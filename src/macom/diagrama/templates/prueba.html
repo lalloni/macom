@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Titulo!{% endblock %}
+
+{% block sidebar %}
+	<h2>MENU DE LA IZQUIERDA</h2>
+{% endblock %}
+
+{% block content %}
+    {% url diagrama.views.ver as link %}
+    
+	<h2>CONTENIDO!!!!</h2>
+	{% cycle 'row1' 'row2' as rows%}
+	{% cycle rows %}
+	{% cycle rows %}
+	{% cycle rows %}
+	{% cycle rows %}
+	{% cycle rows %}
+	{% cycle rows %}
+	{% cycle rows %}
+	<br/>
+	{% filter force_escape|lower %}
+		This text will be HTML-escaped, and will appear in all lowercase.
+	{% endfilter %}
+	<br/>
+	It is {% now "jS F Y H:i" %}
+	<br/>
+	
+	<a href="{{ link }}">ver diagrama!</a>
+{% endblock %}
