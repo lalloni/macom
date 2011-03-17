@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+   <h2>Diagrama</h2>
+   
+   <img src="{% url diagrama.views.png %}" usemap="{{ mapname }}"/>
+   {{ cmap|safe }}
+      
+   <p><a href="{% url diagrama.views.download '100' %}">Descargar</a></p>
+{% endblock %}

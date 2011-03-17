@@ -6,43 +6,35 @@ Created on 09/03/2011
 @author: sebas
 '''
 
-from django.http import HttpResponse
-from macom.diagrama.models import System
-from pygraphviz.agraph import AGraph
-from tempfile import NamedTemporaryFile
+from django.http import HttpResponse, HttpResponseNotFound
+from macom.diagrama.models import System, Module, Interface
 from django.shortcuts import render_to_response
-import StringIO
+from diagrama.utils import graph
+from pydot import graph_from_dot_data
 
-def __id(obj):
-    return "cluster_%s_%s" % (obj.__class__.__name__, obj.id)
+def system_detail(request, id):
+    return render_to_response('system-detail.html', {'object': System.objects.get(id=id)})
 
-def __graph():
-    g = AGraph(name="systems", strict=False, directed=True)
-    g.node_attr['shape'] = 'component'
-   
-    for s in System.objects.all():
-        sub = g.add_subgraph('', __id(s), label=s.description.encode('utf-8'), color='red', href="http://www.google.com/%s"%s.name.encode('utf-8'))
-        for m in s.module_set.all():
-            sub_mod = sub.add_subgraph('', __id(m), label=m.name.encode('utf-8'), color='blue', href="http://www.google.com/%s"%m.name.encode('utf-8'))
+def module_detail(request, id):
+    return render_to_response('module-detail.html', {'object': Module.objects.get(id=id)})
 
-            for i in m.exposed.all():
-                sub_mod.add_node(__id(i), label=i.name.encode('utf-8'), href="http://www.google.com/%s"%i.name.encode('utf-8'))
-
-                for c in i.consumers.all():
-                    sub_mod.add_edge(__id(i), __id(c))
-    return g
-
-def detalle(request):
-    #file = StringIO.StringIO()
-    #g = __graph()
-    #g.draw(path=file, format='cmapx', prog='fdp')
-    #return render_to_response("detalle.html", {'cmap': file.getvalue(), 'mapid': str(g)})
-    return render_to_response("detalle.html")
+def interface_detail(request, id):
+    return render_to_response('interface-detail.html', {'object': Interface.objects.get(id=id)})
+        
+def detail(request):
+    g = graph('systems', {'layout': 'fdp', 'size': '10'})
+    ctx = {'cmap': g.create(format='cmapx'), 'mapname': 'systems'}
+    
+    request.session['graph'] = g.to_string()
+    
+    return render_to_response("detail.html", ctx)
 
 def png(request):
-    file = NamedTemporaryFile(suffix='.png')
-    g = __graph()
-    g.draw(path=file.name, format='png', prog='fdp')
-    dot = open(file.name).read()
-    file.close()
-    return HttpResponse(dot, content_type='image/png')
+    if 'graph' not in request.session:
+        return HttpResponseNotFound("Graph not found in session")
+    g = graph_from_dot_data(request.session['graph'])
+    return HttpResponse(g.create(format='png'), content_type='image/png')
+
+def download(request, size = '100'):
+    g = graph('systems', {'layout': 'fdp', 'size': str(size)})
+    return HttpResponse(g.create(format='png'), content_type='image/png')

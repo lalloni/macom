@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>detalle del sistema</h2>
+<div>
+	<p>Nombre: {{ object.name }}</p>
+	<p>Descripci&oacute;n: {{ object.description }}</p>
+	<p>Es externo: {{ object.external }}</p>
+</div>
+<a href="javascript:history.back()">Volver</a>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import permalink
 
 class System(models.Model):
     name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
@@ -14,6 +15,10 @@ class System(models.Model):
         
     def __unicode__(self):
         return self.name
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('system_detail', [self.id])
 
 class Module(models.Model):
     CRITICITY = (
@@ -36,6 +41,10 @@ class Module(models.Model):
     def __unicode__(self):
         return self.name
 
+    @permalink
+    def get_absolute_url(self):
+        return ('module_detail', [self.id])
+    
 class Interface(models.Model):
     name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
     goal = models.CharField(_('goal'), help_text=_('goal-help'), max_length=200)
@@ -48,3 +57,7 @@ class Interface(models.Model):
         
     def __unicode__(self):
         return self.name
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('interface_detail', [self.id])
