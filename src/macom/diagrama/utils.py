@@ -34,6 +34,6 @@ def graph(name, extra = {}):
 
                 consumers = i.consumers.order_by('id').all()
                 for c in consumers:
-                    subsub.add_edge(pydot.Edge(__id(i), __id(c, 'cluster_')))
+                    subsub.add_edge(pydot.Edge(__id(c, 'cluster_'), __id(i)))
     
     return graph
