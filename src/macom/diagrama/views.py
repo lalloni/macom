@@ -35,7 +35,7 @@ def maximize(request, entity, id):
     return HttpResponseRedirect(reverse(detail))
     
 def detail(request):
-    minimized = request.session.get('minimized')
+    minimized = request.session.get('minimized', {})
     g = graph('systems', minimized, {'layout': 'fdp', 'size': '10'})
     ctx = {'cmap': g.create(format='cmapx'), 'mapname': 'systems', 'show_maximizeall': len(minimized) > 0}
     request.session['graph'] = g.to_string()
