@@ -27,9 +27,11 @@ def graph(name, minimized = {}, extra = {}):
         if isminimized:
             action = 'maximize'
             title = '^'
+            desc = 'Maximizar'
         else:
             action = 'minimize'
             title = '_'
+            desc = 'Minimizar'
 
         label = '''<
         <table cellpadding='0' cellborder='0' BORDER="0" cellspacing='0'>
@@ -39,7 +41,7 @@ def graph(name, minimized = {}, extra = {}):
               <td title="%s" href="%s">%s</td>
            </tr>
         </table>
-        >''' % (__label(s.name), s.get_absolute_url(), reverse(action,args=['system', s.id]) , title)
+        >''' % (__label(s.name), desc, reverse(action,args=['system', s.id]) , title)
         
         sub = pydot.Cluster(__id(s), color='red' if not s.external else 'orange', label=label, URL='"%s"'%s.get_absolute_url())
         graph.add_subgraph(sub)
