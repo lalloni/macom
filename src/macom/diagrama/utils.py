@@ -58,7 +58,7 @@ def graph(name, minimized = {}, extra = {}):
                 
             interfaces = m.exposed.order_by('id').all()
             for i in interfaces:
-                int_node = pydot.Node(__id(i), shape="rec", URL='"%s"'%i.get_absolute_url())
+                int_node = pydot.Node(__id(i), shape="rec", URL='"%s"'%i.get_absolute_url(), label=__label(s.name))
 
                 if not isminimized:
                     sub.add_node(int_node)
