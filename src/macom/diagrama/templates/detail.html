@@ -7,4 +7,9 @@
    {{ cmap|safe }}
       
    <p><a href="{% url diagrama.views.download '100' %}">Descargar</a></p>
+   <ul>
+   {% if show_maximizeall %}
+   <li><a href="{% url diagrama.views.maximize_all %}">Mostrar todos</a></li>
+   {% endif %}
+   </ul>
 {% endblock %}

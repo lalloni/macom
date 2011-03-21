@@ -4,7 +4,15 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
 
-class System(models.Model):
+class Base(models.Model):
+    @permalink
+    def get_absolute_url(self):
+        return ('admin:%s_%s_change' %(self._meta.app_label, self._meta.module_name), [self.id])
+
+    class Meta:
+        abstract = True
+
+class System(Base):
     name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
     description = models.CharField(_('description'), help_text=_('description-help'), max_length=200)
     external = models.BooleanField(_('Externo'))
@@ -15,12 +23,8 @@ class System(models.Model):
         
     def __unicode__(self):
         return self.name
-    
-    @permalink
-    def get_absolute_url(self):
-        return ('system_detail', [self.id])
 
-class Module(models.Model):
+class Module(Base):
     CRITICITY = (
         (u'H', _('high')),
         (u'M', _('medium')),
@@ -41,11 +45,7 @@ class Module(models.Model):
     def __unicode__(self):
         return self.name
 
-    @permalink
-    def get_absolute_url(self):
-        return ('module_detail', [self.id])
-    
-class Interface(models.Model):
+class Interface(Base):
     name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
     goal = models.CharField(_('goal'), help_text=_('goal-help'), max_length=200)
     technology = models.CharField(_('technology'), help_text=_('technology-help'), max_length=200)
@@ -57,7 +57,3 @@ class Interface(models.Model):
         
     def __unicode__(self):
         return self.name
-    
-    @permalink
-    def get_absolute_url(self):
-        return ('interface_detail', [self.id])
