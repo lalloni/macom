@@ -84,7 +84,7 @@ def graph(name, minimized = [], closedlist = [], extra = {}, cleaned=False):
                 if not isclosed:
                     if not isminimized:
                         sub.add_node(int_node)
-                        sub.add_edge(pydot.Edge(int_node, mod_node, arrowhead="none", arrowtail="none", style="dotted"))
+                        sub.add_edge(pydot.Edge(int_node, mod_node, arrowhead="none", arrowtail="none"))
                     else:
                         replace_by[__id(i)] = __id(s, 'cluster_')
                 else:
