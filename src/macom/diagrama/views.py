@@ -20,6 +20,8 @@ def maximize_all(request):
 
 def minimize_all(request):
     minimized = request.session.get('minimized', [])
+    if type(minimized).__name__ != 'list':
+        minimized = []
     minimized.extend([str(s.id) for s in System.objects.order_by('id').all()])
     request.session['minimized'] = minimized
     return HttpResponseRedirect(reverse(detail))
