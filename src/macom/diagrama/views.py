@@ -11,33 +11,73 @@ from django.shortcuts import render_to_response
 from diagrama.utils import graph
 from pydot import graph_from_dot_data
 from django.core.urlresolvers import reverse
-import datetime
+from diagrama.models import System
 
 def maximize_all(request):
-    request.session['minimized'] = {}
+    request.session['minimized'] = []
 
     return HttpResponseRedirect(reverse(detail))
 
-def minimize(request, entity, id):
-    minimized = request.session.get('minimized', {})
-    minimized.setdefault(entity, []).append(str(id))
+def minimize_all(request):
+    minimized = request.session.get('minimized', [])
+    minimized.extend([str(s.id) for s in System.objects.order_by('id').all()])
+    request.session['minimized'] = minimized
+    return HttpResponseRedirect(reverse(detail))
+
+def close_all(request):
+    closed = request.session.get('closed', [])
+    closed.extend([str(s.id) for s in System.objects.order_by('id').all()])
+    request.session['closed'] = closed
+    return HttpResponseRedirect(reverse(detail))
+
+def open_all(request):
+    request.session['closed'] = []
+
+    return HttpResponseRedirect(reverse(detail))
+
+def close(request, id):
+    closed = request.session.get('closed', [])
+    closed.append(str(id))
+    request.session['closed'] = closed
+
+    return HttpResponseRedirect(reverse(detail))
+
+def minimize(request, id):
+    minimized = request.session.get('minimized', [])
+    minimized.append(str(id))
     request.session['minimized'] = minimized
 
     return HttpResponseRedirect(reverse(detail))
 
-def maximize(request, entity, id):
-    minimized = request.session.get('minimized', {})
-    byentity = minimized.get(entity, None)
-    if byentity is not None and str(id) in byentity:
-        byentity.remove(str(id))
+def maximize(request, id):
+    minimized = request.session.get('minimized', [])
+    if str(id) in minimized:
+        minimized.remove(str(id))
         request.session['minimized'] = minimized
 
     return HttpResponseRedirect(reverse(detail))
     
+def open(request, id):
+    closed = request.session.get('closed', [])
+    if str(id) in closed:
+        closed.remove(str(id))
+        request.session['closed'] = closed
+
+    return HttpResponseRedirect(reverse(detail))
+
 def detail(request):
-    minimized = request.session.get('minimized', {})
-    g = graph('systems', minimized, {'layout': 'fdp', 'size': '10'})
-    ctx = {'cmap': g.create(format='cmapx'), 'mapname': 'systems', 'show_maximizeall': len(minimized) > 0}
+    minimized = request.session.get('minimized', [])
+    closed = request.session.get('closed', [])
+    g = graph('systems', minimized, closed, extra={'layout': 'fdp', 'size': '10'})
+    systems_count = len(System.objects.all())
+    ctx = {
+           'cmap': g.create(format='cmapx'), 
+           'mapname': 'systems', 
+           'show_maximizeall': len(minimized) > 0, 
+           'show_openall': len(closed) > 0,
+           'show_minimizeall': len(minimized) != systems_count, 
+           'show_closeall': len(closed) != systems_count
+    }
     request.session['graph'] = g.to_string()
     
     return render_to_response("detail.html", ctx)
@@ -53,5 +93,6 @@ def png(request):
 
 def download(request, size = '100'):
     minimized = request.session.get('minimized', {})
-    g = graph('systems', minimized, {'layout': 'fdp', 'size': str(size)})
+    closed = request.session.get('closed', {})
+    g = graph('systems', minimized, closed, extra={'layout': 'fdp', 'size': str(size)}, cleaned=True)
     return HttpResponse(g.create(format='png'), content_type='image/png')

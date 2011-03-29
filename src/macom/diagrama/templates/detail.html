@@ -6,10 +6,20 @@
    <img src="{% url diagrama.views.png %}" usemap="{{ mapname }}"/>
    {{ cmap|safe }}
       
-   <p><a href="{% url diagrama.views.download '100' %}">Descargar</a></p>
-   <ul>
-   {% if show_maximizeall %}
-   <li><a href="{% url diagrama.views.maximize_all %}">Mostrar todos</a></li>
-   {% endif %}
-   </ul>
+   <p>
+	   <div><a href="{% url diagrama.views.download '100' %}">Descargar</a></div>
+	   {% if show_minimizeall %}
+	   <div><a href="{% url diagrama.views.minimize_all %}">Minimizar todos</a></div>
+	   {% endif %}
+	   {% if show_closeall %}
+	   <div><a href="{% url diagrama.views.close_all %}">Cerrar todos</a></div>
+	   {% endif %}
+	   {% if show_maximizeall %}
+	   <div><a href="{% url diagrama.views.maximize_all %}">Maximizar todos</a></div>
+	   {% endif %}
+	   {% if show_openall %}
+	   <div><a href="{% url diagrama.views.open_all %}">Abrir todos</a></div>
+	   {% endif %}
+   </p>
+
 {% endblock %}
