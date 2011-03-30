@@ -97,4 +97,4 @@ def download(request, size = '100'):
     minimized = request.session.get('minimized', {})
     closed = request.session.get('closed', {})
     g = graph('systems', minimized, closed, extra={'layout': 'fdp', 'size': str(size)}, cleaned=True)
-    return HttpResponse(g.create(format='png'), content_type='image/png')
+    return HttpResponse(g.create(format='svg'), content_type='image/svg+xml')
