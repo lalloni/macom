@@ -88,9 +88,7 @@ def png(request):
     if 'graph' not in request.session:
         return HttpResponseNotFound("Graph not found in session")
     
-    str_g = request.session['graph']
-    g = graph_from_dot_data(str_g)
-
+    g = graph_from_dot_data(request.session['graph'])
     response = HttpResponse(g.create(format='png'), content_type='image/png')
     response['Cache-Control'] = 'no-cache'
     return response
@@ -100,5 +98,3 @@ def download(request, size = '100'):
     closed = request.session.get('closed', {})
     g = graph('systems', minimized, closed, extra={'layout': 'fdp', 'size': str(size)}, cleaned=True)
     return HttpResponse(g.create(format='svg'), content_type='image/svg+xml')
-    #return HttpResponse(g.create(format='png'), content_type='image/png')
-    #return HttpResponse(g.create(format='ps'), content_type='application/postscript')

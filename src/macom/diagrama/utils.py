@@ -67,7 +67,7 @@ def graph(name, minimized = [], closedlist = [], extra = {}, cleaned=False):
 
         modules = s.module_set.order_by('id').all()
         for m in modules:
-            mod_node = pydot.Node(__id(m), label='"%s"'%__label(m.name), shape="component", URL='"%s"'%m.get_absolute_url())
+            mod_node = pydot.Node(__id(m), label=__label(m.name), shape="component", URL='"%s"'%m.get_absolute_url())
             
             if not isclosed:
                 if not isminimized :

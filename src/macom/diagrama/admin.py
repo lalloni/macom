@@ -16,7 +16,7 @@ class ModuleAdmin(admin.ModelAdmin):
     filter_horizontal = ['consumed']
     list_display = ['system', 'name', 'goal', 'external']
     list_display_links = ['name']
-    search_fields = ['name', 'goal', 'system__name']
+    search_fields = ['name', 'goal']
     inlines = [InlineInterface]
 
 class SystemAdmin(admin.ModelAdmin):
