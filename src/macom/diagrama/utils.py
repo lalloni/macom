@@ -4,7 +4,7 @@ Created on 17/03/2011
 @author: sebas
 '''
 import pydot
-from diagrama.models import System
+from diagrama.models import System, Interface
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -19,25 +19,28 @@ def __id(obj, prefix = None):
 def __label(s):
     return unicode(s).encode('utf-8')
 
-def graph(name, minimized = [], closedlist = [], extra = {}, cleaned=False):
+def graph(name, minimized = [], closedlist = [], extra = {}, cleaned=False, show_related_systems=False):
     graph = pydot.Dot(name, **extra)
     consumers_toadd = []
     replace_by = {}
     closed = []
     omit = []
+    related_systems= dict()
+    
     systems = System.objects.order_by('id').all()
+    
+    for s in systems:
+        related_systems[s.id] = list(set(map(lambda i: i.exposer.system.id, Interface.objects.filter(consumers__system__id=s.id))))
+        
     for s in systems:
         isminimized = str(s.id) in minimized
-        isclosed = str(s.id) in closedlist
+        isclosed = str(s.id) in closedlist 
+        
+        if isclosed and s.id in related_systems[s.id] and show_related_systems:
+            isclosed = False
         
         if cleaned:
-            label = '''<
-            <table border='0'>
-               <tr>
-                  <td align='left'><b>%s</b></td>
-               </tr>
-            </table>
-            >''' % (__label(s.name))
+            label = '"%s"' % (__label(s.name))
         else:
             label = '''<
             <table border='0'>
@@ -99,7 +102,7 @@ def graph(name, minimized = [], closedlist = [], extra = {}, cleaned=False):
             if idi not in omit and idc not in omit and idi != idc:
                 graph.add_edge(pydot.Edge(idc, idi))
 
-    if len(closed) > 0:
+    if len(closed) > 0 and not cleaned:
         sub = pydot.Cluster('cluster_closed_systems', color='blue', label='Cerrados')
         graph.add_subgraph(sub)
         for c in closed:
