@@ -3,28 +3,7 @@
 {% block content %}
    <h2>Diagrama</h2>
    
-   <img src="{% url diagrama.views.show 'png' %}" usemap="{{ mapname }}"/>
+   <img src="{% url diagrama.views.show 'svg' %}" usemap="#{{ mapname }}"/>
    {{ cmap|safe }}
-      
-   <p>
-	   <div><a href="{% url diagrama.views.download 100 'png' %}">Descargar</a></div>
-	   {% if show_minimizeall %}
-	   <div><a href="{% url diagrama.views.minimize_all %}">Minimizar todos</a></div>
-	   {% endif %}
-	   {% if show_closeall %}
-	   <div><a href="{% url diagrama.views.close_all %}">Cerrar todos</a></div>
-	   {% endif %}
-	   {% if show_maximizeall %}
-	   <div><a href="{% url diagrama.views.maximize_all %}">Maximizar todos</a></div>
-	   {% endif %}
-	   {% if show_openall %}
-	   <div><a href="{% url diagrama.views.open_all %}">Abrir todos</a></div>
-	   {% endif %}
-	   {% if show_related_systems_enabled %}
-	   <div><a href="{% url diagrama.views.hide_related_systems %}">Ocultar sistemas relacionados</a></div>
-	   {% else %}
-       <div><a href="{% url diagrama.views.show_related_systems %}">Mostrar sistemas relacionados</a></div>
-	   {% endif %}
-   </p>
 
 {% endblock %}

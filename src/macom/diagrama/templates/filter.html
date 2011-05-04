@@ -1,0 +1,107 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+	<div class="botonera">
+		<a id="ocultar" class="ocultar" href="#">Ocultar Filtro</a>
+		<a id="mostrar" class="ocultar" href="#">Mostrar Filtro</a>
+		<a href="{% url diagrama.views.download format show minimized related %}">Descargar</a> 
+	</div>
+
+	<form action="filter" method="post">{% csrf_token %}
+		<div class="form" id="form">
+			<table class="filtro" id="filtro">
+				<tr>
+					<th rowspan="2">Nombre</th>
+					<th>Mostrar</th>
+					<th>Minimizado</th>
+					<th>Relacionados</th>
+				</tr>
+				<tr class="header">
+					<td><input type="checkbox" id="all_show"/></td>
+					<td><input type="checkbox" id="all_minimized"/></td>
+					<td><input type="checkbox" id="all_related"/></td>
+				</tr>
+				{% for system in systems %}
+				<tr class="{% cycle 'par' 'impar' %}">
+					<td>{{ system.name }}</td>
+					
+					{% if system.show %}
+					<td><input type="checkbox" checked="checked" name="show_{{ system.id }}"/></td>
+					{% else %}
+					<td><input type="checkbox" name="show_{{ system.id }}"/></td>
+					{% endif %}
+					
+					{% if system.minimized %}
+					<td><input type="checkbox" checked="checked" name="minimized_{{ system.id }}"/></td>
+					{% else %}
+					<td><input type="checkbox" name="minimized_{{ system.id }}"/></td>
+					{% endif %}
+					
+					{% if system.related %}
+					<td><input type="checkbox" checked="checked" name="related_{{ system.id }}"/></td>
+					{% else %}
+					<td><input type="checkbox" name="related_{{ system.id }}"/></td>
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</table>
+	
+			<div class="formato">
+				{% for ct in contenttypes %}
+				   <label for="{{ ct }}">
+				   	{% if format == ct %}
+				   	<input checked="checked" type="radio" name="formato" value="{{ ct }}" id="{{ ct }}">{{ ct }}</input>
+				   	{% else %}
+				   	<input type="radio" name="formato" value="{{ ct }}" id="{{ ct }}">{{ ct }}</input>
+				   	{% endif %}
+				   </label>
+				{% endfor %}
+				<input type="submit" value="Actualizar"/>
+			</div>
+		</div>
+	</form>
+	
+   <img src="{% url diagrama.views.show 'svg' %}" usemap="#{{ mapname }}"/>
+   {{ cmap|safe }}
+   
+	<script>
+		window.addEvent('domready', function() {
+			var myVerticalSlide = new Fx.Slide('form');
+		  
+			$('mostrar').addEvent('click', function(event){
+				event.stop();
+				$('mostrar').toggleClass('ocultar')
+				$('ocultar').toggleClass('ocultar')
+				myVerticalSlide.slideIn();
+			});
+
+			$('ocultar').addEvent('click', function(event){
+				event.stop();
+				$('mostrar').toggleClass('ocultar')
+				$('ocultar').toggleClass('ocultar')
+				myVerticalSlide.slideOut();
+			});
+
+			{% if not empty %}
+			myVerticalSlide.hide()
+			$('mostrar').toggleClass('ocultar')
+			{% else %}
+			$('ocultar').toggleClass('ocultar')
+			{% endif %}
+		});
+
+		$('all_show').addEvent('click', function(){toggle(this.checked, 'show_');});
+		$('all_minimized').addEvent('click', function(){toggle(this.checked, 'minimized_');});
+		$('all_related').addEvent('click', function(){toggle(this.checked, 'related_');});
+
+		function toggle(checked, prefix) {
+			elements = $('filtro').getElements('input');
+			for (var i = 0; i < elements.length; i++) {
+				if (elements[i].name.indexOf(prefix) == 0) {
+					elements[i].checked = checked
+				}
+			}
+		}
+	</script>
+{% endblock %}
