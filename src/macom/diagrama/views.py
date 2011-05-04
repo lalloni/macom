@@ -127,9 +127,11 @@ def __graph(show, minimized, related, extra={}):
     related_systems = dict()
     by_id = dict()
     
+    
     for s in systems:
         related_systems[str(s.id)] = list(set(map(lambda i: i.exposer.system, Interface.objects.filter(consumers__system__id=s.id))))
-        related_systems[str(s.id)].extend(list(set(map(lambda i: i.exposer.system, Interface.objects.filter(exposer__system__id=s.id)))))
+        for i in Interface.objects.filter(exposer__system__id=s.id):
+            related_systems[str(s.id)].extend(list(set(map(lambda c: c.system, i.consumers.all()))))
         by_id[str(s.id)] = s
 
     to_show = set()
