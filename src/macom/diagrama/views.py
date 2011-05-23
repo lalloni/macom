@@ -11,8 +11,7 @@ from django.shortcuts import render_to_response
 from pydot import graph_from_dot_data
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
-from diagrama.utils import RawGraphViz
-from diagrama.utils.Utils import context, plantUML, split, request_to_context, CONTENT_TYPES
+from diagrama.utils import RawGraphViz, Utils
 
 def root(request):
     '''
@@ -23,14 +22,14 @@ def root(request):
 def filter(request, format="", view="", show="", minimized="", related=""):
     req = request.REQUEST
     if request.method == 'GET':
-        ctx = context(format, view, show, minimized, related)
+        ctx = Utils.context(format, view, show, minimized, related)
         ctx.update(csrf(request))
         
         if view == 'completo':
             g = RawGraphViz(show, minimized, related, extra={'layout': 'fdp', 'size': '10'}).graph()
             request.session['program'] = None
         else:
-            g = plantUML(split(show, '_'))
+            g = Utils.plantUML(Utils.split(show, '_'))
             request.session['program'] = 'fdp'
     
         ctx['cmap'] = g.create(format='cmapx') if g is not None else None
@@ -38,7 +37,7 @@ def filter(request, format="", view="", show="", minimized="", related=""):
 
         return render_to_response('filter.html', ctx)
     else:
-        return HttpResponseRedirect(reverse(filter, kwargs=request_to_context(req)))
+        return HttpResponseRedirect(reverse(filter, kwargs=Utils.request_to_context(req)))
 
 def show(request, format='png'):
     '''
@@ -48,12 +47,12 @@ def show(request, format='png'):
     if 'graph' not in request.session:
         return HttpResponseNotFound("Graph not found in session")
     
-    if format not in CONTENT_TYPES:
+    if format not in Utils.CONTENT_TYPES:
         return HttpResponseNotFound("Content type '%s' not supported" % format)
     
     program = request.session['program']
     g = graph_from_dot_data(request.session['graph'])
-    response = HttpResponse(g.create(program, format=format), content_type=CONTENT_TYPES[format])
+    response = HttpResponse(g.create(program, format=format), content_type=Utils.CONTENT_TYPES[format])
     response['Cache-Control'] = 'no-cache'
     return response
 
@@ -61,15 +60,15 @@ def download(request, format="png", view="", show="", minimized="", related=""):
     '''
         Regenera el gráfico y lo devuelve según el formato que recibe como parámetro.
     '''
-    if format not in CONTENT_TYPES:
+    if format not in Utils.CONTENT_TYPES:
         return HttpResponseNotFound("Content type '%s' not supported" % format)
     
-    show = split(show, "_")
+    show = Utils.split(show, "_")
     program = None
     if view == 'completo':
-        g = RawGraphViz(show, split(minimized, "_"), split(related, "_"), extra={'layout': 'fdp'}).graph()
+        g = RawGraphViz(show, Utils.split(minimized, "_"), Utils.split(related, "_"), extra={'layout': 'fdp'}).graph()
     else:
-        g = plantUML(show)
+        g = Utils.plantUML(show)
         program = 'fdp'
             
-    return HttpResponse(g.create(program, format=format), content_type=CONTENT_TYPES[format])
+    return HttpResponse(g.create(program, format=format), content_type=Utils.CONTENT_TYPES[format])

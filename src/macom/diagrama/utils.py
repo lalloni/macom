@@ -26,6 +26,9 @@ class PlantUML(object):
         self.code += ''' %s %s %s\n ''' % (source, type, target)
 
     def graph(self):
+        if self.code is '':
+            return None
+        
         stdin = SpooledTemporaryFile()
         stdout = SpooledTemporaryFile()
 
