@@ -5,7 +5,7 @@
 	<div class="botonera">
 		<a id="ocultar" class="ocultar" href="#">Ocultar Filtro</a>
 		<a id="mostrar" class="ocultar" href="#">Mostrar Filtro</a>
-		<a href="{% url diagrama.views.download format show minimized related %}">Descargar</a> 
+		<a href="{% url diagrama.views.download format view show minimized related %}">Descargar</a> 
 	</div>
 
 	<form action="filter" method="post">{% csrf_token %}
@@ -48,6 +48,7 @@
 			</table>
 	
 			<div class="formato">
+				<div>
 				{% for ct in contenttypes %}
 				   <label for="{{ ct }}">
 				   	{% if format == ct %}
@@ -57,13 +58,27 @@
 				   	{% endif %}
 				   </label>
 				{% endfor %}
+				</div>
+				<div>
+				{% for v,l in views %}
+				   <label for="{{ v }}">
+				   	{% if view == v %}
+				   	<input checked="checked" type="radio" name="view" value="{{ v }}" id="{{ v }}">{{ l }}</input>
+				   	{% else %}
+				   	<input type="radio" name="view" value="{{ v }}" id="{{ v }}">{{ l }}</input>
+				   	{% endif %}
+				   </label>
+				{% endfor %}
+				</div>
 				<input type="submit" value="Actualizar"/>
 			</div>
 		</div>
 	</form>
 	
-   <img src="{% url diagrama.views.show 'svg' %}" usemap="#{{ mapname }}"/>
+   {% if not empty %}
+   <img src="{% url diagrama.views.show format %}" usemap="#{{ mapname }}"/>
    {{ cmap|safe }}
+   {% endif %}
    
 	<script>
 		window.addEvent('domready', function() {
