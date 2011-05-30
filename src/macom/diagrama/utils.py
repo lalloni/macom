@@ -78,7 +78,6 @@ class RawGraphViz(object):
     
         to_show = set()
         to_minimize = set()
-        print "iterando show: %s" % self.show
         for s in self.show:
             to_show.add(by_id[str(s)])
         for s in self.minimized:
@@ -232,11 +231,11 @@ class Utils(object):
         for ids in systems:
             s = System.objects.get(id = ids)
             idc = 'C%s'%s.id
-            uml.add(PlantUML.COMPONENT, idc, s.name)
+            uml.add(PlantUML.COMPONENT, idc, "%s (%s)" % (s.name, s.id))
             
             for i in Interface.objects.filter(exposer__system__id=s.id):
                 idi = 'I%s'%i.id
-                uml.add(PlantUML.INTERFACE, idi, i.name)
+                uml.add(PlantUML.INTERFACE, idi, "%s (%s)"%(i.name, i.id))
                 mappings.append((idi, idc))
                 
         for comp, iface in mappings:
