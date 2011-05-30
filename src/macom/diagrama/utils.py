@@ -78,6 +78,7 @@ class RawGraphViz(object):
     
         to_show = set()
         to_minimize = set()
+        print "iterando show: %s" % self.show
         for s in self.show:
             to_show.add(by_id[str(s)])
         for s in self.minimized:
@@ -214,8 +215,6 @@ class Utils(object):
         minimized = Utils.split(minimized, "_")
         related = Utils.split(related, "_")
         for s in System.objects.order_by('name').all():
-            if str(s.id) in show:
-                systems.append(s)
             obj = {
                    'id': s.id, 
                    'name': s.name, 
@@ -224,7 +223,6 @@ class Utils(object):
                    'related': str(s.id) in related
             }
             systems.append(obj)
-            
         return ctx
     
     @staticmethod

@@ -26,7 +26,7 @@ def filter(request, format="", view="", show="", minimized="", related=""):
         ctx.update(csrf(request))
         
         if view == 'completo':
-            g = RawGraphViz(show, minimized, related, extra={'layout': 'fdp', 'size': '10'}).graph()
+            g = RawGraphViz(Utils.split(show, '_'), Utils.split(minimized, '_'), Utils.split(related, '_'), extra={'layout': 'fdp', 'size': '10'}).graph()
             request.session['program'] = None
         else:
             g = Utils.plantUML(Utils.split(show, '_'))
