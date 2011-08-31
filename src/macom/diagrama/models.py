@@ -20,6 +20,7 @@ class System(Base):
     class Meta:
         verbose_name = _('system')
         verbose_name_plural = _('systems')
+        ordering = ['name']
         
     def __unicode__(self):
         return self.name
@@ -41,7 +42,8 @@ class Module(Base):
     class Meta:
         verbose_name = _('module')
         verbose_name_plural = _('modules')
-        
+        ordering = ['name']
+
     def __unicode__(self):
         return self.name
 
@@ -54,6 +56,7 @@ class Interface(Base):
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')
-        
+        ordering = ['exposer']
+
     def __unicode__(self):
-        return self.name
+        return "%s.%s" % (self.exposer.name, self.name)
