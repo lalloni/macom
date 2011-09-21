@@ -72,7 +72,7 @@ class Module(Base):
         ordering = ['system__name']
 
     def __unicode__(self):
-        return self.name
+        return "%s:%s" % (unicode(self.system), self.name)
 
 class Interface(Base):
     name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
@@ -90,4 +90,4 @@ class Interface(Base):
         ordering = ['exposer__name']
 
     def __unicode__(self):
-        return "%s:%s" % (self.exposer.name, self.name)
+        return "%s:%s" % (unicode(self.exposer), self.name)
