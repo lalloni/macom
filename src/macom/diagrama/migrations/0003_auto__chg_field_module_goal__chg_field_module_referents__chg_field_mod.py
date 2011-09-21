@@ -9,19 +9,19 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Changing field 'Module.goal'
-        db.alter_column('diagrama_module', 'goal', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_module', 'goal', self.gf('diagrama.models.TextField60')())
 
         # Changing field 'Module.referents'
-        db.alter_column('diagrama_module', 'referents', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_module', 'referents', self.gf('diagrama.models.TextField60')())
 
         # Changing field 'Module.documentation'
-        db.alter_column('diagrama_module', 'documentation', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_module', 'documentation', self.gf('diagrama.models.TextField60')())
 
         # Changing field 'System.description'
-        db.alter_column('diagrama_system', 'description', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_system', 'description', self.gf('diagrama.models.TextField60')())
 
         # Changing field 'System.referents'
-        db.alter_column('diagrama_system', 'referents', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_system', 'referents', self.gf('diagrama.models.TextField60')())
 
         # Adding field 'Interface.direction_inbound'
         db.add_column('diagrama_interface', 'direction_inbound', self.gf('django.db.models.fields.BooleanField')(default=False), keep_default=False)
@@ -30,16 +30,16 @@ class Migration(SchemaMigration):
         db.add_column('diagrama_interface', 'direction_outbound', self.gf('django.db.models.fields.BooleanField')(default=False), keep_default=False)
 
         # Changing field 'Interface.goal'
-        db.alter_column('diagrama_interface', 'goal', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_interface', 'goal', self.gf('diagrama.models.TextField40')())
 
         # Changing field 'Interface.documentation'
-        db.alter_column('diagrama_interface', 'documentation', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_interface', 'documentation', self.gf('diagrama.models.TextField60')())
 
         # Changing field 'Interface.referents'
-        db.alter_column('diagrama_interface', 'referents', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_interface', 'referents', self.gf('diagrama.models.TextField40')())
 
         # Changing field 'Interface.technology'
-        db.alter_column('diagrama_interface', 'technology', self.gf('diagrama.models.MyTextField')())
+        db.alter_column('diagrama_interface', 'technology', self.gf('diagrama.models.TextField40')())
 
 
     def backwards(self, orm):
@@ -83,34 +83,34 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['exposer__name']", 'object_name': 'Interface'},
             'direction_inbound': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'direction_outbound': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'documentation': ('diagrama.models.MyTextField', [], {'blank': 'True'}),
+            'documentation': ('diagrama.models.TextField60', [], {'blank': 'True'}),
             'exposer': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'exposed'", 'null': 'True', 'to': "orm['diagrama.Module']"}),
-            'goal': ('diagrama.models.MyTextField', [], {}),
+            'goal': ('diagrama.models.TextField40', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'referents': ('diagrama.models.MyTextField', [], {'blank': 'True'}),
-            'technology': ('diagrama.models.MyTextField', [], {})
+            'referents': ('diagrama.models.TextField40', [], {'blank': 'True'}),
+            'technology': ('diagrama.models.TextField40', [], {})
         },
         'diagrama.module': {
             'Meta': {'ordering': "['system__name']", 'object_name': 'Module'},
             'consumed': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'consumers'", 'blank': 'True', 'to': "orm['diagrama.Interface']"}),
             'criticity': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
-            'documentation': ('diagrama.models.MyTextField', [], {'blank': 'True'}),
+            'documentation': ('diagrama.models.TextField60', [], {'blank': 'True'}),
             'external': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'goal': ('diagrama.models.MyTextField', [], {'blank': 'True'}),
+            'goal': ('diagrama.models.TextField60', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'referents': ('diagrama.models.MyTextField', [], {'blank': 'True'}),
-            'system': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['diagrama.System']", 'null': 'True', 'blank': 'True'})
+            'referents': ('diagrama.models.TextField60', [], {'blank': 'True'}),
+            'system': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['diagrama.System']", 'null': 'True'})
         },
         'diagrama.system': {
             'Meta': {'ordering': "['name']", 'object_name': 'System'},
-            'description': ('diagrama.models.MyTextField', [], {}),
+            'description': ('diagrama.models.TextField60', [], {}),
             'documentation': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'external': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'referents': ('diagrama.models.MyTextField', [], {'blank': 'True'})
+            'referents': ('diagrama.models.TextField60', [], {'blank': 'True'})
         }
     }
 
