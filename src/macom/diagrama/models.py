@@ -58,8 +58,8 @@ class Module(Base):
     )
     
     name = models.CharField(_('name'), help_text=_('name-help'), max_length=100)
-    goal = TextField60(_('goal'), help_text=_('goal-help'), blank=True)
-    system = models.ForeignKey(System, verbose_name=_('system'), null=True, blank=True)
+    goal = TextField60(_('goal'), help_text=_('goal-help'))
+    system = models.ForeignKey(System, verbose_name=_('system'), null=True)
     external = models.BooleanField(_('external'))
     consumed = models.ManyToManyField('Interface', verbose_name = _('Interfaces Consumidas'), blank=True, related_name='consumers')
     referents = TextField60(_('referents'), help_text=_('referents-help'), blank=True)
