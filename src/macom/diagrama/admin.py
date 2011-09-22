@@ -6,12 +6,12 @@ from django.utils.translation import ugettext_lazy as _
 
 class InlineInterface(admin.TabularInline):
     model = models.Interface
-    
+	#fields = ['exposer', 'name', 'goal', 'technology', 'direction_inbound', 'direction_outbound']
     fieldsets = (
-        (None, {
+        ('General', {
             'fields': ('exposer', 'name')
         }),
-        ('Referencias', {
+        ('Reference', {
             'classes': ('wide',),
             'fields': ('goal', 'technology')
         }),
@@ -20,18 +20,15 @@ class InlineInterface(admin.TabularInline):
             'fields': ('direction_inbound', 'direction_outbound')
         }),
     )
-
-#fields = ['exposer', 'name', 'goal', 'technology', 'direction_inbound', 'direction_outbound']
     list_display = ['exposer', 'name', 'goal', 'technology']
     verbose_name = _('Interface')
     verbose_name_plural = _('Interfaces')
     extra = 0
             
 class ModuleAdmin(admin.ModelAdmin):
-#    fields = ['system', 'name', 'goal', 'referents', 'documentation', 'external', 'criticity', 'consumed' ]
-
+	#fields = ['system', 'name', 'goal', 'referents', 'documentation', 'external', 'criticity', 'consumed' ]
     fieldsets = (
-        (None, {
+        ('General', {
             'fields': ('system', 'name', 'goal', 'external')
         }),
         ('Reference', {
@@ -43,7 +40,6 @@ class ModuleAdmin(admin.ModelAdmin):
             'fields': ('criticity','consumed')    
         }),
     )
-
     filter_horizontal = ['consumed']
     list_display = ['system', 'name', 'goal', 'external']
     list_display_links = ['name']
@@ -56,7 +52,7 @@ class SystemAdmin(admin.ModelAdmin):
     
 class InterfaceAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {
+        ('General', {
             'fields': ('exposer', 'name', 'goal')
         }),
         ('Reference', {
@@ -64,7 +60,6 @@ class InterfaceAdmin(admin.ModelAdmin):
             'fields': ('referents', 'documentation')
         }),
     )
-
     list_display = ['exposer', 'name', 'goal', 'referents', 'documentation']
     list_display_links = ['name']
     ordering = ['exposer']
@@ -73,3 +68,4 @@ class InterfaceAdmin(admin.ModelAdmin):
 admin.site.register(models.Interface, InterfaceAdmin)
 admin.site.register(models.Module, ModuleAdmin)
 admin.site.register(models.System, SystemAdmin)
+
