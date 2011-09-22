@@ -40,7 +40,7 @@ class System(Base):
     description = TextField60(_('description'), help_text=_('description-help'))
     referents = TextField60(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
-    external = models.BooleanField(_('Externo'))
+    external = models.BooleanField(_('external'))
 
     class Meta:
         verbose_name = _('system')
@@ -61,7 +61,7 @@ class Module(Base):
     goal = TextField60(_('goal'), help_text=_('goal-help'))
     system = models.ForeignKey(System, verbose_name=_('system'), null=True)
     external = models.BooleanField(_('external'))
-    consumed = models.ManyToManyField('Interface', verbose_name = _('Interfaces Consumidas'), blank=True, related_name='consumers')
+    consumed = models.ManyToManyField('Interface', verbose_name = _('used-interfaces'), blank=True, related_name='consumers')
     referents = TextField60(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = TextField60(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)

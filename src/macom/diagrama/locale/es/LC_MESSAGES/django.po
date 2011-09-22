@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-11 14:48-0300\n"
+"POT-Creation-Date: 2011-09-22 14:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,105 +18,122 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:10
-#, fuzzy
-msgid "Interface expuesta"
+#: admin.py:24
+msgid "Interface"
+msgstr "Interfaz"
+
+#: admin.py:25
+msgid "Interfaces"
 msgstr "Interfaces"
 
-#: admin.py:11
-#, fuzzy
-msgid "Interfaces expuestas"
-msgstr "Interfaces"
-
-#: models.py:7 models.py:24 models.py:39
+#: models.py:39 models.py:60 models.py:78
 msgid "name"
 msgstr "Nombre"
 
-#: models.py:7 models.py:24 models.py:39
+#: models.py:39 models.py:60 models.py:78
 msgid "name-help"
 msgstr "El nombre de la entidad"
 
-#: models.py:8
+#: models.py:40
 msgid "description"
 msgstr "Descripción"
 
-#: models.py:8
+#: models.py:40
 msgid "description-help"
 msgstr "La descripción de la entidad"
 
-#: models.py:11 models.py:26
-msgid "system"
-msgstr "Sistema"
+#: models.py:41 models.py:65 models.py:81
+msgid "referents"
+msgstr "Referentes"
 
-#: models.py:12
-msgid "systems"
-msgstr "Sistemas"
+#: models.py:41 models.py:65 models.py:81
+msgid "referents-help"
+msgstr "Lista de referentes y sus mails"
 
-#: models.py:19
-msgid "high"
-msgstr "Alta"
+#: models.py:42 models.py:66 models.py:82
+msgid "documentation"
+msgstr "Documentación"
 
-#: models.py:20
-msgid "medium"
-msgstr "Media"
+#: models.py:42 models.py:66 models.py:82
+msgid "documentation-help"
+msgstr "Links y documentación"
 
-#: models.py:21
-msgid "low"
-msgstr "Baja"
-
-#: models.py:25 models.py:40
-msgid "goal"
-msgstr "Objetivo"
-
-#: models.py:25 models.py:40
-msgid "goal-help"
-msgstr "El objetivo"
-
-#: models.py:27
+#: models.py:43 models.py:63
 msgid "external"
 msgstr "¿Es externo el módulo?"
 
-#: models.py:28
-msgid "Interfaces Consumidas"
-msgstr ""
+#: models.py:46 models.py:62
+msgid "system"
+msgstr "Sistema"
 
-#: models.py:29
+#: models.py:47
+msgid "systems"
+msgstr "Sistemas"
+
+#: models.py:55
+msgid "high"
+msgstr "Alta"
+
+#: models.py:56
+msgid "medium"
+msgstr "Media"
+
+#: models.py:57
+msgid "low"
+msgstr "Baja"
+
+#: models.py:61 models.py:79
+msgid "goal"
+msgstr "Objetivo"
+
+#: models.py:61 models.py:79
+msgid "goal-help"
+msgstr "El objetivo"
+
+#: models.py:64
+msgid "used-interfaces"
+msgstr "Interfaces Consumidas"
+
+#: models.py:67
 msgid "criticity"
 msgstr "Criticidad"
 
-#: models.py:29
+#: models.py:67
 msgid "criticity-help"
 msgstr "La criticidad del módulo"
 
-#: models.py:32
+#: models.py:70
 msgid "module"
 msgstr "Módulo"
 
-#: models.py:33
+#: models.py:71
 msgid "modules"
 msgstr "Módulos"
 
-#: models.py:41
+#: models.py:80
 msgid "technology"
 msgstr "Tecnología"
 
-#: models.py:41
+#: models.py:80
 msgid "technology-help"
 msgstr "La tecnología utilizada por la interfaz"
 
-#: models.py:42
+#: models.py:83
+msgid "Inbound"
+msgstr ""
+
+#: models.py:84
+msgid "Outbound"
+msgstr ""
+
+#: models.py:85
 msgid "exposer"
 msgstr "Módulo"
 
-#: models.py:42
-#, fuzzy
-msgid "exposer-help"
-msgstr "Módulo"
-
-#: models.py:45
+#: models.py:88
 msgid "interface"
 msgstr "Interfaz"
 
-#: models.py:46
+#: models.py:89
 msgid "interfaces"
 msgstr "Interfaces"
