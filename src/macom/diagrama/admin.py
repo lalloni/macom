@@ -43,6 +43,7 @@ class ModuleAdmin(admin.ModelAdmin):
     filter_horizontal = ['consumed']
     list_display = ['system', 'name', 'goal', 'external']
     list_display_links = ['name']
+    
     search_fields = ['system__name','name', 'goal']
     inlines = [InlineInterface]
 
@@ -53,7 +54,11 @@ class SystemAdmin(admin.ModelAdmin):
 class InterfaceAdmin(admin.ModelAdmin):
     fieldsets = (
         ('General', {
-            'fields': ('exposer', 'name', 'goal')
+            'fields': ('exposer', 'name', 'goal','technology')
+        }),
+        ('Direction', {
+            'classes': ('wide',),
+            'fields': ('direction_inbound', 'direction_outbound')
         }),
         ('Reference', {
             'classes': ('wide',),
@@ -62,10 +67,9 @@ class InterfaceAdmin(admin.ModelAdmin):
     )
     list_display = ['exposer', 'name', 'goal', 'referents', 'documentation']
     list_display_links = ['name']
-    ordering = ['exposer']
+    ordering = ['exposer__system__name']
     search_fields = ['exposer__name', 'name']
 
 admin.site.register(models.Interface, InterfaceAdmin)
 admin.site.register(models.Module, ModuleAdmin)
 admin.site.register(models.System, SystemAdmin)
-

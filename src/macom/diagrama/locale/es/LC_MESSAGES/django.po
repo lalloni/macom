@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 14:50-0300\n"
+"POT-Creation-Date: 2011-09-23 12:45-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,11 +26,11 @@ msgstr "Interfaz"
 msgid "Interfaces"
 msgstr "Interfaces"
 
-#: models.py:39 models.py:60 models.py:78
+#: models.py:39 models.py:60 models.py:78 models.py:96
 msgid "name"
 msgstr "Nombre"
 
-#: models.py:39 models.py:60 models.py:78
+#: models.py:39 models.py:60 models.py:78 models.py:96
 msgid "name-help"
 msgstr "El nombre de la entidad"
 
@@ -42,19 +42,19 @@ msgstr "Descripción"
 msgid "description-help"
 msgstr "La descripción de la entidad"
 
-#: models.py:41 models.py:65 models.py:81
+#: models.py:41 models.py:65 models.py:81 models.py:98
 msgid "referents"
 msgstr "Referentes"
 
-#: models.py:41 models.py:65 models.py:81
+#: models.py:41 models.py:65 models.py:81 models.py:98
 msgid "referents-help"
 msgstr "Lista de referentes y sus mails"
 
-#: models.py:42 models.py:66 models.py:82
+#: models.py:42 models.py:66 models.py:82 models.py:99
 msgid "documentation"
 msgstr "Documentación"
 
-#: models.py:42 models.py:66 models.py:82
+#: models.py:42 models.py:66 models.py:82 models.py:99
 msgid "documentation-help"
 msgstr "Links y documentación"
 
@@ -82,17 +82,17 @@ msgstr "Media"
 msgid "low"
 msgstr "Baja"
 
-#: models.py:61 models.py:79
+#: models.py:61 models.py:79 models.py:97
 msgid "goal"
 msgstr "Objetivo"
 
-#: models.py:61 models.py:79
+#: models.py:61 models.py:79 models.py:97
 msgid "goal-help"
 msgstr "El objetivo"
 
-#: models.py:64
-msgid "used-interfaces"
-msgstr "Interfaces Consumidas"
+#: models.py:64 models.py:89
+msgid "interfaces"
+msgstr "Interfaces"
 
 #: models.py:67
 msgid "criticity"
@@ -120,11 +120,11 @@ msgstr "La tecnología utilizada por la interfaz"
 
 #: models.py:83
 msgid "Inbound"
-msgstr ""
+msgstr "Entrada"
 
 #: models.py:84
 msgid "Outbound"
-msgstr ""
+msgstr "Salida"
 
 #: models.py:85
 msgid "exposer"
@@ -134,6 +134,15 @@ msgstr "Módulo"
 msgid "interface"
 msgstr "Interfaz"
 
-#: models.py:89
-msgid "interfaces"
-msgstr "Interfaces"
+#: models.py:100
+msgid "loadestimate"
+msgstr "Carga del modulo"
+
+#: models.py:104
+msgid "interfaceuse"
+msgstr "Usos de la interface"
+
+#: models.py:105
+msgid "interfaceuses"
+msgstr "Usos de la interface"
+

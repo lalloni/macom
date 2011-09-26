@@ -61,7 +61,7 @@ class Module(Base):
     goal = TextField60(_('goal'), help_text=_('goal-help'))
     system = models.ForeignKey(System, verbose_name=_('system'), null=True)
     external = models.BooleanField(_('external'))
-    consumed = models.ManyToManyField('Interface', verbose_name = _('used-interfaces'), blank=True, related_name='consumers')
+    consumed = models.ManyToManyField('Interface', verbose_name = _('interfaces'), blank=True, related_name='consumers')
     referents = TextField60(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = TextField60(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
@@ -87,7 +87,7 @@ class Interface(Base):
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')
-        ordering = ['exposer__name']
+        ordering = ['exposer__system__name']
 
     def __unicode__(self):
         return "%s:%s" % (unicode(self.exposer), self.name)
