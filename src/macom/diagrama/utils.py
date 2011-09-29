@@ -71,9 +71,9 @@ class RawGraphViz(object):
         by_id = dict()
         
         for s in systems:
-            related_systems[str(s.id)] = list(set(map(lambda i: i.exposer.system, Interface.objects.filter(consumers__system__id=s.id))))
+            related_systems[str(s.id)] = list(set(map(lambda i: i.exposer.system, Interface.objects.filter(dependencies__system__id=s.id))))
             for i in Interface.objects.filter(exposer__system__id=s.id):
-                related_systems[str(s.id)].extend(list(set(map(lambda c: c.system, i.consumers.all()))))
+                related_systems[str(s.id)].extend(list(set(map(lambda c: c.system, i.dependencies.all()))))
             by_id[str(s.id)] = s
     
         to_show = set()
@@ -89,7 +89,7 @@ class RawGraphViz(object):
         self.extra['ratio'] = 'expand'
     
         graph = pydot.Dot('systems', **self.extra)
-        consumers_toadd = []
+        dependencies_toadd = []
         replace_by = {}
         universe = []
         
@@ -142,11 +142,11 @@ class RawGraphViz(object):
                     else:
                         replace_by[Utils.id(i)] = Utils.id(s, 'cluster_')
     
-                    consumers_toadd.append((i, i.consumers.order_by('id').all()))
+                    dependencies_toadd.append((i, i.dependencies.order_by('id').all()))
     
-        for i, consumers in consumers_toadd:
+        for i, dependencies in dependencies_toadd:
             idi = replace_by.get(Utils.id(i), Utils.id(i))
-            for c in consumers:
+            for c in dependencies:
                 idc = replace_by.get(Utils.id(c), Utils.id(c))
                 if i in universe and c in universe and idi != idc:
                     graph.add_edge(pydot.Edge(idc, idi))
