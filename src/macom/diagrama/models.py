@@ -65,7 +65,6 @@ class Module(Base):
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
 
-    consumed = models.ManyToManyField('Interface', verbose_name = _('interfaces'), blank=True, related_name='consumers')
     dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependencies')
 
     class Meta:
