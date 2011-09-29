@@ -8,180 +8,180 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-28 15:57-0300\n"
+"POT-Creation-Date: 2011-09-29 15:41-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:14
+#: admin.py:24
 msgid "Interface"
 msgstr "Interfaz"
 
-#: admin.py:15
+#: admin.py:25
 msgid "Interfaces"
 msgstr "Interfaces"
 
-#: models.py:37 models.py:60 models.py:80
+#: models.py:18 models.py:41 models.py:60
 msgid "name"
 msgstr "Nombre"
 
-#: models.py:37
+#: models.py:18
 msgid "system-name-help"
 msgstr "Nombre del sistems"
 
-#: models.py:38
+#: models.py:19
 msgid "description"
 msgstr "Descripción"
 
-#: models.py:38
+#: models.py:19
 msgid "description-help"
 msgstr "La descripción de la entidad"
 
-#: models.py:39 models.py:64 models.py:83 models.py:103
+#: models.py:20 models.py:45 models.py:63 models.py:83
 msgid "referents"
 msgstr "Referentes"
 
-#: models.py:39 models.py:64 models.py:83 models.py:103
+#: models.py:20 models.py:45 models.py:63 models.py:83
 msgid "referents-help"
 msgstr "Lista de referentes y sus mails"
 
-#: models.py:40 models.py:65 models.py:84 models.py:104
+#: models.py:21 models.py:46 models.py:64 models.py:84
 msgid "documentation"
 msgstr "Documentación"
 
-#: models.py:40 models.py:65 models.py:84 models.py:104
+#: models.py:21 models.py:46 models.py:64 models.py:84
 msgid "documentation-help"
 msgstr "Links y documentación"
 
-#: models.py:41 models.py:63
+#: models.py:22 models.py:44
 msgid "external"
 msgstr "Externo"
 
-#: models.py:41 models.py:63
+#: models.py:22 models.py:44
 msgid "external-help"
 msgstr "El módulo no pertenece al ámbito de la DIT"
 
-#: models.py:44 models.py:58
+#: models.py:25 models.py:39
 msgid "system"
 msgstr "Sistema"
 
-#: models.py:45
+#: models.py:26
 msgid "systems"
 msgstr "Sistemas"
 
-#: models.py:53
+#: models.py:34
 msgid "high"
 msgstr "Alta"
 
-#: models.py:54
+#: models.py:35
 msgid "medium"
 msgstr "Media"
 
-#: models.py:55
+#: models.py:36
 msgid "low"
 msgstr "Baja"
 
-#: models.py:60
+#: models.py:41
 msgid "module-name-help"
 msgstr "Nombre del módulo"
 
-#: models.py:61 models.py:81 models.py:100
+#: models.py:42 models.py:61 models.py:80
 msgid "goal"
 msgstr "Objetivo"
 
-#: models.py:61
+#: models.py:42
 msgid "module-goal-help"
 msgstr "¿Con qué fin se creó el módulo? ¿Cuáles son los roles que tiene?"
 
-#: models.py:66
+#: models.py:47
 msgid "criticity"
 msgstr "Criticidad"
 
-#: models.py:66
+#: models.py:47
 msgid "criticity-help"
 msgstr "La criticidad del módulo"
 
-#: models.py:68 models.py:91
-msgid "interfaces"
-msgstr "Interfaces"
-
-#: models.py:72
+#: models.py:52
 msgid "module"
 msgstr "Módulo"
 
-#: models.py:73
+#: models.py:53
 msgid "modules"
 msgstr "Módulos"
 
-#: models.py:80
+#: models.py:60
 msgid "interface-name-help"
 msgstr "Nombre de la interface"
 
-#: models.py:81
+#: models.py:61
 msgid "interface-goal-help"
 msgstr "¿Con qué fin se creó la interface? ¿Cuáles son los roles que tiene?"
 
-#: models.py:82 models.py:105
+#: models.py:62 models.py:85
 msgid "technology"
 msgstr "Tecnología"
 
-#: models.py:82 models.py:105
+#: models.py:62 models.py:85
 msgid "technology-help"
 msgstr "La tecnología utilizada por la interfaz"
 
-#: models.py:85 models.py:101
+#: models.py:65 models.py:81
 msgid "Inbound"
 msgstr "Entrada"
 
-#: models.py:85
+#: models.py:65
 msgid "interface-inbound-help"
 msgstr "El objetivo de la interfaz es el ingreso de datos"
 
-#: models.py:86 models.py:102
+#: models.py:66 models.py:82
 msgid "Outbound"
 msgstr "Salida"
 
-#: models.py:86
+#: models.py:66
 msgid "interface-outbound-help"
 msgstr "El objetivo de la interfaz es la extracción de datos"
 
-#: models.py:87 models.py:98
+#: models.py:67 models.py:78
 msgid "exposer"
 msgstr "Módulo"
 
-#: models.py:90
+#: models.py:70
 msgid "interface"
 msgstr "Interfaz"
 
-#: models.py:100
+#: models.py:71
+msgid "interfaces"
+msgstr "Interfaces"
+
+#: models.py:80
 msgid "dependency-goal-help"
 msgstr "¿Con qué fin se creó la dependencia? ¿Cuáles son los roles que tiene?"
 
-#: models.py:101
+#: models.py:81
 msgid "dependency-inbound-help"
 msgstr "Se utiliza la interfaz para obtener datos"
 
-#: models.py:102
+#: models.py:82
 msgid "dependency-outbound-help"
 msgstr "Se utiliza la interfaz para enviar datos"
 
-#: models.py:106
+#: models.py:86
 msgid "loadestimate"
 msgstr "Nivel de carga"
 
-#: models.py:106
+#: models.py:86
 msgid "loadestimate-help"
 msgstr "Nivel de carga estimada"
 
-#: models.py:109
+#: models.py:89
 msgid "dependency"
 msgstr "Dependencia"
 
-#: models.py:110
+#: models.py:90
 msgid "dependencies"
 msgstr "Dependencias"

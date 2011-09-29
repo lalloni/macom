@@ -6,25 +6,6 @@ from django.db.models import permalink
 from django.forms import Textarea
 from south.modelsinspector import add_introspection_rules
 
-add_introspection_rules([], ["^diagrama\.models\.TextField60"])
-add_introspection_rules([], ["^diagrama\.models\.TextField40"])
-
-class TextField60(models.TextField):
-#A more reasonably sized textarea                                                                                                            
-    def formfield(self, **kwargs):
-        kwargs.update(
-            {"widget": Textarea(attrs={'rows':7, 'cols':60})}
-        )
-        return super(TextField60, self).formfield(**kwargs)
-
-class TextField40(models.TextField):
-#A more reasonably sized textarea                                                                                                            
-    def formfield(self, **kwargs):
-        kwargs.update(
-            {"widget": Textarea(attrs={'rows':7, 'cols':40})}
-        )
-        return super(TextField40, self).formfield(**kwargs)
-
 class Base(models.Model):
     @permalink
     def get_absolute_url(self):
@@ -78,7 +59,7 @@ class Module(Base):
 class Interface(Base):
     name = models.CharField(_('name'), help_text=_('interface-name-help'), max_length=100)
     goal = models.TextField(_('goal'), help_text=_('interface-goal-help') )
-    technology = models.TextField(_('technology'), help_text=_('technology-help'))
+    technology = models.CharField(_('technology'), help_text=_('technology-help') , max_length=200, blank=True)
     referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('interface-inbound-help'))
@@ -110,4 +91,4 @@ class Dependency(Base):
         ordering = ['exposer__system__name']
 
     def __unicode__(self):
-        return "%s (%s)" % (unicode(self.exposer), self.interface)
+        return "%s:(%s)" % (unicode(self.exposer), self.interface)

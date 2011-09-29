@@ -9,7 +9,17 @@ media = settings.MEDIA_URL
 
 class InlineInterface(admin.StackedInline):
     model = models.Interface
-    fields = ['exposer', 'name', 'goal', 'technology', 'direction_inbound', 'direction_outbound']
+    #fields = ['exposer', 'name', 'goal', 'technology', 'direction_inbound', 'direction_outbound']
+    fieldsets = (
+        (None, {
+            'fields': ('exposer', 'name')
+        }),
+        ('Detail', {
+            'classes': ('collapse',),
+            'fields': ('goal','technology','direction_inbound', 'direction_outbound')
+        }),
+    )
+
     list_display = ['exposer', 'name', 'goal', 'technology']
     verbose_name = _('Interface')
     verbose_name_plural = _('Interfaces')
@@ -18,7 +28,17 @@ class InlineInterface(admin.StackedInline):
 class InlineDependency(admin.StackedInline):
     model = models.Dependency
     extra = 0
-    fields = ['exposer','interface','goal','technology','direction_inbound', 'direction_outbound','referents', 'documentation']
+    #fields = ['exposer','interface','goal','technology','direction_inbound', 'direction_outbound','referents', 'documentation']
+    fieldsets = (
+        (None, {
+            'fields': ('exposer','interface')
+        }),
+        ('Detail', {
+            'classes': ('collapse',),
+            'fields': ('goal','technology','direction_inbound', 'direction_outbound','referents', 'documentation')
+        }),
+    )
+
     list_display = ['interface', 'goal', 'referents', 'documentation']
     search_fields = ['exposer__name', 'name']
     ordering = ['exposer__system__name']
@@ -54,7 +74,7 @@ class InterfaceAdmin(admin.ModelAdmin):
             'classes': ('wide',),
             'fields': ('direction_inbound', 'direction_outbound')
         }),
-        ('Reference', {
+        ('Detail', {
             'classes': ('collapse',),
             'fields': ('goal','technology','referents', 'documentation')
         }),
@@ -73,7 +93,7 @@ class DependencyAdmin(admin.ModelAdmin):
             'classes': ('wide',),
             'fields': ('direction_inbound', 'direction_outbound')
         }),
-        ('Reference', {
+        ('Detail', {
             'classes': ('collapse',),
             'fields': ('goal','technology','loadestimate', 'referents', 'documentation')
         }),
