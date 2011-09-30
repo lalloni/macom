@@ -3,13 +3,10 @@
 from django.contrib import admin
 from macom.diagrama import models
 from django.utils.translation import ugettext_lazy as _
-import settings
-
-media = settings.MEDIA_URL
 
 class InlineInterface(admin.StackedInline):
     model = models.Interface
-    #fields = ['exposer', 'name', 'goal', 'technology', 'direction_inbound', 'direction_outbound']
+    extra = 0
     fieldsets = (
         (None, {
             'fields': ('exposer', 'name')
@@ -19,16 +16,13 @@ class InlineInterface(admin.StackedInline):
             'fields': ('goal','technology','direction_inbound', 'direction_outbound')
         }),
     )
-
     list_display = ['exposer', 'name', 'goal', 'technology']
     verbose_name = _('Interface')
     verbose_name_plural = _('Interfaces')
-    extra = 0
 
 class InlineDependency(admin.StackedInline):
     model = models.Dependency
     extra = 0
-    #fields = ['exposer','interface','goal','technology','direction_inbound', 'direction_outbound','referents', 'documentation']
     fieldsets = (
         (None, {
             'fields': ('exposer','interface')
@@ -38,13 +32,11 @@ class InlineDependency(admin.StackedInline):
             'fields': ('goal','technology','direction_inbound', 'direction_outbound','referents', 'documentation')
         }),
     )
-
     list_display = ['interface', 'goal', 'referents', 'documentation']
-    search_fields = ['exposer__name', 'name']
+    search_fields = ['exposer__name', 'name','referents', 'documentation','technology']
     ordering = ['exposer__system__name']
 
 class ModuleAdmin(admin.ModelAdmin):
-	#fields = ['system', 'name', 'goal', 'referents', 'documentation', 'external', 'criticity', 'consumed' ]
     fieldsets = (
         ('Identification', {
             'fields': ('system', 'name',  'external')
@@ -54,16 +46,16 @@ class ModuleAdmin(admin.ModelAdmin):
             'fields': ('goal','criticity','referents', 'documentation')
         }),
     )
-    #filter_horizontal = ['consumed']
+
     list_display = ['system', 'name', 'goal', 'external']
     list_display_links = ['name']
     
-    search_fields = ['system__name','name', 'goal']
+    search_fields = ['system__name','name', 'goal','referents', 'documentation']
     inlines = [InlineInterface, InlineDependency]
 
 class SystemAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'referents', 'documentation', 'external']
-    search_fields = ['name', 'description']
+    search_fields = ['name', 'description','referents', 'documentation']
     
 class InterfaceAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -82,7 +74,7 @@ class InterfaceAdmin(admin.ModelAdmin):
     list_display = ['exposer', 'name', 'goal', 'referents', 'documentation']
     list_display_links = ['name']
     ordering = ['exposer__system__name']
-    search_fields = ['exposer__name', 'name']
+    search_fields = ['exposer__name', 'name','referents', 'documentation']
 
 class DependencyAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -101,9 +93,10 @@ class DependencyAdmin(admin.ModelAdmin):
     list_display = ['exposer', 'interface', 'goal', 'referents', 'documentation']
     list_display_links = ['exposer']
     ordering = ['exposer__system__name']
-    search_fields = ['exposer__name']
+    search_fields = ['exposer__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','referents', 'documentation']
 
-admin.site.register(models.Dependency, DependencyAdmin)
-admin.site.register(models.Interface, InterfaceAdmin)
-admin.site.register(models.Module, ModuleAdmin)
 admin.site.register(models.System, SystemAdmin)
+admin.site.register(models.Module, ModuleAdmin)
+admin.site.register(models.Interface, InterfaceAdmin)
+admin.site.register(models.Dependency, DependencyAdmin)
+
