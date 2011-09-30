@@ -36,7 +36,7 @@ class Module(Base):
         (u'L', _('low')),
     )
     
-    system = models.ForeignKey(System, verbose_name=_('system'), null=True)
+    system = models.ForeignKey('System', verbose_name=_('system'), null=True)
     
     name = models.CharField(_('name'), help_text=_('module-name-help'), max_length=100)
     goal = models.TextField(_('goal'), help_text=_('module-goal-help'))

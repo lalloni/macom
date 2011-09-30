@@ -49,7 +49,7 @@ class ModuleAdmin(admin.ModelAdmin):
         ('Identification', {
             'fields': ('system', 'name',  'external')
         }),
-        ('Reference', {
+        ('Detail', {
             'classes': ('collapse',),
             'fields': ('goal','criticity','referents', 'documentation')
         }),
