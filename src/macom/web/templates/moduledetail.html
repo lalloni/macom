@@ -1,0 +1,28 @@
+{% extends "baseweb.html" %}
+
+{% block content %}
+<strong>Detalle del módulo</strong>
+{% if modulelist %}
+    <ul>
+    {% for item in modulelist%}
+        <li><a href="../systemdetail/{{ item.id }}">{{item}}</a></li>
+        <ul>
+        {{ item.goal }}
+        </ul>
+    {% endfor %}
+    
+    <h2>Dependencias</h2>
+    
+    {% for item in dependencies%}
+        <li><a href="../moduledetail/{{ item.id }}">{{item}}</a></li>
+        <ul>
+        {{ item.goal}}
+        </ul>
+    {% endfor %}    
+    
+    </ul>
+{% else %}
+    <p>No hay items a mostrar</p>
+{% endif %}
+
+{% endblock %}

@@ -1,7 +1,6 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% block content %}
-
 	<div class="botonera">
 		<a id="ocultar" class="ocultar" href="#">Ocultar Filtro</a>
 		<a id="mostrar" class="ocultar" href="#">Mostrar Filtro</a>
@@ -25,24 +24,9 @@
 				{% for system in systems %}
 				<tr class="{% cycle 'par' 'impar' %}">
 					<td>{{ system.name }}</td>
-					
-					{% if system.show %}
-					<td><input type="checkbox" checked="checked" name="show_{{ system.id }}"/></td>
-					{% else %}
-					<td><input type="checkbox" name="show_{{ system.id }}"/></td>
-					{% endif %}
-					
-					{% if system.minimized %}
-					<td><input type="checkbox" checked="checked" name="minimized_{{ system.id }}"/></td>
-					{% else %}
-					<td><input type="checkbox" name="minimized_{{ system.id }}"/></td>
-					{% endif %}
-					
-					{% if system.related %}
-					<td><input type="checkbox" checked="checked" name="related_{{ system.id }}"/></td>
-					{% else %}
-					<td><input type="checkbox" name="related_{{ system.id }}"/></td>
-					{% endif %}
+					<td><input type="checkbox" {% if system.show %}checked="checked" {% endif %}name="show_{{ system.id }}"/></td>
+					<td><input type="checkbox" {% if system.minimized %}checked="checked" {% endif %}name="minimized_{{ system.id }}"/></td>
+					<td><input type="checkbox" {% if system.related %}checked="checked" {% endif %}name="related_{{ system.id }}"/></td>
 				</tr>
 				{% endfor %}
 			</table>

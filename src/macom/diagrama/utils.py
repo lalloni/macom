@@ -87,7 +87,7 @@ class RawGraphViz(object):
         
         self.extra['overlap'] = 'scaling'
         self.extra['ratio'] = 'expand'
-    
+
         graph = pydot.Dot('systems', **self.extra)
         dependencies_toadd = []
         replace_by = {}
@@ -226,7 +226,7 @@ class Utils(object):
     
     @staticmethod
     def plantUML(systems):
-        uml = PlantUML('/home/sebas/tmp/plantuml.jar')
+        uml = PlantUML('plantuml.jar')
         mappings = []
         for ids in systems:
             s = System.objects.get(id = ids)

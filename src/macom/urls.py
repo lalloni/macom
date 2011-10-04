@@ -7,11 +7,13 @@ from django.conf import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^$', 'web.views.index'),
+
+    (r'^web.', include('web.urls')),
     (r'^diagrama/', include('diagrama.urls')),
-    #(r'^polls/', include('polls.urls')),
     
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
+    (r'^admin.', include(admin.site.urls)),
     
     url(r'^static-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}, name='static_media'),
 )

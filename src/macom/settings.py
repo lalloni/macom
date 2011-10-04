@@ -94,5 +94,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     #'polls',
     'diagrama',
+    'web',
     'south',
 )

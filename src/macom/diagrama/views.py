@@ -31,7 +31,7 @@ def filter(request, format="", view="", show="", minimized="", related=""):
         else:
             g = Utils.plantUML(Utils.split(show, '_'))
             request.session['program'] = 'fdp'
-    
+
         ctx['cmap'] = g.create(format='cmapx') if g is not None else None
         request.session['graph'] = g.to_string() if g is not None else None
 
@@ -39,7 +39,7 @@ def filter(request, format="", view="", show="", minimized="", related=""):
     else:
         return HttpResponseRedirect(reverse(filter, kwargs=Utils.request_to_context(req)))
 
-def show(request, format='png'):
+def show(request, format='svg'):
     '''
         Espera encontrar en la session un gráfico graphviz y lo renderiza
         en el formato recibido como parámetro.

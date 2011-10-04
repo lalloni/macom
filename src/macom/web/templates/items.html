@@ -1,0 +1,18 @@
+{% extends "baseweb.html" %}
+
+{% block content %}
+<strong>Listado</strong>
+{% if items %}
+    <ul>
+    {% for item in items%}
+        <li>{{ item.name }}</li>
+        <ul>
+        {{ item.description }}
+        </ul>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay items a mostrar</p>
+{% endif %}
+
+{% endblock %}
