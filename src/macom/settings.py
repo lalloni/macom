@@ -5,9 +5,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    ('Sebastián', 'sebas@zaffarano.com.ar'),
-)
+ADMINS = ()
 
 MANAGERS = ADMINS
 
@@ -92,7 +90,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    #'polls',
     'diagrama',
     'web',
     'south',
