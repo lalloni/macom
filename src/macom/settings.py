@@ -90,7 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'diagrama',
-    'web',
+    'macom.diagrama',
+    'macom.web',
     'south',
 )

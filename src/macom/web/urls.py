@@ -1,23 +1,12 @@
-from django.conf.urls.defaults import patterns, url
-
-from diagrama.models import *
+from django.conf.urls.defaults import patterns, url 
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.shortcuts import redirect
+
+from macom.diagrama.models import System
 
 urlpatterns = patterns('',
-
-    (r'^sys/$', ListView.as_view(
-        model=System,
-    )),
-
-    (r'^$', 'web.views.index'),
-
-    (r'^system.$', 'web.views.system'),
-    (r'^system/(?P<id>.+)$', 'web.views.systemdetail'),
-
-    (r'^system.module.$', 'web.views.module'),
-    (r'^system.module/(?P<id>.+)$', 'web.views.moduledetail'),
-
-    #(r'^dependency.$', 'web.views.dependency'),
-    #(r'^dependency/(?P<id>.+)$', 'web.views.dependencydetail'),
+    url(r'^$', lambda x: redirect('system_list')),
+    url(r'^system[s/]?$', ListView.as_view(model=System, context_object_name='system_list'), name='system_list'),
+    url(r'^system/(?P<pk>\d+)/', DetailView.as_view(model=System, context_object_name='system'), name='system_detail'),
 )
-

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Systems{% endblock %}
+{% block content %}
+    <h2>Systems</h2>
+    <table>
+       <thead>
+           <tr>
+               <th>Name</th>
+               <th>Description</th>
+           </tr>
+       </thead>
+       <tbody>
+           {% for system in system_list %}
+           <tr>
+               <th><a href="{% url system_detail system.id %}">{{ system.name }}</a></th>
+               <td>{{ system.description }}</td>
+           </tr>
+           {% endfor %}
+       </tbody>
+    </table>
+{% endblock content %}

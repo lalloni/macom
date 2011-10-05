@@ -3,7 +3,7 @@ Created on 09/03/2011
 
 @author: sebas
 '''
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url #@UnusedImport
 
 urlpatterns = patterns('',
    (r'^$', 'diagrama.views.root'),

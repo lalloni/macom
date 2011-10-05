@@ -99,4 +99,3 @@ admin.site.register(models.System, SystemAdmin)
 admin.site.register(models.Module, ModuleAdmin)
 admin.site.register(models.Interface, InterfaceAdmin)
 admin.site.register(models.Dependency, DependencyAdmin)
-

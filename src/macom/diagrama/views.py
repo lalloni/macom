@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from pydot import graph_from_dot_data
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
-from diagrama.utils import RawGraphViz, Utils
+from macom.diagrama.utils import RawGraphViz, Utils
 
 def root(request):
     '''

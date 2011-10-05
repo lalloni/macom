@@ -3,16 +3,16 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
-from django.forms import Textarea
-from south.modelsinspector import add_introspection_rules
 
 class Base(models.Model):
+    
     @permalink
     def get_absolute_url(self):
         return ('admin:%s_%s_change' %(self._meta.app_label, self._meta.module_name), [self.id])
-
+    
     class Meta:
         abstract = True
+        db_tablespace = 'macom'
 
 class System(Base):
     name = models.CharField(_('name'), help_text=_('system-name-help'), max_length=100)

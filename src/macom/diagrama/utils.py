@@ -7,7 +7,7 @@ Created on 17/03/2011
 from subprocess import Popen
 from tempfile import SpooledTemporaryFile
 from pydot import graph_from_dot_data
-from diagrama.models import System, Interface
+from macom.diagrama.models import System, Interface
 import pydot
 
 class PlantUML(object):
