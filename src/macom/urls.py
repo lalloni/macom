@@ -7,14 +7,16 @@ from django.conf import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
+
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),
     
     url(r'^static-media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}, name='static_media'),
     
-    (r'^diagrama/', include('macom.diagrama.urls')),
+    url(r'^diagrama/', include('macom.diagrama.urls')),
     
-    (r'^', include('macom.web.urls')), # todo lo demás es la "web"
+    url(r'^app/', include('macom.app.urls')),
+    url(r'^api/', include('macom.api.urls')),
+    url(r'^web/', include('macom.web.urls')),
     
 )

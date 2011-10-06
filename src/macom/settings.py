@@ -45,7 +45,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/sebas/macom/media/'
+MEDIA_ROOT = 'media' # IMPORTANTE: con este dir relativo se DEBE correr "runserver" con $PWD en el directorio raíz del proyecto
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -92,5 +92,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'macom.diagrama',
     'macom.web',
+    'macom.api',
+    'macom.app',
     'south',
 )

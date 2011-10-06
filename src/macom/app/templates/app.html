@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>macom</title>
+		<script>var isomorphicDir="{% url static_media 'isomorphic/' %}";</script>
+		<script src="{% url static_media 'isomorphic/system/modules/ISC_Core.js' %}"></script>
+		<script src="{% url static_media 'isomorphic/system/modules/ISC_Foundation.js' %}"></script>
+		<script src="{% url static_media 'isomorphic/system/modules/ISC_Containers.js' %}"></script>
+		<script src="{% url static_media 'isomorphic/system/modules/ISC_Grids.js' %}"></script>
+		<script src="{% url static_media 'isomorphic/system/modules/ISC_Forms.js' %}"></script>
+		<script src="{% url static_media 'isomorphic/system/modules/ISC_DataBinding.js' %}"></script>
+		<script src="{% url static_media 'isomorphic/skins/Enterprise/load_skin.js' %}"></script>
+	</head>
+	<body>
+	    <script src="{% url script_template 'app.js' %}"></script>
+	</body>
+</html>
