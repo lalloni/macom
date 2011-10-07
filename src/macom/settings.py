@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.markup',
     'macom.diagrama',
     'macom.web',
     'macom.api',
