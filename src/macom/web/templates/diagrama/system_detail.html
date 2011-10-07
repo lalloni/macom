@@ -1,24 +1,37 @@
 {% extends "base.html" %}
-{% block title %}System {{ system.name }}{% endblock %}
+{% load markup %}
+{% block title %}System {{ object.name }}{% endblock %}
 {% block content %}
-    <h2>System {{ system.name }}</h2>
-    <h3>Description</h3>
-    <p>{{ system.description }}</p>
-    <h3>Modules</h3>
-    <table>
-       <thead>
-           <tr>
-               <th>Name</th>
-               <th>Description</th>
-           </tr>
-       </thead>
-       <tbody>
-           {% for module in modules %}
-           <tr>
-               <th>{{ module.name }}</th>
-               <td>{{ module.description }}</td>
-           </tr>
-           {% endfor %}
-       </tbody>
-    </table>
+    <h2>System: <b>{{ object.name }}</b></h2>
+    <div id="system-description">
+	    <h3>Description</h3>
+	    {{ object.description|markdown }}
+    </div>
+    <div id="system-documentation">
+	    <h3>Documentation</h3>
+	    {{ object.documentation|markdown }}
+    </div>
+    <div id="system-referents">
+        <h3>Referents</h3>
+        {{ object.referents|markdown }}
+    </div>
+    <div id="system-modules">
+	    <h3>Modules</h3>
+	    <table>
+	       <thead>
+	           <tr>
+	               <th>Name</th>
+	               <th>Goal</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           {% for module in object.modules.all %}
+	           <tr>
+	               <th><a href="{% url module_detail module.pk %}">{{ module.name }}</a></th>
+	               <td>{{ module.goal|markdown }}</td>
+	           </tr>
+	           {% endfor %}
+	       </tbody>
+	    </table>
+    </div>
 {% endblock content %}

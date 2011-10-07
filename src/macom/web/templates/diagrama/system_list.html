@@ -10,10 +10,10 @@
            </tr>
        </thead>
        <tbody>
-           {% for system in system_list %}
+           {% for object in object_list %}
            <tr>
-               <th><a href="{% url system_detail system.id %}">{{ system.name }}</a></th>
-               <td>{{ system.description }}</td>
+               <th><a href="{% url system_detail object.id %}">{{ object.name }}</a></th>
+               <td>{{ object.description }}</td>
            </tr>
            {% endfor %}
        </tbody>

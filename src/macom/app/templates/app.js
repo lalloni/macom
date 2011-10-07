@@ -1,13 +1,13 @@
 
 isc.DataSource.create({
-	ID : "system_list",
+	ID : "ds_system_list",
 	dataURL : "{% url api_system_list %}",
 	dataFormat : "json",
 	fields : [ {
 		name : "name"
 	}, {
 		name : "description"
-	}, ]
+	} ]
 });
 
 isc.VLayout.create({
@@ -18,42 +18,42 @@ isc.VLayout.create({
 		height : "30px",
 		members : [ isc.Label.create({
 			contents : "macom"
-		}) ],
+		}) ]
 	}), isc.HLayout.create({
 		height : "*",
 		members : [ isc.ListGrid.create({
-			dataSource : "system_list",
+			dataSource : "ds_system_list",
 			autoFetchData : true,
 			showResizeBar : true,
 		}), isc.TabSet.create({
 			tabs : [ {
 				title : "Prueba 1",
 				pane : isc.Label.create({
-					contents : "Contenido"
+					contents : "Contenido 1"
 				})
 			}, {
 				title : "Prueba 2",
 				pane : isc.Label.create({
-					contents : "Contenido"
+					contents : "Contenido 2"
 				})
 			}, {
 				title : "Prueba 3",
-				pane : isc.Label.create({
-					contents : "Contenido"
+				pane : isc.HTMLFlow.create({
+					contentsURL: "{% url system_detail '1' %}"
 				})
 			}, {
 				title : "Prueba 4",
 				pane : isc.Label.create({
-					contents : "Contenido"
+					contents : "Contenido 4"
 				})
-			}, ],
-		}), ],
+			} ]
+		}) ]
 	}), isc.HStack.create({
 		ID : "BottomToolBar",
 		height : "1",
 		members : [ isc.IButton.create({
 			title : "Console",
 			click : "isc.showConsole()"
-		}), ]
-	}), ]
+		}) ]
+	}) ]
 });

@@ -1,4 +1,4 @@
-# Create your views here.
+
 from django.shortcuts import render_to_response
 
 def script_template(request, script_name):
