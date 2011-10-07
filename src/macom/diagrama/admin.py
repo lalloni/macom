@@ -9,14 +9,14 @@ class InlineInterface(admin.StackedInline):
     extra = 0
     fieldsets = (
         (None, {
-            'fields': ('exposer', 'name')
+            'fields': ('module', 'name')
         }),
         ('Detail', {
             'classes': ('collapse',),
             'fields': ('goal','technology','direction_inbound', 'direction_outbound')
         }),
     )
-    list_display = ['exposer', 'name', 'goal', 'technology']
+    list_display = ['module', 'name', 'goal', 'technology']
     verbose_name = _('Interface')
     verbose_name_plural = _('Interfaces')
 
@@ -25,7 +25,7 @@ class InlineDependency(admin.StackedInline):
     extra = 0
     fieldsets = (
         (None, {
-            'fields': ('exposer','interface')
+            'fields': ('module','interface')
         }),
         ('Detail', {
             'classes': ('collapse',),
@@ -33,8 +33,8 @@ class InlineDependency(admin.StackedInline):
         }),
     )
     list_display = ['interface', 'goal', 'referents', 'documentation']
-    search_fields = ['exposer__name', 'name','referents', 'documentation','technology']
-    ordering = ['exposer__system__name']
+    search_fields = ['module__name', 'name','referents', 'documentation','technology']
+    ordering = ['module__system__name']
 
 class ModuleAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -60,7 +60,7 @@ class SystemAdmin(admin.ModelAdmin):
 class InterfaceAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Identification', {
-            'fields': ('exposer', 'name')
+            'fields': ('module', 'name')
         }),
         ('Direction', {
             'classes': ('wide',),
@@ -71,15 +71,15 @@ class InterfaceAdmin(admin.ModelAdmin):
             'fields': ('goal','technology','referents', 'documentation')
         }),
     )
-    list_display = ['exposer', 'name', 'goal', 'referents', 'documentation']
+    list_display = ['module', 'name', 'goal', 'referents', 'documentation']
     list_display_links = ['name']
-    ordering = ['exposer__system__name']
-    search_fields = ['exposer__name', 'name','referents', 'documentation']
+    ordering = ['module__system__name']
+    search_fields = ['module__name', 'name','referents', 'documentation']
 
 class DependencyAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Identification', {
-            'fields': ('exposer','interface')
+            'fields': ('module','interface')
         }),
         ('Direction', {
             'classes': ('wide',),
@@ -90,10 +90,10 @@ class DependencyAdmin(admin.ModelAdmin):
             'fields': ('goal','technology','loadestimate', 'referents', 'documentation')
         }),
     )
-    list_display = ['exposer', 'interface', 'goal', 'referents', 'documentation']
-    list_display_links = ['exposer']
-    ordering = ['exposer__system__name']
-    search_fields = ['exposer__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','referents', 'documentation']
+    list_display = ['module', 'interface', 'goal', 'referents', 'documentation']
+    list_display_links = ['module']
+    ordering = ['module__system__name']
+    search_fields = ['module__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','referents', 'documentation']
 
 admin.site.register(models.System, SystemAdmin)
 admin.site.register(models.Module, ModuleAdmin)
