@@ -1,37 +1,67 @@
-{% extends "base.html" %}
+{% extends "base-web.html" %}
 {% load markup %}
-{% block title %}System {{ object.name }}{% endblock %}
+{% block title %} - System {{ object }}{% endblock %}
 {% block content %}
-    <h2>System: <b>{{ object.name }}</b></h2>
+    <h2>System <b>{{ object.name }}</b>{% include 'third-party-object.html' %}</h2>
     <div id="system-description">
 	    <h3>Description</h3>
-	    {{ object.description|markdown }}
+        {{ object.description|default:"_No description_"|markdown }}
     </div>
     <div id="system-documentation">
 	    <h3>Documentation</h3>
-	    {{ object.documentation|markdown }}
+        {{ object.documentation|default:"_No documentation_"|markdown }}
     </div>
     <div id="system-referents">
         <h3>Referents</h3>
-        {{ object.referents|markdown }}
+        {{ object.referents|default:"_No referents_"|markdown }}
     </div>
     <div id="system-modules">
 	    <h3>Modules</h3>
 	    <table>
 	       <thead>
 	           <tr>
-	               <th>Name</th>
+	               <th>Module</th>
 	               <th>Goal</th>
 	           </tr>
 	       </thead>
 	       <tbody>
 	           {% for module in object.modules.all %}
 	           <tr>
-	               <th><a href="{% url module_detail module.pk %}">{{ module.name }}</a></th>
-	               <td>{{ module.goal|markdown }}</td>
+	               <td><a href="{% url module_detail module.pk %}">{{ module }}</a>{% include 'third-party-object.html' with object=module %}</td>
+	               <td>{{ module.goal|default:"_No goal_"|markdown }}</td>
+	           </tr>
+	           {% empty %}
+	           <tr>
+	             <td colspan="2" align="center">No modules</td>
 	           </tr>
 	           {% endfor %}
 	       </tbody>
 	    </table>
     </div>
+    <div id="system-interfaces">
+        <h3>Interfaces</h3>
+        <table>
+           <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Goal</th>
+                   <th>Direction</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for interface in interfaces %}
+               <tr>
+                   <td><a href="{% url interface_detail interface.pk %}">{{ interface }}</a></td>
+                   <td>{{ interface.goalModule|default:"_No goal_"|markdown }}</td>
+                   <td>{% if interface.direction_inbound %}in{% endif %}{% if interface.direction_outbound %}out{% endif %}</td>
+               </tr>
+               {% empty %}
+               <tr>
+                 <td colspan="3" align="center">No interfaces</td>
+               </tr>
+               {% endfor %}
+           </tbody>
+        </table>
+    </div>
+    
 {% endblock content %}

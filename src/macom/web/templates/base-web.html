@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+    	<title>Macom{% block title %}{% endblock %}</title>
+    	<style type="text/css">
+    	   td > p {
+    	       margin-top: 0.5em;
+               margin-bottom: 0.5em;
+    	   }
+    	   .hcenter {
+    	       text-align: center;
+    	   }
+    	   .super {
+    	       vertical-align: super;
+    	   }
+    	   table {
+    	       border-collapse: collapse;
+    	   }
+    	   table, td, th {
+    	       border: 1px solid silver;
+    	       padding-top: 1px;
+               padding-bottom: 1px;
+    	       padding-left: 10px;
+    	       padding-right: 10px;
+    	   }
+    	   body {
+    	       font-family: sans;
+    	   }
+    	   #shortcuts {
+    	       float: right;
+    	       background-color: #FFC;
+    	       padding: 5px;
+    	       border: 1px solid silver;
+    	   }
+    	   div#shortcuts ul {
+    	       list-style-type: none;
+    	       padding-left: 0;
+    	       margin-top: 0;
+    	       margin-bottom: 0;    	       
+    	   }
+    	   th {
+    	       background-color: silver;
+       	   }
+       	   h3 {
+       	        border-top: 2px black solid;
+       	        background-color: silver;       	    
+       	   }
+    	</style>
+	</head>
+
+	<body>
+	    
+	    <div id="shortcuts">
+	       <ul>
+	           <li><a href="{% url system_list %}">Systems</a></li>
+               <li><a href="{% url module_list %}">Modules</a></li>
+               <li><a href="{% url interface_list %}">Interfaces</a></li>
+	       </ul>
+	    </div>
+	    
+		<div id="content">
+		   {% block content %}{% endblock %}
+		</div>
+		
+	</body>
+
+</html>

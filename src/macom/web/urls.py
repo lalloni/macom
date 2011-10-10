@@ -5,26 +5,16 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import redirect
 
 from macom.diagrama.models import System, Dependency, Interface, Module
+from macom.web.views import ModuleDetailView, InterfaceDetailView, SystemDetailView
     
-def model_urls(args):
-    (model, name) = args
-    return [
-            url(r'^%s[s/]?$' % name, ListView.as_view(model=model), name='%s_list' % name),
-            url(r'^%s/(?P<pk>\d+)/' % name, DetailView.as_view(model=model), name='%s_detail' % name),
-           ]
-
-urlpatterns = patterns('', *
-    [url(r'^$', lambda x: redirect('system_list'))] + 
-    reduce(
-           lambda x, y: x + y, 
-           map(
-               model_urls, 
-               [
-                (System, 'system'), 
-                (Module, 'module'), 
-                (Interface, 'interface'), 
-                (Dependency, 'dependency'),
-               ]
-              )
-          )
+urlpatterns = patterns('',
+     url(r'^$', lambda x: redirect('system_list')),
+     url(r'^system[s/]?$', ListView.as_view(model=System), name='system_list'),
+     url(r'^system/(?P<pk>\d+)/', SystemDetailView.as_view(), name='system_detail'),
+     url(r'^module[s/]?$', ListView.as_view(model=Module), name='module_list'),
+     url(r'^module/(?P<pk>\d+)/', ModuleDetailView.as_view(), name='module_detail'),
+     url(r'^interface[s/]?$', ListView.as_view(model=Interface), name='interface_list'),
+     url(r'^interface/(?P<pk>\d+)/', InterfaceDetailView.as_view(), name='interface_detail'),
+     url(r'^dependency[s/]?$' , ListView.as_view(model=Dependency), name='dependency_list'),
+     url(r'^dependency/(?P<pk>\d+)/', DetailView.as_view(model=Dependency), name='dependency_detail'),
 )

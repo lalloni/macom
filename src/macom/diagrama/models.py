@@ -37,7 +37,7 @@ class Module(Base):
     referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
-    dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependencies')
+    dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependants')
     class Meta:
         verbose_name = _('module')
         ordering = ['system__name']
@@ -52,7 +52,7 @@ class Interface(Base):
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('interface-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('interface-outbound-help'))
-    module = models.ForeignKey(Module, verbose_name = _('module'))
+    module = models.ForeignKey(Module, related_name = 'interfaces', verbose_name = _('module'))
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')

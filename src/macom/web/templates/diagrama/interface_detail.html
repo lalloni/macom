@@ -1,0 +1,54 @@
+{% extends "base-web.html" %}
+{% load markup %}
+{% block title %} - Interface {{ object }}{% endblock %}
+{% block content %}
+    <div class="location"><a href="{% url system_detail object.module.system.pk %}">System {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">Module {{ object.module.name }}</a></div>
+    <h2>Interface <b>{{ object.name }}</b>{% include 'third-party-object.html' %}</h2>
+    <div id="interface-direction">
+        <h3>Direction</h3>
+        <p>{% if object.direction_inbound or object.direction_outbound %}{% if object.direction_inbound %}in{% endif %}{% if object.direction_outbound %}out{% endif %}{% else %}<em>No direction</em>{% endif %}</p>
+    </div>
+    <div id="interface-description">
+	    <h3>Goal</h3>
+        {{ object.goal|default:"_No goal_"|markdown }}
+    </div>
+    <div id="interface-documentation">
+	    <h3>Documentation</h3>
+        {{ object.documentation|default:"_No documentation_"|markdown }}
+    </div>
+    <div id="interface-referents">
+        <h3>Referents</h3>
+        {{ object.referents|default:"_No referents_"|markdown }}
+    </div>
+    <div id="interface-technology">
+        <h3>Technology</h3>
+        {{ object.technology|default:"_No technology_"|markdown }}
+    </div>
+    <div id="interface-dependants">
+        <h3>Dependants</h3>
+        <table>
+           <thead>
+               <tr>
+                   <th>Dependency</th>
+                   <th>Module</th>
+                   <th>Goal</th>
+                   <th>Direction</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for dependency in dependencies %}
+               <tr>
+                   <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+                   <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+                   <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
+                   <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+               </tr>
+               {% empty %}
+               <tr>
+                 <td colspan="4" align="center">No dependants</td>
+               </tr>
+               {% endfor %}
+           </tbody>
+        </table>
+    </div>
+{% endblock content %}

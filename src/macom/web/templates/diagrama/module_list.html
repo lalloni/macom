@@ -1,0 +1,28 @@
+{% extends "base-web.html" %}
+{% load markup %}
+{% block title %} - Modules{% endblock %}
+{% block content %}
+    <h2>Modules</h2>
+    <table>
+       <thead>
+           <tr>
+               <th>System</th>
+               <th>Module</th>
+               <th>Goal</th>
+           </tr>
+       </thead>
+       <tbody>
+           {% for object in object_list %}
+           <tr>
+               <td><a href="{% url system_detail object.system.pk %}">{{ object.system.name }}</a>{% include 'third-party-object.html' with object=object.system %}</td>
+               <td><a href="{% url module_detail object.pk %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
+               <td>{{ object.goal|default:"_No goal_"|markdown }}</td>
+           </tr>
+           {% empty %}
+           <tr>
+                <td colspan="2">No modules</td>
+           </tr>
+           {% endfor %}
+       </tbody>
+    </table>
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends "base-web.html" %}
+{% load markup %}
+{% block title %} - Dependency {{ object }}{% endblock %}
+{% block content %}
+    <div class="location"><a href="{% url system_detail object.module.system.pk %}">System {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">Module {{ object.module.name }}</a></div>
+    <h2>Dependency</h2>
+    <div id="dependency-target">
+        <h3>Interface</h3>
+        <a href="{% url interface_detail object.interface.pk %}">{{ object.interface }}</a>
+    </div>
+    <div id="dependency-direction">
+        <h3>Direction</h3>
+        <p>{% if object.direction_inbound or object.direction_outbound %}{% if object.direction_inbound %}in{% endif %}{% if object.direction_outbound %}out{% endif %}{% else %}<em>No direction</em>{% endif %}</p>
+    </div>
+    <div id="dependency-description">
+	    <h3>Goal</h3>
+        {{ object.goal|default:"_No goal_"|markdown }}
+    </div>
+    <div id="dependency-documentation">
+	    <h3>Documentation</h3>
+        {{ object.documentation|default:"_No documentation_"|markdown }}
+    </div>
+    <div id="dependency-referents">
+        <h3>Referents</h3>
+        {{ object.referents|default:"_No referents_"|markdown }}
+    </div>
+    <div id="dependency-technology">
+        <h3>Technology</h3>
+        {{ object.technology|default:"_No technology_"|markdown }}
+    </div>
+{% endblock content %}
