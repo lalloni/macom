@@ -36,6 +36,40 @@ class InlineDependency(admin.StackedInline):
     search_fields = ['module__name', 'name','referents', 'documentation','technology']
     ordering = ['module__system__name']
 
+class InlineModuleTypeCase(admin.TabularInline):
+    model = models.ModuleTypeCase
+    extra = 0
+    fieldsets = (
+        (None, {
+            'fields': ('module','moduletype', 'annotation')
+        }),
+    )
+    list_display = ['module','moduletype']
+    list_display_links = ['mdule','moduletype']
+    ordering = ['module__system__name']
+
+    verbose_name = _('Type')
+    verbose_name_plural = _('Types')
+
+    search_fields = ['module__name', 'moduletype', 'annotation']
+
+class InlineArchitecturalPatternCase(admin.TabularInline):
+    model = models.ArchitecturalPatternCase
+    extra = 0
+    fieldsets = (
+        (None, {
+            'fields': ('module','architecturalpattern', 'annotation')
+        }),
+    )
+    list_display = ['module','architecturalpattern']
+    list_display_links = ['module','architecturalpattern']
+    ordering = ['module__system__name']
+
+    verbose_name = _('Architectural Pattern')
+    verbose_name_plural = _('Architectural Patterns')
+
+    search_fields = ['module__name', 'architecturalpattern', 'annotation']
+
 class ModuleAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Identification', {
@@ -51,7 +85,7 @@ class ModuleAdmin(admin.ModelAdmin):
     list_display_links = ['name']
     
     search_fields = ['system__name','name', 'goal','referents', 'documentation']
-    inlines = [InlineInterface, InlineDependency]
+    inlines = [InlineInterface, InlineDependency, InlineModuleTypeCase, InlineArchitecturalPatternCase]
 
 class SystemAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'referents', 'documentation', 'external']
@@ -68,7 +102,7 @@ class InterfaceAdmin(admin.ModelAdmin):
         }),
         ('Detail', {
             'classes': ('collapse',),
-            'fields': ('goal','technology','referents', 'documentation')
+            'fields': ('goal','technology','referents', 'documentation'),
         }),
     )
     list_display = ['module', 'name', 'goal', 'referents', 'documentation']
@@ -95,7 +129,57 @@ class DependencyAdmin(admin.ModelAdmin):
     ordering = ['module__system__name']
     search_fields = ['module__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','referents', 'documentation']
 
+class ModuleTypeAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description')
+        }),
+    )
+    list_display = ['name', 'description']
+    list_display_links = ['name']
+    ordering = ['name']
+    search_fields = ['name', 'description']
+
+class ArchitecturalPatternAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description')
+        }),
+    )
+    list_display = ['name', 'description']
+    list_display_links = ['name']
+    ordering = ['name']
+    search_fields = ['name', 'description']
+
+class ModuleTypeCaseAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('module','moduletype', 'annotation')
+        }),
+    )
+    list_display = ['module','moduletype']
+    list_display_links = ['module','moduletype']
+    ordering = ['module__system__name']
+    search_fields = ['module__name', 'moduletype', 'annotation']
+
+
+class ArchitecturalPatternCaseAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('module','architecturalpattern', 'annotation')
+        }),
+    )
+    list_display = ['module','architecturalpattern']
+    list_display_links = ['module','architecturalpattern']
+    ordering = ['module__system__name']
+    search_fields = ['module__name', 'architecturalpattern', 'annotation']
+
 admin.site.register(models.System, SystemAdmin)
 admin.site.register(models.Module, ModuleAdmin)
 admin.site.register(models.Interface, InterfaceAdmin)
+admin.site.register(models.ModuleType, ModuleTypeAdmin)
+admin.site.register(models.ArchitecturalPattern, ArchitecturalPatternAdmin)
 admin.site.register(models.Dependency, DependencyAdmin)
+admin.site.register(models.ModuleTypeCase, ModuleTypeCaseAdmin)
+admin.site.register(models.ArchitecturalPatternCase, ArchitecturalPatternCaseAdmin)
+
