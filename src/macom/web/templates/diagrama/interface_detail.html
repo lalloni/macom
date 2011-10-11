@@ -26,29 +26,29 @@
     </div>
     <div id="interface-dependants">
         <h3>Dependants</h3>
-        <table>
-           <thead>
-               <tr>
-                   <th>Dependency</th>
-                   <th>Module</th>
-                   <th>Goal</th>
-                   <th>Direction</th>
-               </tr>
-           </thead>
-           <tbody>
-               {% for dependency in dependencies %}
-               <tr>
-                   <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
-                   <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
-                   <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
-                   <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
-               </tr>
-               {% empty %}
-               <tr>
-                 <td colspan="4" align="center">No dependants</td>
-               </tr>
-               {% endfor %}
-           </tbody>
-        </table>
+        {% if dependencies %}
+	        <table>
+	           <thead>
+	               <tr>
+	                   <th>Dependency</th>
+	                   <th>Module</th>
+	                   <th>Goal</th>
+	                   <th>Direction</th>
+	               </tr>
+	           </thead>
+	           <tbody>
+	               {% for dependency in dependencies %}
+	               <tr>
+	                   <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+	                   <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+	                   <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
+	                   <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+	               </tr>
+	               {% endfor %}
+	           </tbody>
+	        </table>
+        {% else %}
+            <em>No dependants</em>
+        {% endif %}
     </div>
 {% endblock content %}

@@ -3,24 +3,24 @@
 {% block title %} - Systems{% endblock %}
 {% block content %}
     <h2>Systems</h2>
-    <table>
-       <thead>
-           <tr>
-               <th>Name</th>
-               <th>Description</th>
-           </tr>
-       </thead>
-       <tbody>
-           {% for object in object_list %}
-           <tr>
-               <td><a href="{% url system_detail object.id %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
-               <td>{{ object.description|default:"_No description_"|markdown }}</td>
-           </tr>
-           {% empty %}
-           <tr>
-                <td colspan="2">No systems</td>
-           </tr>
-           {% endfor %}
-       </tbody>
-    </table>
+    {% if object_list %}
+	    <table>
+	       <thead>
+	           <tr>
+	               <th>Name</th>
+	               <th>Description</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           {% for object in object_list %}
+	           <tr>
+	               <td><a href="{% url system_detail object.id %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
+	               <td>{{ object.description|default:"_No description_"|markdown }}</td>
+	           </tr>
+	           {% endfor %}
+	       </tbody>
+	    </table>
+	{% else %}
+	   <em>No systems</em>
+	{% endif %}
 {% endblock content %}
