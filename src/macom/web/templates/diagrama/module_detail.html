@@ -3,7 +3,7 @@
 {% block title %} - Module {{ object }}{% endblock %}
 {% block content %}
     <div class="location"><a href="{% url system_detail object.system.pk %}">System {{ object.system.name }}</a></div>
-    <h2>Module <b>{{ object.name }}</b>{% include 'third-party-object.html' %}</h2>
+    <h2>Module <b>{{ object.name }}</b>{% include 'third-party-object.html' %} <span class="super"><a href="{% url admin:diagrama_module_history object.pk %}">history</a> <a href="{% url admin:diagrama_module_change object.pk %}">edit</a></span></h2>
     <div id="module-description">
 	    <h3>Goal</h3>
         {{ object.goal|default:"_No goal_"|markdown }}
@@ -30,7 +30,7 @@
 	           {% for interface in object.interfaces.all %}
 	           <tr>
 	               <td><a href="{% url interface_detail interface.pk %}">{{ interface }}</a></td>
-	               <td>{{ interface.goalModule|default:"_No goal_"|markdown }}</td>
+	               <td>{{ interface.goal|default:"_No goal_"|markdown }}</td>
                    <td>{% if interface.direction_inbound %}in{% endif %}{% if interface.direction_outbound %}out{% endif %}</td>
 	           </tr>
 	           {% empty %}
