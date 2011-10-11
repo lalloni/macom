@@ -7,6 +7,7 @@ class SystemDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(SystemDetailView, self).get_context_data(**kwargs)
         context['interfaces'] = Interface.objects.filter(module__system=context['object'])
+        context['dependencies'] = Dependency.objects.filter(module__system=context['object']).exclude(interface__module__system=context['object'])
         return context
 
 class ModuleDetailView(DetailView):
