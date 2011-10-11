@@ -2,7 +2,7 @@
 {% load markup %}
 {% block title %} - System {{ object }}{% endblock %}
 {% block content %}
-    <h2>System <b>{{ object.name }}</b>{% include 'third-party-object.html' %} <span class="super"><a href="{% url admin:diagrama_system_history object.pk %}">history</a> <a href="{% url admin:diagrama_system_change object.pk %}">edit</a></span></h2>
+    <h2>System <b>{{ object.name }}</b>{% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_system_history object.pk %}">history</a> <a href="{% url admin:diagrama_system_change object.pk %}">edit</a></span></h2>
     <div id="system-description">
 	    <h3>Description</h3>
         {{ object.description|default:"_No description_"|markdown }}

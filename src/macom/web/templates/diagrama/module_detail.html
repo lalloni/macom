@@ -2,8 +2,8 @@
 {% load markup %}
 {% block title %} - Module {{ object }}{% endblock %}
 {% block content %}
-    <div class="location"><a href="{% url system_detail object.system.pk %}">System {{ object.system.name }}</a></div>
-    <h2>Module <b>{{ object.name }}</b>{% include 'third-party-object.html' %} <span class="super"><a href="{% url admin:diagrama_module_history object.pk %}">history</a> <a href="{% url admin:diagrama_module_change object.pk %}">edit</a></span></h2>
+    <div class="location" title="Location"><a href="{% url system_detail object.system.pk %}">System {{ object.system.name }}</a></div>
+    <h2>Module <b>{{ object.name }}</b>{% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_module_history object.pk %}">history</a> <a href="{% url admin:diagrama_module_change object.pk %}">edit</a></span></h2>
     <div id="module-description">
 	    <h3>Goal</h3>
         {{ object.goal|default:"_No goal_"|markdown }}
