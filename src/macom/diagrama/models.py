@@ -12,6 +12,11 @@ class Base(models.Model):
         abstract = True
         db_tablespace = 'macom'
 
+class Annotation(Base):
+    annotation = models.TextField(_('annotation'))
+    class Meta:
+        abstract = True
+
 class System(Base):
     name = models.CharField(_('name'), help_text=_('system-name-help'), max_length=100)
     description = models.TextField(_('description'), help_text=_('description-help'))
@@ -20,6 +25,7 @@ class System(Base):
     external = models.BooleanField(_('external'), help_text=_('external-help'))
     class Meta:
         verbose_name = _('system')
+        verbose_name_plural = _('systems')
         ordering = ['name']
     def __unicode__(self):
         return self.name
@@ -38,13 +44,17 @@ class Module(Base):
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
     dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependants')
+    moduletypecases = models.ManyToManyField('ModuleType', through='ModuleTypeCase', related_name='moduletypecases')
+    architecturalpatterncases = models.ManyToManyField('ArchitecturalPattern', through='ArchitecturalPatternCase', related_name='architecturalpatterncases')
     class Meta:
         verbose_name = _('module')
+        verbose_name_plural = _('modules')
         ordering = ['system__name']
     def __unicode__(self):
         return "%s:%s" % (unicode(self.system), self.name)
 
 class Interface(Base):
+    module = models.ForeignKey(Module, related_name = 'interfaces', verbose_name = _('module'))
     name = models.CharField(_('name'), help_text=_('interface-name-help'), max_length=100)
     goal = models.TextField(_('goal'), help_text=_('interface-goal-help') )
     technology = models.CharField(_('technology'), help_text=_('technology-help') , max_length=200, blank=True)
@@ -52,7 +62,6 @@ class Interface(Base):
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('interface-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('interface-outbound-help'))
-    module = models.ForeignKey(Module, related_name = 'interfaces', verbose_name = _('module'))
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')
@@ -76,3 +85,44 @@ class Dependency(Base):
         ordering = ['module__system__name']
     def __unicode__(self):
         return "%s:(%s)" % (unicode(self.module), unicode(self.interface))
+
+class ArchitecturalPattern(Base):
+    name = models.CharField(_('name'), help_text=_('architecturalpattern-name-help'), max_length=100)
+    description = models.TextField(_('description'), help_text=_('architecturalpattern-description-help') , blank=True)
+    class Meta:
+        verbose_name = _('architectural pattern')
+        verbose_name_plural = _('architectural patterns')
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name
+
+class ModuleType(Base):
+    name = models.CharField(_('name'), help_text=_('moduletype-name-help'), max_length=100)
+    description = models.TextField(_('description'), help_text=_('moduletype-description-help') , blank=True)
+    class Meta:
+        verbose_name = _('module type')
+        verbose_name_plural = _('module types')
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name
+
+class ArchitecturalPatternCase(Annotation):
+    module = models.ForeignKey(Module)
+    architecturalpattern = models.ForeignKey(ArchitecturalPattern, verbose_name=_('Architectural Pattern'))
+    class Meta:
+        verbose_name = _('architectural pattern case')
+        verbose_name_plural = _('architectural pattern cases')
+        ordering = ['module__system__name']
+    def __unicode__(self):
+        return "%s:(%s)" % (unicode(self.module), unicode(self.architecturalpattern))
+
+class ModuleTypeCase(Annotation):
+    module = models.ForeignKey(Module)
+    moduletype= models.ForeignKey(ModuleType, verbose_name=_('Module Type'))
+    class Meta:
+        verbose_name = _('module type case')
+        verbose_name_plural = _('module type cases')
+        ordering = ['module__system__name']
+    def __unicode__(self):
+        return "%s:(%s)" % (unicode(self.module), unicode(self.moduletype))
+

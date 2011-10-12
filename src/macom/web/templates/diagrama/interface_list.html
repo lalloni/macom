@@ -3,28 +3,32 @@
 {% block title %} - Interfaces{% endblock %}
 {% block content %}
     <h2>Interfaces</h2>
-    <table>
-       <thead>
-           <tr>
-               <th>System</th>
-               <th>Module</th>
-               <th>Interface</th>
-               <th>Goal</th>
-           </tr>
-       </thead>
-       <tbody>
-           {% for object in object_list %}
-           <tr>
-               <td><a href="{% url system_detail object.module.system.pk %}">{{ object.module.system.name }}</a>{% include 'third-party-object.html' with object=object.module.system %}</td>
-               <td><a href="{% url module_detail object.module.pk %}">{{ object.module.name }}</a>{% include 'third-party-object.html' with object=object.module %}</td>
-               <td><a href="{% url interface_detail object.pk %}">{{ object.name }}</a></td>
-               <td>{{ object.goal|default:"_No goal_"|markdown }}</td>
-           </tr>
-           {% empty %}
-           <tr>
-                <td colspan="2">No interfaces</td>
-           </tr>
-           {% endfor %}
-       </tbody>
-    </table>
+    {% if object_list %}
+	    <table>
+	       <thead>
+	           <tr>
+	               <th>System</th>
+	               <th>Module</th>
+	               <th>Interface</th>
+	               <th>Goal</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           {% for object in object_list %}
+	           <tr>
+	               <td><a href="{% url system_detail object.module.system.pk %}">{{ object.module.system.name }}</a>{% include 'third-party-object.html' with object=object.module.system %}</td>
+	               <td><a href="{% url module_detail object.module.pk %}">{{ object.module.name }}</a>{% include 'third-party-object.html' with object=object.module %}</td>
+	               <td><a href="{% url interface_detail object.pk %}">{{ object.name }}</a></td>
+	               <td>{{ object.goal|default:"_No goal_"|markdown }}</td>
+	           </tr>
+	           {% empty %}
+	           <tr>
+	                <td colspan="2">No interfaces</td>
+	           </tr>
+	           {% endfor %}
+	       </tbody>
+	    </table>
+    {% else %}
+       <em>No modules</em>
+    {% endif %}
 {% endblock content %}

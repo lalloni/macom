@@ -2,7 +2,7 @@
 {% load markup %}
 {% block title %} - System {{ object }}{% endblock %}
 {% block content %}
-    <h2>System <b>{{ object.name }}</b>{% include 'third-party-object.html' %}</h2>
+    <h2>System <b>{{ object.name }}</b>{% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_system_history object.pk %}">history</a> <a href="{% url admin:diagrama_system_change object.pk %}">edit</a></span></h2>
     <div id="system-description">
 	    <h3>Description</h3>
         {{ object.description|default:"_No description_"|markdown }}
@@ -17,50 +17,81 @@
     </div>
     <div id="system-modules">
 	    <h3>Modules</h3>
-	    <table>
-	       <thead>
-	           <tr>
-	               <th>Module</th>
-	               <th>Goal</th>
-	           </tr>
-	       </thead>
-	       <tbody>
-	           {% for module in object.modules.all %}
-	           <tr>
-	               <td><a href="{% url module_detail module.pk %}">{{ module }}</a>{% include 'third-party-object.html' with object=module %}</td>
-	               <td>{{ module.goal|default:"_No goal_"|markdown }}</td>
-	           </tr>
-	           {% empty %}
-	           <tr>
-	             <td colspan="2" align="center">No modules</td>
-	           </tr>
-	           {% endfor %}
-	       </tbody>
-	    </table>
+	    {% with modules=object.modules.all %}
+		    {% if modules %}
+		    <table>
+		       <thead>
+		           <tr>
+		               <th>Module</th>
+		               <th>Goal</th>
+		           </tr>
+		       </thead>
+		       <tbody>
+		           {% for module in modules %}
+		           <tr>
+		               <td><a href="{% url module_detail module.pk %}">{{ module }}</a>{% include 'third-party-object.html' with object=module %}</td>
+		               <td>{{ module.goal|default:"_No goal_"|markdown }}</td>
+		           </tr>
+		           {% endfor %}
+		       </tbody>
+		    </table>
+		    {% else %}
+		      <em>No modules</em>
+		    {% endif %}
+	    {% endwith %}
     </div>
     <div id="system-interfaces">
         <h3>Interfaces</h3>
-        <table>
-           <thead>
-               <tr>
-                   <th>Name</th>
-                   <th>Goal</th>
-                   <th>Direction</th>
-               </tr>
-           </thead>
-           <tbody>
-               {% for interface in interfaces %}
-               <tr>
-                   <td><a href="{% url interface_detail interface.pk %}">{{ interface }}</a></td>
-                   <td>{{ interface.goalModule|default:"_No goal_"|markdown }}</td>
-                   <td>{% if interface.direction_inbound %}in{% endif %}{% if interface.direction_outbound %}out{% endif %}</td>
-               </tr>
-               {% empty %}
-               <tr>
-                 <td colspan="3" align="center">No interfaces</td>
-               </tr>
-               {% endfor %}
-           </tbody>
-        </table>
+        {% if interfaces %}
+	        <table>
+	           <thead>
+	               <tr>
+	                   <th>Name</th>
+	                   <th>Goal</th>
+	                   <th>Direction</th>
+	               </tr>
+	           </thead>
+	           <tbody>
+	               {% for interface in interfaces %}
+	               <tr>
+	                   <td><a href="{% url interface_detail interface.pk %}">{{ interface }}</a></td>
+	                   <td>{{ interface.goal|default:"_No goal_"|markdown }}</td>
+	                   <td>{% if interface.direction_inbound %}in{% endif %}{% if interface.direction_outbound %}out{% endif %}</td>
+	               </tr>
+	               {% endfor %}
+	           </tbody>
+	        </table>
+        {% else %}
+            <em>No interfaces</em>
+        {% endif %}
+    </div>
+    <div id="system-dependencies">
+        <h3>Dependencies to other systems</h3>
+        {% if dependencies %}
+            <table>
+               <thead>
+                   <tr>
+                       <th>Dependency</th>
+                       <th>Dependent Module</th>
+                       <th>Target Interface</th>
+                       <th>Goal</th>
+                       <th>Direction</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for dependency in dependencies %}
+                   <tr>
+                       <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+                       <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+                       <td><a href="{% url interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
+                       <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
+                       <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+                   </tr>
+                   {% endfor %}
+               </tbody>
+            </table>
+        {% else %}
+            <em>No dependencies</em>
+        {% endif %}
     </div>
 {% endblock content %}
