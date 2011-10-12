@@ -1,12 +1,9 @@
-
 isc.DataSource.create({
-	ID : "ds_system_list",
-	dataURL : "{% url api_system_list %}",
+	ID : "ds_model",
+	dataURL : "{% url api_model %}",
 	dataFormat : "json",
 	fields : [ {
-		name : "name"
-	}, {
-		name : "description"
+		"name" : "name"
 	} ]
 });
 
@@ -21,8 +18,8 @@ isc.VLayout.create({
 		}) ]
 	}), isc.HLayout.create({
 		height : "*",
-		members : [ isc.ListGrid.create({
-			dataSource : "ds_system_list",
+		members : [ isc.TreeGrid.create({
+			dataSource : "ds_model",
 			autoFetchData : true,
 			showResizeBar : true,
 		}), isc.TabSet.create({
@@ -39,7 +36,7 @@ isc.VLayout.create({
 			}, {
 				title : "Prueba 3",
 				pane : isc.HTMLFlow.create({
-					contentsURL: "{% url system_detail '1' %}"
+					contentsURL : "{% url system_detail '1' %}"
 				})
 			}, {
 				title : "Prueba 4",
