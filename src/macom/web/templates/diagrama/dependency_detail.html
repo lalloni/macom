@@ -1,8 +1,8 @@
 {% extends "base-web.html" %}
 {% load markup %}
 {% block title %} - Dependency {{ object }}{% endblock %}
+{% block location %}<a href="{% url system_detail object.module.system.pk %}">System {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">Module {{ object.module.name }}</a> : Dependency to {{ object.interface }}{% endblock %}
 {% block content %}
-    <div class="location"><a href="{% url system_detail object.module.system.pk %}">System {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">Module {{ object.module.name }}</a></div>
     <h2>Dependency <span class="super no-print"><a href="{% url admin:diagrama_dependency_history object.pk %}">history</a> <a href="{% url admin:diagrama_dependency_change object.pk %}">edit</a></span></h2>
     <div id="dependency-target">
         <h3>Target Interface</h3>

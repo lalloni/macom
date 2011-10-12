@@ -5,12 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
 
 class Base(models.Model):
-    @permalink
-    def get_absolute_url(self):
-        return ('admin:%s_%s_change' %(self._meta.app_label, self._meta.module_name), [self.id])
     class Meta:
         abstract = True
         db_tablespace = 'macom'
+    @permalink
+    def get_absolute_url(self):
+        return ('admin:%s_%s_change' % (self._meta.app_label, self._meta.module_name), [self.id])
 
 class Annotation(Base):
     annotation = models.TextField(_('annotation'))
@@ -54,9 +54,9 @@ class Module(Base):
         return "%s:%s" % (unicode(self.system), self.name)
 
 class Interface(Base):
-    module = models.ForeignKey(Module, related_name = 'interfaces', verbose_name = _('module'))
+    module = models.ForeignKey(Module, related_name='interfaces', verbose_name=_('module'))
     name = models.CharField(_('name'), help_text=_('interface-name-help'), max_length=100)
-    goal = models.TextField(_('goal'), help_text=_('interface-goal-help') )
+    goal = models.TextField(_('goal'), help_text=_('interface-goal-help'))
     technology = models.CharField(_('technology'), help_text=_('technology-help') , max_length=200, blank=True)
     referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
@@ -70,8 +70,8 @@ class Interface(Base):
         return "%s:%s" % (unicode(self.module), self.name)
 
 class Dependency(Base):
-    module = models.ForeignKey(Module, verbose_name = _('module'))
-    interface = models.ForeignKey(Interface, verbose_name = _('interface'))
+    module = models.ForeignKey(Module, verbose_name=_('module'))
+    interface = models.ForeignKey(Interface, verbose_name=_('interface'))
     goal = models.TextField(_('goal'), help_text=_('dependency-goal-help') , blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('dependency-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('dependency-outbound-help'))
@@ -118,11 +118,10 @@ class ArchitecturalPatternCase(Annotation):
 
 class ModuleTypeCase(Annotation):
     module = models.ForeignKey(Module)
-    moduletype= models.ForeignKey(ModuleType, verbose_name=_('Module Type'))
+    moduletype = models.ForeignKey(ModuleType, verbose_name=_('Module Type'))
     class Meta:
         verbose_name = _('module type case')
         verbose_name_plural = _('module type cases')
         ordering = ['module__system__name']
     def __unicode__(self):
         return "%s:(%s)" % (unicode(self.module), unicode(self.moduletype))
-

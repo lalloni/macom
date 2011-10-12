@@ -4,69 +4,7 @@
 
 	<head>
     	<title>Macom{% block title %}{% endblock %}</title>
-    	<style type="text/css" media="print">
-    	   .no-print {
-    	       display: none;
-    	   }
-    	</style>
-    	<style type="text/css">
-           a:link {
-                text-decoration: none;
-           }
-    	   td > p {
-    	       margin-top: 0.5em;
-               margin-bottom: 0.5em;
-    	   }
-           table {
-               border-collapse: collapse;
-           }
-           table, td, th {
-               border: 1px solid silver;
-               padding-left: 1em;
-               padding-right: 1em;
-           }
-           body {
-               font-family: sans;
-           }
-           th {
-               background-color: #EEE;
-           }
-           h3 {
-                border-top: 2px black solid;
-                padding-left: 1em;
-                padding-right: 4em;
-                background-color: #CDF;
-                border-bottom-right-radius: 2em;
-           }
-    	   .hcenter {
-    	       text-align: center;
-    	   }
-    	   .super {
-    	       vertical-align: super;
-    	       font-size: 0.5em;
-    	   }
-    	   .location {
-    	       font-weight: bold;
-    	   }
-    	   #shortcuts {
-    	       float: right;
-    	       background-color: #FFA;
-    	       padding: .2em 2em .2em 2em;
-    	       font-weight: bolder;
-    	       border-radius: 1em 4em 1em 4em;
-    	       border: 1px silver solid;
-    	   }
-    	   #shortcuts ul {
-    	       padding: 0;
-    	       margin: 0;
-    	   }
-           #shortcuts li {
-               list-style-type: none;
-               display: inline;
-               padding-left: .5em;
-               padding-right: .5em;
-           }
-    	</style>
+    	<link rel="stylesheet" type="text/css" href="{% url static_media 'css/web-styles.css' %}"/>
 	</head>
 
 	<body>
@@ -77,6 +15,10 @@
                <li><a href="{% url module_list %}">Modules</a></li>
                <li><a href="{% url interface_list %}">Interfaces</a></li>
            </ul>
+        </div>
+        
+        <div id="location">
+           {% block location %}&nbsp;{% endblock %}
         </div>
 	    
 		<div id="content">
