@@ -94,3 +94,5 @@ INSTALLED_APPS = (
     'macom.app',
     'south',
 )
+
+DIAGRAMS_CACHE_BASE = '/tmp/macom/cache/diagrams'

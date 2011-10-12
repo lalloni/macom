@@ -1,0 +1,15 @@
+@startuml {{ cache_base }}/system_components_diagram_{{ object.pk }}.png
+{% for module in object.modules.all %}
+
+[{{ module.name }}]
+
+{% for interface in module.interfaces.all %}
+[{{ module.name }}] -- () "{{ interface.name }}"
+{% endfor %}
+
+{% for interface in module.dependencies.all %}
+[{{ module.name }}] --> "{{ interface.name }}": use
+{% endfor %}
+
+{% endfor %}
+@enduml
