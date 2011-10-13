@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.views.generic.detail import DetailView
 from macom.diagrama.models import Module, Dependency, Interface, System
-from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from macom.settings import DIAGRAMS_CACHE_BASE
 
 class SystemDetailView(DetailView):
     model = System
@@ -31,10 +29,4 @@ class InterfaceDetailView(DetailView):
         return context
 
 def system_components_diagram(request, pk):    
-    return render_to_response(
-        'system_components_diagram.plantuml',
-        {
-         'object': System.objects.get(pk=pk),
-         'cache_base': DIAGRAMS_CACHE_BASE,
-        },
-        mimetype='text/plain')
+    return render_to_response('diagrams/system_components.puml', {'object': System.objects.get(pk=pk)}, mimetype='text/plain')

@@ -1,5 +1,6 @@
 {% extends "base-web.html" %}
 {% load markup %}
+{% load diagrams %}
 {% block title %} - System {{ object }}{% endblock %}
 {% block location %}System {{ object.name }}{% endblock %}
 {% block content %}
@@ -97,8 +98,6 @@
     </div>
     <div id="system-diagrams">
         <h3>Diagrams</h3>
-        <ul>
-            <li><a href="{% url system_components_diagram object.pk %}">Components Diagram</a></li>
-        </ul> 
+        {% diagram system_components_diagram object.pk %}
     </div>
 {% endblock content %}
