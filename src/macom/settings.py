@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
 
-# Django settings for macom project.
+from os.path import dirname, abspath, isdir, split, join
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
-ADMINS = ()
-
-MANAGERS = ADMINS
+TEMPLATE_DEBUG = True
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'sqlite.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'NAME': 'sqlite.db', # Or path to database file if using sqlite3.
+        'USER': '', # Not used with sqlite3.
+        'PASSWORD': '', # Not used with sqlite3.
+        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '', # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -41,28 +38,21 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = 'media' # IMPORTANTE: con este dir relativo se DEBE correr "runserver" con $PWD en el directorio raíz del proyecto
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/static-media'
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'x@gqjtfz*e0rn17x#3%aw)@6=q-c4$37r7x#jmx1&+ld1#clp0'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages",
+)
+
+TEMPLATE_DIRS = (
+    'templates',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,10 +65,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'macom.urls'
-
-TEMPLATE_DIRS = (
-    'templates',
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -95,4 +81,17 @@ INSTALLED_APPS = (
     'south',
 )
 
-DIAGRAMS_CACHE_BASE = '/tmp/macom/cache/diagrams'
+DIAGRAM_SERVICE_URL = 'http://10.20.109.140:8080/plantuml/proxy'
+
+def find_media(path):
+    media = join(path, 'media')
+    if isdir(media):
+        return media
+    else:
+        parent, _ = split(path)
+        if parent == '/':
+            raise 'Media not found'
+        else:
+            return find_media(parent)
+
+MEDIA_ROOT = find_media(abspath(dirname(__file__)))
