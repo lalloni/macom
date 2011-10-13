@@ -2,9 +2,10 @@ isc.DataSource.create({
 	ID : "ds_model",
 	dataURL : "{% url api_model %}",
 	dataFormat : "json",
-	fields : [ {
-		"name" : "name"
-	} ]
+	fields : [
+        { name : "name" },
+        { name : "name" }
+    ]
 });
 
 isc.VLayout.create({
@@ -19,31 +20,18 @@ isc.VLayout.create({
 	}), isc.HLayout.create({
 		height : "*",
 		members : [ isc.TreeGrid.create({
-			dataSource : "ds_model",
+            dataSource : "ds_model",
 			autoFetchData : true,
+            loadDataOnDemand: false,
+            defaultIsFolder:false,
 			showResizeBar : true,
+            generateClickOnEnter: true,
+            fields: [
+                { name: 'name' ,
+                    recordDoubleClick: openTab }
+            ],
 		}), isc.TabSet.create({
-			tabs : [ {
-				title : "Prueba 1",
-				pane : isc.Label.create({
-					contents : "Contenido 1"
-				})
-			}, {
-				title : "Prueba 2",
-				pane : isc.Label.create({
-					contents : "Contenido 2"
-				})
-			}, {
-				title : "Prueba 3",
-				pane : isc.HTMLFlow.create({
-					contentsURL : "{% url system_detail '1' %}"
-				})
-			}, {
-				title : "Prueba 4",
-				pane : isc.Label.create({
-					contents : "Contenido 4"
-				})
-			} ]
+			ID: 'contentTabs'
 		}) ]
 	}), isc.HStack.create({
 		ID : "BottomToolBar",
@@ -54,3 +42,26 @@ isc.VLayout.create({
 		}) ]
 	}) ]
 });
+
+function openTab (viewer, record, recordNum, field, fieldNum, value, rawValue) {
+    // buscar tab q tenga el mismo record
+    var tab;
+    for ( i=0; i < contentTabs.tabs.length; i++ ) {
+        var t = contentTabs.getTab(i);
+        if ( t.record == record ) {
+            tab = t;
+            break;
+        }
+    }
+    
+    // si no se encuentra generar uno nuevo con titulo = record.name
+    if ( !tab ){
+        contentTabs.addTab( {
+            title: record.name,
+            record : record
+        } );
+        tab = contentTabs.getTab(contentTabs.tabs.length-1);
+    }
+
+    contentTabs.selectTab( tab );
+}
