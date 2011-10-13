@@ -8,7 +8,7 @@
 {% endfor %}
 
 {% for interface in module.dependencies.all %}
-[{{ module.name }}] --> "{{ interface.name }}": use
+() "{{ interface.name }}" <-- [{{ module.name }}]: use
 {% endfor %}
 
 {% endfor %}
