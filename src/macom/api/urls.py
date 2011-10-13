@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 
     url(r'^system[s/]?$', system_resource, { 'emitter_format': 'json' }, name='api_system_list'),
     
-    url(r'^system/(?P<id>\d+)$', system_resource, { 'emitter_format': 'json' }),
+    url(r'^system/(?P<id>\d+)$', system_resource, { 'emitter_format': 'json' }, name='api_system'),
 
     url(r'^model$', Resource(ModelHandler), { 'emitter_format': 'json' }, name='api_model'),
     
