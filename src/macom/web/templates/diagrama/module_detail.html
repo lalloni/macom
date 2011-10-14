@@ -1,5 +1,6 @@
 {% extends "base-web.html" %}
 {% load markup %}
+{% load diagrams %}
 {% block title %} - Module {{ object }}{% endblock %}
 {% block location %}<a href="{% url system_detail object.system.pk %}">System {{ object.system.name }}</a> : Module {{ object.name }}{% endblock %}
 {% block content %}
@@ -69,5 +70,9 @@
         {% else %}
             <em>No dependencies</em>
         {% endif %}
+    </div>
+    <div id="module-diagram">
+        <h3>Diagram</h3>
+        {% diagram module_diagram object.pk %}
     </div>
 {% endblock content %}

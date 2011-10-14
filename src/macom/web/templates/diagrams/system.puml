@@ -1,4 +1,5 @@
 @startuml
+
 package "{{ system }}" #AliceBlue {
     {% for module in system.modules.all %}
     [{{ module }}]
@@ -7,7 +8,6 @@ package "{{ system }}" #AliceBlue {
     {% endfor %}
     {% endfor %}   
 }
-
 {% for module in system.modules.all %}
 {% for interface in module.dependencies.all %}
 () "{{ interface }}" <-- [{{ module }}]: use

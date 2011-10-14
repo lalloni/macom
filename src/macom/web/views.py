@@ -29,4 +29,7 @@ class InterfaceDetailView(DetailView):
         return context
 
 def system_diagram(request, pk):    
-    return render_to_response('diagrams/system.puml', {'system':System.objects.get(pk=pk)}, mimetype='text/plain')
+    return render_to_response('diagrams/system.puml', {'system':System.objects.get(id=pk)}, mimetype="text/plain;charset=utf-8")
+
+def module_diagram(request, pk):    
+    return render_to_response('diagrams/module.puml', {'module':Module.objects.get(id=pk), 'dependencies':Dependency.objects.filter(module=pk)}, mimetype='text/plain;charset=utf-8')

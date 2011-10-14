@@ -1,0 +1,18 @@
+@startuml
+
+package "{{ module.system }}" {
+
+    [{{ module }}]
+    {% for interface in module.interfaces.all %}
+    [{{ module }}] -- () "{{ interface}}"
+    {% endfor %}
+}
+{% for dependency in dependencies %}
+() "{{ dependency.interface }}" <-- [{{ module }}]
+{% if dependency.goal %}
+note right of "{{ dependency.interface }}"
+  {{ dependency.goal|wordwrap:10 }}
+end note
+{% endif %}
+{% endfor %}
+@enduml
