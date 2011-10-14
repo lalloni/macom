@@ -59,10 +59,17 @@
 	#content {
 		clear: both;
 	}
+	.diagram {
+	   max-width: 100%;
+	   overflow: auto;
+	}
 }
 
 @media print {
-	#shortcuts {
-		display: none;
+	.diagram img {
+	   max-width: 100%;
+	}
+	.no-print {
+	   display: none;
 	}
 }

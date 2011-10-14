@@ -2,6 +2,7 @@
 
 {% load diagrams %}
 {% load markup %}
+{% include 'diagrams/skinparam.puml' %}
 
 package "{{ module.system }}" #AliceBlue {
 

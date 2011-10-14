@@ -1,0 +1,4 @@
+skinparam component {
+    fontsize 9
+    arrowfontsize 8 
+}

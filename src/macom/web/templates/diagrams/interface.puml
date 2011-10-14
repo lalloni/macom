@@ -1,6 +1,7 @@
 @startuml
 
 {% load diagrams %}
+{% include 'diagrams/skinparam.puml' %}
 
 package "{{ interface.module.system }}" #AliceBlue {
 

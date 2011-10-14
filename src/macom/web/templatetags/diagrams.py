@@ -72,4 +72,4 @@ def direction(value):
 
 @register.filter
 def single(value):
-    return value.replace('\n', r'\n')
+    return value.replace('\n', r'\n').replace('\r', r'\n')
