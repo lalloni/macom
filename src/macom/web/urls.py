@@ -6,11 +6,11 @@ from django.shortcuts import redirect
 
 from macom.diagrama.models import System, Module, Interface, Dependency
 from macom.web.views import SystemDetailView, ModuleDetailView, \
-    InterfaceDetailView, system_components_diagram
+    InterfaceDetailView, system_diagram
     
 urlpatterns = patterns('',
      url(r'^$', lambda x: redirect('system_list')),
-     url(r'^system/(?P<pk>\d+)/diagrams/components', system_components_diagram, name='system_components_diagram'),
+     url(r'^system/(?P<pk>\d+)/diagram', system_diagram, name='system_diagram'),
      url(r'^system/(?P<pk>\d+)/', SystemDetailView.as_view(), name='system_detail'),
      url(r'^system[s/]?$', ListView.as_view(model=System), name='system_list'),
      url(r'^module/(?P<pk>\d+)/', ModuleDetailView.as_view(), name='module_detail'),

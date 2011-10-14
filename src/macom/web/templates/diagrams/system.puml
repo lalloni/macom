@@ -1,0 +1,16 @@
+@startuml
+package "{{ system }}" #AliceBlue {
+    {% for module in system.modules.all %}
+    [{{ module }}]
+    {% for interface in module.interfaces.all %}
+    [{{ module }}] -- () "{{ interface }}"
+    {% endfor %}
+    {% endfor %}   
+}
+
+{% for module in system.modules.all %}
+{% for interface in module.dependencies.all %}
+() "{{ interface }}" <-- [{{ module }}]: use
+{% endfor %}
+{% endfor %}
+@enduml

@@ -28,5 +28,5 @@ class InterfaceDetailView(DetailView):
         context['dependencies'] = Dependency.objects.filter(interface=interface)
         return context
 
-def system_components_diagram(request, pk):    
-    return render_to_response('diagrams/system_components.puml', {'object': System.objects.get(pk=pk)}, mimetype='text/plain')
+def system_diagram(request, pk):    
+    return render_to_response('diagrams/system.puml', {'system':System.objects.get(pk=pk)}, mimetype='text/plain')
