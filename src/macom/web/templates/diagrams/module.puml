@@ -1,18 +1,36 @@
 @startuml
 
-package "{{ module.system }}" {
+{% load diagrams %}
+{% load markup %}
 
-    [{{ module }}]
-    {% for interface in module.interfaces.all %}
-    [{{ module }}] -- () "{{ interface}}"
-    {% endfor %}
-}
-{% for dependency in dependencies %}
-() "{{ dependency.interface }}" <-- [{{ module }}]
-{% if dependency.goal %}
-note right of "{{ dependency.interface }}"
-  {{ dependency.goal|wordwrap:10 }}
-end note
+package "{{ module.system }}" #AliceBlue {
+
+[{{ module }}]
+
+{% for interface in system_interfaces %}
+
+{% if interface in dependencies_interfaces %}
+() "{{ interface }}" as {{ interface|as_id }}
 {% endif %}
+
 {% endfor %}
+
+{% for interface in module.interfaces.all %}
+
+() "{{ interface }}" as {{ interface|as_id }}
+
+{{ interface|as_id }} -- [{{ module }}] : {{ interface|direction|default:"expose" }}
+
+{% endfor %}
+
+}
+
+{% for dependency in dependencies %}
+
+() "{{ dependency.interface }}" as {{ dependency.interface|as_id }}
+
+[{{ module }}] ..> {{ dependency.interface|as_id }} : {{ dependency|direction|default:"use" }}{% if dependency.goal %}:\n{{ dependency.goal|wordwrap:15|single }}{% endif %}
+
+{% endfor %}
+
 @enduml

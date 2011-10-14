@@ -10,6 +10,8 @@ from django.core.urlresolvers import reverse
 from django.template.context import Context
 from django.template.defaulttags import kwarg_re
 from django.conf import settings 
+from django.template.defaultfilters import stringfilter
+import re
 
 register = Library()
 
@@ -29,6 +31,7 @@ class DiagramNode(Node):
             self.nodelist = get_template('diagram.html')
         return self.nodelist.render(new_context)
 
+@register.tag
 def diagram(parser, token):
     bits = token.split_contents()
     if len(bits) < 2:
@@ -50,4 +53,23 @@ def diagram(parser, token):
                 args.append(parser.compile_filter(value))
     return DiagramNode(viewname, args, kwargs)
 
-register.tag(diagram)
+
+FORBIDDEN_RE = re.compile(r'\W')
+
+@register.filter
+@stringfilter
+def as_id(value):
+    return FORBIDDEN_RE.sub('_', value)
+
+@register.filter
+def direction(value):
+    inbound = outbound = ''
+    if value.direction_inbound:
+        inbound = 'in'
+    if value.direction_outbound:
+        outbound = 'out'
+    return '%s%s' % (inbound, outbound)
+
+@register.filter
+def single(value):
+    return value.replace('\n', r'\n')

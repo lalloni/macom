@@ -1,0 +1,23 @@
+@startuml
+
+{% load diagrams %}
+
+package "{{ interface.module.system }}" #AliceBlue {
+
+() "{{ interface }}" as {{ interface|as_id }}
+
+{% for dependency in system_dependencies %}
+
+[{{ dependency.module }}] ..> {{ interface|as_id }} : {{ dependency|direction|default:"use" }}{% if dependency.goal %}:\n{{ dependency.goal|wordwrap:15|single }}{% endif %}
+
+{% endfor %} 
+
+}
+
+{% for dependency in external_dependencies %}
+
+[{{ dependency.module }}] ..> {{ interface|as_id }} : {{ dependency|direction|default:"use" }}{% if dependency.goal %}:\n{{ dependency.goal|wordwrap:15|single }}{% endif %}
+ 
+{% endfor %} 
+
+@enduml

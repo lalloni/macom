@@ -1,16 +1,34 @@
 @startuml
 
+{% load diagrams %}
+
 package "{{ system }}" #AliceBlue {
-    {% for module in system.modules.all %}
-    [{{ module }}]
-    {% for interface in module.interfaces.all %}
-    [{{ module }}] -- () "{{ interface }}"
-    {% endfor %}
-    {% endfor %}   
-}
+
 {% for module in system.modules.all %}
-{% for interface in module.dependencies.all %}
-() "{{ interface }}" <-- [{{ module }}]: use
+
+[{{ module }}]
+
+{% for interface in module.interfaces.all %}
+
+() "{{ interface }}" as {{ interface|as_id }}
+
+{{ interface|as_id }} -- [{{ module }}] : {{ interface|direction|default:"expose" }}
+
 {% endfor %}
+
 {% endfor %}
+       
+}
+
+{% for module in system.modules.all %}
+
+{% for dependency in module.dependency_objects %}
+
+() "{{ dependency.interface }}" as {{ dependency.interface|as_id }} 
+[{{ module }}] ..> {{ dependency.interface|as_id }} : {{ dependency|direction|default:"use" }}{% if dependency.goal %}:\n{{ dependency.goal|wordwrap:15|single }}{% endif %}
+
+{% endfor %}
+
+{% endfor %}
+
 @enduml

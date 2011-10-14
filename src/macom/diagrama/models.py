@@ -52,8 +52,20 @@ class Module(Base):
         ordering = ['system__name']
     def __unicode__(self):
         return "%s:%s" % (unicode(self.system), self.name)
+    def dependency_objects(self):
+        return Dependency.objects.filter(module=self)
 
-class Interface(Base):
+class Directionality:
+    def direction(self, inbound_str="read", outbound_str="write"):
+        inbound = ""
+        outbound = ""
+        if self.direction_inbound:
+            inbound = inbound_str
+        if self.direction_outbound:
+            outbound = outbound_str
+        return  inbound + outbound
+
+class Interface(Base, Directionality):
     module = models.ForeignKey(Module, related_name='interfaces', verbose_name=_('module'))
     name = models.CharField(_('name'), help_text=_('interface-name-help'), max_length=100)
     goal = models.TextField(_('goal'), help_text=_('interface-goal-help'))
@@ -69,7 +81,7 @@ class Interface(Base):
     def __unicode__(self):
         return "%s:%s" % (unicode(self.module), self.name)
 
-class Dependency(Base):
+class Dependency(Base, Directionality):
     module = models.ForeignKey(Module, verbose_name=_('module'))
     interface = models.ForeignKey(Interface, verbose_name=_('interface'))
     goal = models.TextField(_('goal'), help_text=_('dependency-goal-help') , blank=True)

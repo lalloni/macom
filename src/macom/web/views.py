@@ -28,8 +28,28 @@ class InterfaceDetailView(DetailView):
         context['dependencies'] = Dependency.objects.filter(interface=interface)
         return context
 
-def system_diagram(request, pk):    
-    return render_to_response('diagrams/system.puml', {'system':System.objects.get(id=pk)}, mimetype="text/plain;charset=utf-8")
+def system_diagram(request, pk):
+    context = dict(
+                   system=System.objects.get(id=pk),
+                  )
+    return render_to_response('diagrams/system.puml', context, mimetype="text/plain;charset=utf-8")
 
-def module_diagram(request, pk):    
-    return render_to_response('diagrams/module.puml', {'module':Module.objects.get(id=pk), 'dependencies':Dependency.objects.filter(module=pk)}, mimetype='text/plain;charset=utf-8')
+def module_diagram(request, pk):
+    module = Module.objects.get(id=pk)    
+    dependencies = Dependency.objects.filter(module=pk).all()
+    context = dict(
+                   module=module,
+                   dependencies=dependencies,
+                   system_interfaces=Interface.objects.filter(module__system=module.system),
+                   dependencies_interfaces=map(lambda dep: dep.interface, dependencies),
+                  )
+    return render_to_response('diagrams/module.puml', context, mimetype='text/plain;charset=utf-8')
+
+def interface_diagram(request, pk):
+    interface = Interface.objects.get(id=pk)
+    context = dict(
+                   interface=interface,
+                   system_dependencies=Dependency.objects.filter(interface=interface, module__system=interface.module.system),
+                   external_dependencies=Dependency.objects.filter(interface=interface).exclude(module__system=interface.module.system)
+                  )
+    return render_to_response('diagrams/interface.puml', context, mimetype="text/plain;charset=utf-8")
