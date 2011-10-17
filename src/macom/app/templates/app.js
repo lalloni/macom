@@ -4,7 +4,6 @@ isc.DataSource.create({
 	dataFormat : "json",
 	fields : [
         { name : "name" },
-        { name : "name" }
     ]
 });
 
@@ -20,6 +19,7 @@ isc.VLayout.create({
 	}), isc.HLayout.create({
 		height : "*",
 		members : [ isc.TreeGrid.create({
+            width: '300px',
             dataSource : "ds_model",
 			autoFetchData : true,
             loadDataOnDemand: false,
@@ -30,9 +30,10 @@ isc.VLayout.create({
                 { name: 'name' ,
                     recordDoubleClick: openTab }
             ],
-		}), isc.TabSet.create({
-			ID: 'contentTabs'
-		}) ]
+            }), isc.TabSet.create({
+                ID: 'contentTabs'
+            }) 
+        ]
 	}), isc.HStack.create({
 		ID : "BottomToolBar",
 		height : "1",
@@ -58,10 +59,90 @@ function openTab (viewer, record, recordNum, field, fieldNum, value, rawValue) {
     if ( !tab ){
         contentTabs.addTab( {
             title: record.name,
-            record : record
+            record : record,
+            canClose: true,
+            pane: nodeContent(record)
         } );
         tab = contentTabs.getTab(contentTabs.tabs.length-1);
     }
 
     contentTabs.selectTab( tab );
+}
+
+content.transformHTML = function (html){
+    if ( html.indexOf("<link") > 0 ) {
+        html = html.replace(/<link.*?>/g,"");
+    }
+    return html;
+}
+
+function nodeContent( record ) {
+    switch ( record.type ) {
+        case 'system':
+            return isc.DynamicForm.create({
+                    autoFetchData: true,
+                    canEdit: false,
+                    dataSource: isc.DataSource.create({
+                        dataURL: record.readurl,
+                        dataFormat : "json",
+                        dataProtocol: "getParams"
+                    }),
+                    fields: [
+                        { name:"name", type:"text", title:"Nombre", width: "*"},
+                        { name:"description", type:"textArea", title:"Descripción", width: "*"},
+                        { name:"referents", type:"textArea", title:"Referentes", width: "*"},
+                        { name:"documentation", type:"textArea", title:"Documentación", width: "*"},
+                        { name:"external", type:"checkbox", title:"Externo", width: "*"}
+                    ]
+            });
+
+            break;
+        case 'module':
+            return isc.DynamicForm.create({
+                    autoFetchData: true,
+                    canEdit: false,
+                    dataSource: isc.DataSource.create({
+                        dataURL: record.readurl,
+                        dataFormat : "json",
+                        dataProtocol: "getParams",
+                        fields: [
+                            { name: "system", valueXPath: "system/name" }
+                        ]
+                    }),
+                    fields: [
+                        { name:"system", type:"textArea", title:"Sistema", width: "*"},    
+                        { name:"name", type:"text", title:"Nombre", width: "*"},
+                        { name:"goal", type:"textArea", title:"Objetivo", width: "*"},
+                        { name:"referents", type:"textArea", title:"Referentes", width: "*"},
+                        { name:"documentation", type:"textArea", title:"Documentación", width: "*"},
+                        { name:"external", type:"checkbox", title:"Externo", width: "*"},
+                        { name:"criticity", type:"text",title:"Criticidad"}
+                    ]
+            });
+            break;
+        case 'interface':
+            return isc.DynamicForm.create({
+                    autoFetchData: true,
+                    canEdit: false,
+                    dataSource: isc.DataSource.create({
+                        dataURL: record.readurl,
+                        dataFormat : "json",
+                        dataProtocol: "getParams",
+                        fields: [
+                            { name: "module", valueXPath: "module/name" }
+                        ]
+                    }),
+                    fields: [
+                        { name:"module", type:"text", title:"Módulo", width: "*"},    
+                        { name:"name", type:"text", title:"Nombre", width: "*"},
+                        { name:"goal", type:"textArea", title:"Objetivo", width: "*"},
+                        { name:"referents", type:"textArea", title:"Referentes", width: "*"},
+                        { name:"documentation", type:"textArea", title:"Documentación", width: "*"},
+                        { name:"technology", type:"textArea", title:"Tecnología", width: "*"},
+                        { name:"direction_inbound", type:"checkbox", title:"Entrada", width: "*"},
+                        { name:"direction_outbound", type:"checkbox", title:"Salida", width: "*"},
+                    ]
+            });
+            break;
+    }
 }
