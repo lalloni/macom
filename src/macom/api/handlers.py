@@ -21,17 +21,23 @@ class ModelHandler(BaseHandler):
         res = []
         for syst in System.objects.values('id', 'name'):
             syst['type'] = "system"
-            syst['readurl'] = reverse('api_system', args=[syst['id']])
+            syst['nid'] = syst['id']
+            syst['id'] = syst['type'] + str(syst['id'])
+            syst['readurl'] = reverse('api_system', args=[syst['nid']])
             res.append(syst)
             modus = []
-            for modu in Module.objects.filter(system__id=syst['id']).values('id', 'name'):
+            for modu in Module.objects.filter(system__id=syst['nid']).values('id', 'name'):
                 modu['type'] = "module"
-                modu['readurl'] = reverse('api_module', args=[modu['id']])
+                modu['nid'] = modu['id']
+                modu['id'] = modu['type'] + str(modu['id'])
+                modu['readurl'] = reverse('api_module', args=[modu['nid']])
                 modus.append(modu)
                 intes = [] 
-                for inte in Interface.objects.filter(module__id=modu['id']).values('id', 'name'):
+                for inte in Interface.objects.filter(module__id=modu['nid']).values('id', 'name'):
                     inte['type'] = "interface"
-                    inte['readurl'] = reverse('api_interface', args=[inte['id']])
+                    inte['nid'] = inte['id']
+                    inte['id'] = inte['type'] + str(inte['id'])
+                    inte['readurl'] = reverse('api_interface', args=[inte['nid']])
                     intes.append(inte)
                 modu['children'] = intes
             syst['children'] = modus
