@@ -10,7 +10,7 @@ class Base(models.Model):
         db_tablespace = 'macom'
     @permalink
     def get_absolute_url(self):
-        return ('admin:%s_%s_change' % (self._meta.app_label, self._meta.module_name), [self.id])
+        return ('%s_detail' % self._meta.module_name, [self.pk])
 
 class Annotation(Base):
     annotation = models.TextField(_('annotation'))
