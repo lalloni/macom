@@ -53,3 +53,17 @@ def interface_diagram(request, pk):
                    external_dependencies=Dependency.objects.filter(interface=interface).exclude(module__system=interface.module.system)
                   )
     return render_to_response('diagrams/interface.puml', context, mimetype="text/plain;charset=utf-8")
+
+def systems_dependency_diagram(request):
+    dependencies = []
+    systems=System.objects.all()
+    for system in systems:
+        for module in system.modules.all():
+            for dependency in module.dependencies.all():
+                if system != dependency.module.system:
+                    dependencies += [(system, dependency.module.system)]
+    context = dict(
+                   systems=systems,
+                   unique_dependencies=set(dependencies)
+                  )
+    return render_to_response('diagrams/systems_dependency.puml', context, mimetype="text/plain;charset=utf-8")

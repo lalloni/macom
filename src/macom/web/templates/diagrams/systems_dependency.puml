@@ -1,0 +1,13 @@
+@startuml
+{% load diagrams %}
+{% include 'diagrams/skinparam.puml' %}
+
+{% for system in systems %}
+[{{system}}] as {{ system|as_id }}
+{% endfor %}
+
+{% for dependent, dependency in unique_dependencies %}
+{{ dependency|as_id }} <.. {{ dependent|as_id }}
+{% endfor %}
+
+@enduml

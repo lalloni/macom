@@ -53,7 +53,6 @@ def diagram(parser, token):
                 args.append(parser.compile_filter(value))
     return DiagramNode(viewname, args, kwargs)
 
-
 FORBIDDEN_RE = re.compile(r'\W')
 
 @register.filter

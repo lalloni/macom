@@ -1,5 +1,6 @@
 {% extends "base-web.html" %}
 {% load markup %}
+{% load diagrams %}
 {% block title %} - Systems{% endblock %}
 {% block content %}
     <h2>Systems</h2>
@@ -23,4 +24,7 @@
 	{% else %}
 	   <em>No systems</em>
 	{% endif %}
+	<h2>Diagrams</h2>
+	<h3>System Dependencies</h3>
+	{% diagram systems_dependency_diagram %}
 {% endblock content %}
