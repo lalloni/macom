@@ -24,11 +24,11 @@ isc.VLayout.create({
 			imageType : "normal"
 		}) ]
 	}), isc.HLayout.create({
-		ID: "ContentSection",
+		ID : "ContentSection",
 		height : "*",
 		showEdges : "true",
 		members : [ isc.TreeGrid.create({
-			ID:"NavigationTree",
+			ID : "NavigationTree",
 			width : 300,
 			dataSource : "ds_model",
 			autoFetchData : true,
@@ -55,34 +55,20 @@ isc.VLayout.create({
 
 function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
 	// buscar tab q tenga el mismo record
-	var tab;
-	for (i = 0; i < contentTabs.tabs.length; i++) {
-		var t = contentTabs.getTab(i);
-		if (t.record == record) {
-			tab = t;
-			break;
-		}
-	}
-
+	var tab = ContentTabSet.tabs.filter(function(e) {
+		e.record == record
+	})[0];
 	// si no se encuentra generar uno nuevo con titulo = record.name
-	if (!tab) {
-		contentTabs.addTab({
-			title : getTitle(record) + rawValue,
+	if (typeof (tab) == 'undefined') {
+		ContentTabSet.addTab({
+			title : rawValue,
 			record : record,
 			canClose : true,
 			pane : nodeContent(record)
 		});
-		tab = contentTabs.getTab(contentTabs.tabs.length - 1);
+		tab = ContentTabSet.getTab(ContentTabSet.tabs.length - 1);
 	}
-
-	contentTabs.selectTab(tab);
-}
-
-function getTitle(record) {
-	if (record._parent_isc_ResultTree_0.name)
-		return getTitle(record._parent_isc_ResultTree_0)
-				+ record._parent_isc_ResultTree_0.name + ":";
-	return "";
+	ContentTabSet.selectTab(tab);
 }
 
 function nodeContent(record) {
