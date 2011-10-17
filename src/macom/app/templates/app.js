@@ -23,7 +23,7 @@ isc.VLayout.create({
             dataSource : "ds_model",
 			autoFetchData : true,
             loadDataOnDemand: false,
-            defaultIsFolder:false,
+            defaultIsFolder: false,
 			showResizeBar : true,
             generateClickOnEnter: true,
             fields: [
@@ -58,7 +58,7 @@ function openTab (viewer, record, recordNum, field, fieldNum, value, rawValue) {
     // si no se encuentra generar uno nuevo con titulo = record.name
     if ( !tab ){
         contentTabs.addTab( {
-            title: record.name,
+            title: getTitle(record) + rawValue,
             record : record,
             canClose: true,
             pane: nodeContent(record)
@@ -69,11 +69,9 @@ function openTab (viewer, record, recordNum, field, fieldNum, value, rawValue) {
     contentTabs.selectTab( tab );
 }
 
-content.transformHTML = function (html){
-    if ( html.indexOf("<link") > 0 ) {
-        html = html.replace(/<link.*?>/g,"");
-    }
-    return html;
+function getTitle( record ){
+    if ( record._parent_isc_ResultTree_0.name ) return getTitle( record._parent_isc_ResultTree_0 ) + record._parent_isc_ResultTree_0.name + ":";
+    return "";
 }
 
 function nodeContent( record ) {
