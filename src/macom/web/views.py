@@ -10,6 +10,7 @@ class SystemDetailView(DetailView):
         system = context['object']
         context['interfaces'] = Interface.objects.filter(module__system=system)
         context['dependencies'] = Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
+        context['dependents'] = Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
         return context
 
 class ModuleDetailView(DetailView):
@@ -54,16 +55,31 @@ def interface_diagram(request, pk):
                   )
     return render_to_response('diagrams/interface.puml', context, mimetype="text/plain;charset=utf-8")
 
-def systems_dependency_diagram(request):
+def unique_systems_dependencies(exclude_external=False):
     dependencies = []
-    systems=System.objects.all()
+    systems = System.objects.all()
+    if exclude_external:
+        systems = systems.filter(external=False) 
     for system in systems:
         for module in system.modules.all():
             for dependency in module.dependencies.all():
-                if system != dependency.module.system:
-                    dependencies += [(system, dependency.module.system)]
+                other = dependency.module.system
+                if system != other and not (exclude_external and other.external):
+                    dependencies += [(system, other)]
+    return (systems, set(dependencies))
+
+def systems_dependencies_diagram(request):
+    systems, dependencies = unique_systems_dependencies()
     context = dict(
                    systems=systems,
-                   unique_dependencies=set(dependencies)
+                   unique_dependencies=dependencies
                   )
-    return render_to_response('diagrams/systems_dependency.puml', context, mimetype="text/plain;charset=utf-8")
+    return render_to_response('diagrams/systems_dependencies.puml', context, mimetype="text/plain;charset=utf-8")
+
+def systems_no_thirdparty_dependencies_diagram(request):
+    systems, dependencies = unique_systems_dependencies(True)
+    context = dict(
+                   systems=systems,
+                   unique_dependencies=dependencies
+                  )
+    return render_to_response('diagrams/systems_dependencies.puml', context, mimetype="text/plain;charset=utf-8")

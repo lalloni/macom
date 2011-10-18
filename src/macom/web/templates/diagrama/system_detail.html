@@ -96,6 +96,35 @@
             <em>No dependencies</em>
         {% endif %}
     </div>
+    <div id="system-dependencies">
+        <h3>Dependencies from other systems</h3>
+        {% if dependents %}
+            <table>
+               <thead>
+                   <tr>
+                       <th>Dependency</th>
+                       <th>Dependent Module</th>
+                       <th>Target Interface</th>
+                       <th>Goal</th>
+                       <th>Direction</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for dependency in dependents %}
+                   <tr>
+                       <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+                       <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+                       <td><a href="{% url interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
+                       <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
+                       <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+                   </tr>
+                   {% endfor %}
+               </tbody>
+            </table>
+        {% else %}
+            <em>No dependencies</em>
+        {% endif %}
+    </div>
     <div id="system-diagram">
         <h3>Diagram</h3>
         {% diagram system_diagram object.pk %}
