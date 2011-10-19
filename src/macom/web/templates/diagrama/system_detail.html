@@ -1,31 +1,32 @@
 {% extends "base-web.html" %}
 {% load markup %}
+{% load i18n %}
 {% load diagrams %}
-{% block title %} - System {{ object }}{% endblock %}
-{% block location %}System {{ object.name }}{% endblock %}
+{% block title %} - {% trans "System" %} {{ object }}{% endblock %}
+{% block location %}{% trans "System" %} {{ object.name }}{% endblock %}
 {% block content %}
-    <h2>System <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_system_history object.pk %}">history</a> <a href="{% url admin:diagrama_system_change object.pk %}">edit</a></span></h2>
+    <h2>{% trans "System" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_system_history object.pk %}">{% trans "history" %}</a> <a href="{% url admin:diagrama_system_change object.pk %}">{% trans "edit" %}</a></span></h2>
     <div id="system-description">
-	    <h3>Description</h3>
+	    <h3>{% trans "Description" %}</h3>
         {{ object.description|default:"_No description_"|markdown }}
     </div>
     <div id="system-documentation">
-	    <h3>Documentation</h3>
+	    <h3>{% trans "Documentation" %}</h3>
         {{ object.documentation|default:"_No documentation_"|markdown }}
     </div>
     <div id="system-referents">
-        <h3>Referents</h3>
+        <h3>{% trans "Referents" %}</h3>
         {{ object.referents|default:"_No referents_"|markdown }}
     </div>
     <div id="system-modules">
-	    <h3>Modules</h3>
+	    <h3>{% trans "Modules" %}</h3>
 	    {% with modules=object.modules.all %}
 		    {% if modules %}
 		    <table>
 		       <thead>
 		           <tr>
-		               <th>Module</th>
-		               <th>Goal</th>
+		               <th>{% trans "Module" %}</th>
+		               <th>{% trans "Goal" %}</th>
 		           </tr>
 		       </thead>
 		       <tbody>
@@ -38,19 +39,19 @@
 		       </tbody>
 		    </table>
 		    {% else %}
-		      <em>No modules</em>
+		      <em>{% trans "No modules" %}</em>
 		    {% endif %}
 	    {% endwith %}
     </div>
     <div id="system-interfaces">
-        <h3>Interfaces</h3>
+        <h3>{% trans "Interfaces" %}</h3>
         {% if interfaces %}
 	        <table>
 	           <thead>
 	               <tr>
-	                   <th>Name</th>
-	                   <th>Goal</th>
-	                   <th>Direction</th>
+	                   <th>{% trans "Name" %}</th>
+	                   <th>{% trans "Goal" %}</th>
+	                   <th>{% trans "Direction" %}</th>
 	               </tr>
 	           </thead>
 	           <tbody>
@@ -64,20 +65,20 @@
 	           </tbody>
 	        </table>
         {% else %}
-            <em>No interfaces</em>
+            <em>{% trans "No interfaces" %}</em>
         {% endif %}
     </div>
     <div id="system-dependencies">
-        <h3>Dependencies to other systems</h3>
+        <h3>{% trans "Dependencies to other systems" %}</h3>
         {% if dependencies %}
             <table>
                <thead>
                    <tr>
-                       <th>Dependency</th>
-                       <th>Dependent Module</th>
-                       <th>Target Interface</th>
-                       <th>Goal</th>
-                       <th>Direction</th>
+                       <th>{% trans "Dependency" %}</th>
+                       <th>{% trans "Dependent Module" %}</th>
+                       <th>{% trans "Target Interface" %}</th>
+                       <th>{% trans "Goal" %}</th>
+                       <th>{% trans "Direction" %}</th>
                    </tr>
                </thead>
                <tbody>
@@ -93,7 +94,7 @@
                </tbody>
             </table>
         {% else %}
-            <em>No dependencies</em>
+            <em>{% trans "No dependencies" %}</em>
         {% endif %}
     </div>
     <div id="system-dependencies">
@@ -126,7 +127,7 @@
         {% endif %}
     </div>
     <div id="system-diagram">
-        <h3>Diagram</h3>
+        <h3>{% trans "Diagram" %}</h3>
         {% diagram system_diagram object.pk %}
     </div>
 {% endblock content %}

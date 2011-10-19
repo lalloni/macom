@@ -1,4 +1,5 @@
+{% load i18n %}
 <div class="diagram">
 	<img src="{{ diagram_render_url }}" />
 </div>
-<a class="no-print" href="{{ diagram_source_url }}">source</a>
+<a class="no-print" href="{{ diagram_source_url }}">{% trans "source" %}</a>

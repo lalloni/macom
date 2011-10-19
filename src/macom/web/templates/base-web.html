@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 
 <html>
@@ -15,19 +16,16 @@
 		</div>
 	
         <div id="shortcuts" class="no-print">
-            <ul>
-                <li><a href="{% url system_list %}">Systems</a></li>
-                <li><a href="{% url module_list %}">Modules</a></li>
-                <li><a href="{% url interface_list %}">Interfaces</a></li>
-            </ul>
+           <ul>
+               <li><a href="{% url system_list %}">{% trans "Systems" %}</a></li>
+               <li><a href="{% url module_list %}">{% trans "Modules" %}</a></li>
+               <li><a href="{% url interface_list %}">{% trans "Interfaces" %}</a></li>
+           </ul>
         </div>
         
         <div id="location">{% block location %}:){% endblock %}</div>
-	    
-		<div id="content">
-		    {% block content %}{% endblock %}
-		</div>
-		
-	</body>
+        <div id="content">{% block content %}{% endblock %}</div>
+
+    </body>
 
 </html>

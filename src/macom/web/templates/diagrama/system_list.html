@@ -1,16 +1,17 @@
 {% extends "base-web.html" %}
 {% load i18n %}
 {% load markup %}
+{% load i18n %}
 {% load diagrams %}
-{% block title %} - Systems{% endblock %}
+{% block title %} - {% trans "Systems" %}{% endblock %}
 {% block content %}
-    <h2>{% trans "System" %}</h2>
+    <h2>{% trans "Systems" %}</h2>
     {% if object_list %}
 	    <table>
 	       <thead>
 	           <tr>
-	               <th>Name</th>
-	               <th>Description</th>
+	               <th>{% trans "Name" %}</th>
+	               <th>{% trans "Description" %}</th>
 	           </tr>
 	       </thead>
 	       <tbody>
@@ -23,11 +24,12 @@
 	       </tbody>
 	    </table>
 	{% else %}
-	   <em>No systems</em>
+	   <em>{% trans "No systems" %}</em>
 	{% endif %}
-	<h2>Diagrams</h2>
-    <h3>Systems Dependencies</h3>
+
+    <h2>{% trans "Diagrams" %}</h2>
+     <h3>{% trans "System Dependencies" %}</h3>
     {% diagram systems_dependencies_diagram %}
-    <h3>Systems Dependencies (no third-party)</h3>
+    <h3>{% trans "System Dependencies" %} {% trans "(no third-party)" %}</h3>
     {% diagram systems_no_thirdparty_dependencies_diagram %}
 {% endblock content %}

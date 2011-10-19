@@ -1,32 +1,33 @@
 {% extends "base-web.html" %}
 {% load markup %}
+{% load i18n %}
 {% load diagrams %}
-{% block title %} - Module {{ object }}{% endblock %}
-{% block location %}<a href="{% url system_detail object.system.pk %}">System {{ object.system.name }}</a> : Module {{ object.name }}{% endblock %}
+{% block title %} - {% trans "Module" %} {{ object }}{% endblock %}
+{% block location %}<a href="{% url system_detail object.system.pk %}">{% trans "System" %} {{ object.system.name }}</a> : {% trans "Module" %} {{ object.name }}{% endblock %}
 {% block content %}
-    <h2>Module <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_module_history object.pk %}">history</a>&nbsp;<a href="{% url admin:diagrama_module_change object.pk %}">edit</a></span></h2>
+    <h2>{% trans "Module" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_module_history object.pk %}">{% trans "history" %}</a>&nbsp;<a href="{% url admin:diagrama_module_change object.pk %}">{% trans "edit" %}</a></span></h2>
     <div id="module-description">
-	    <h3>Goal</h3>
+	    <h3>{% trans "Goal" %}</h3>
         {{ object.goal|default:"_No goal_"|markdown }}
     </div>
     <div id="module-documentation">
-	    <h3>Documentation</h3>
+	    <h3>{% trans "Documentation" %}</h3>
         {{ object.documentation|default:"_No documentation_"|markdown }}
     </div>
     <div id="module-referents">
-        <h3>Referents</h3>
+        <h3>{% trans "Referents" %}</h3>
         {{ object.referents|default:"_No referents_"|markdown }}
     </div>
     <div id="module-interfaces">
-	    <h3>Interfaces</h3>
+	    <h3>{% trans "Interfaces" %}</h3>
 	    {% with interfaces=object.interfaces.all %}
 		    {% if interfaces %}
 			    <table>
 			       <thead>
 			           <tr>
-			               <th>Name</th>
-			               <th>Goal</th>
-			               <th>Direction</th>
+			               <th>{% trans "Name" %}</th>
+			               <th>{% trans "Goal" %}</th>
+			               <th>{% trans "Direction" %}</th>
 			           </tr>
 			       </thead>
 			       <tbody>
@@ -40,20 +41,20 @@
 			       </tbody>
 			    </table>
 		    {% else %}
-		       <em>No interfaces</em>
+		       <em>{% trans "No interfaces" %}</em>
 		    {% endif %}
 	    {% endwith %}
     </div>
     <div id="module-dependencies">
-        <h3>Dependencies</h3>
+        <h3>{% trans "Dependencies" %}</h3>
         {% if dependencies %}
 	        <table>
 	           <thead>
 	               <tr>
-	                   <th>Dependency</th>
-	                   <th>Target Interface</th>
-	                   <th>Goal</th>
-	                   <th>Direction</th>
+	                   <th>{% trans "Dependency" %}</th>
+	                   <th>{% trans "Target Interface" %}</th>
+	                   <th>{% trans "Goal" %}</th>
+	                   <th>{% trans "Direction" %}</th>
 	               </tr>
 	           </thead>
 	           <tbody>
@@ -68,11 +69,11 @@
 	           </tbody>
 	        </table>
         {% else %}
-            <em>No dependencies</em>
+            <em>{% trans "No dependencies" %}</em>
         {% endif %}
     </div>
     <div id="module-diagram">
-        <h3>Diagram</h3>
+        <h3>{% trans "Diagram" %}</h3>
         {% diagram module_diagram object.pk %}
     </div>
 {% endblock content %}

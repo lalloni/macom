@@ -1,1 +1,2 @@
-{% if object.external %}<span class="super" title="Third-Party: Implemented or maintained outside DIT">third-party</span>{% endif %}
+{% load i18n %}
+{% if object.external %}<span class="super" title="{% trans "Third-Party: Implemented or maintained outside DIT" %}">{% trans "third-party" %}</span>{% endif %}

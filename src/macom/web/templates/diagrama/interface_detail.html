@@ -1,24 +1,25 @@
 {% extends "base-web.html" %}
 {% load markup %}
+{% load i18n %}
 {% load diagrams %}
-{% block title %} - Interface {{ object }}{% endblock %}
-{% block location %}<a href="{% url system_detail object.module.system.pk %}">System {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">Module {{ object.module.name }}</a> : Interface {{ object.name }}{% endblock %}
+{% block title %} - {% trans "Interface" %} {{ object }}{% endblock %}
+{% block location %}<a href="{% url system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Interface" %} {{ object.name }}{% endblock %}
 {% block content %}
-    <h2>Interface <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_interface_history object.pk %}">history</a> <a href="{% url admin:diagrama_interface_change object.pk %}">edit</a></span></h2>
+    <h2>{% trans "Interface" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_interface_history object.pk %}">{% trans "history" %}</a> <a href="{% url admin:diagrama_interface_change object.pk %}">{% trans "edit" %}</a></span></h2>
     <div id="interface-direction">
-        <h3>Direction</h3>
+        <h3>{% trans "Direction" %}</h3>
         <p>{{ object|direction|default:"No direction" }}</p>
     </div>
     <div id="interface-description">
-	    <h3>Goal</h3>
+	    <h3>{% trans "Goal" %}</h3>
         {{ object.goal|default:"_No goal_"|markdown }}
     </div>
     <div id="interface-documentation">
-	    <h3>Documentation</h3>
+	    <h3>{% trans "Documentation" %}</h3>
         {{ object.documentation|default:"_No documentation_"|markdown }}
     </div>
     <div id="interface-referents">
-        <h3>Referents</h3>
+        <h3>{% trans "Referents" %}</h3>
         {{ object.referents|default:"_No referents_"|markdown }}
     </div>
     <div id="interface-technology">
@@ -26,15 +27,15 @@
         {{ object.technology|default:"_No technology_"|markdown }}
     </div>
     <div id="interface-dependents">
-        <h3>Dependent Modules</h3>
+        <h3>Dependent {% trans "Modules" %}</h3>
         {% if dependencies %}
 	        <table>
 	           <thead>
 	               <tr>
-	                   <th>Dependency</th>
-	                   <th>Dependent Module</th>
-	                   <th>Goal</th>
-	                   <th>Direction</th>
+	                   <th>{% trans "Dependency" %}</th>
+	                   <th>{% trans "Dependent Module" %}</th>
+	                   <th>{% trans "Goal" %}</th>
+	                   <th>{% trans "Direction" %}</th>
 	               </tr>
 	           </thead>
 	           <tbody>
@@ -49,11 +50,11 @@
 	           </tbody>
 	        </table>
         {% else %}
-            <em>No dependents</em>
+            <em>{% trans "No dependents" %}</em>
         {% endif %}
     </div>
     <div id="interface-diagram">
-        <h3>Diagram</h3>
+        <h3>{% trans "Diagram" %}</h3>
         {% diagram interface_diagram object.pk %}
     </div>
 {% endblock content %}

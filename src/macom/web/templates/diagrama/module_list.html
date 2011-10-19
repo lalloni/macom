@@ -1,15 +1,16 @@
 {% extends "base-web.html" %}
 {% load markup %}
-{% block title %} - Modules{% endblock %}
+{% load i18n %}
+{% block title %} - {% trans "Modules" %}{% endblock %}
 {% block content %}
-    <h2>Modules</h2>
+    <h2>{% trans "Modules" %}</h2>
     {% if object_list %}
 	    <table>
 	       <thead>
 	           <tr>
-	               <th>System</th>
-	               <th>Module</th>
-	               <th>Goal</th>
+	               <th>{% trans "System" %}</th>
+	               <th>{% trans "Module" %}</th>
+	               <th>{% trans "Goal" %}</th>
 	           </tr>
 	       </thead>
 	       <tbody>
@@ -23,6 +24,6 @@
 	       </tbody>
 	    </table>
     {% else %}
-       <em>No modules</em>
+       <em>{% trans "No modules" %}</em>
     {% endif %}
 {% endblock content %}

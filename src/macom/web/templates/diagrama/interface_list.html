@@ -1,16 +1,17 @@
 {% extends "base-web.html" %}
 {% load markup %}
-{% block title %} - Interfaces{% endblock %}
+{% load i18n %}
+{% block title %} - {% trans "Interfaces" %}{% endblock %}
 {% block content %}
-    <h2>Interfaces</h2>
+    <h2>{% trans "Interfaces" %}</h2>
     {% if object_list %}
 	    <table>
 	       <thead>
 	           <tr>
-	               <th>System</th>
-	               <th>Module</th>
-	               <th>Interface</th>
-	               <th>Goal</th>
+	               <th>{% trans "System" %}</th>
+	               <th>{% trans "Module" %}</th>
+	               <th>{% trans "Interface" %}</th>
+	               <th>{% trans "Goal" %}</th>
 	           </tr>
 	       </thead>
 	       <tbody>
@@ -23,12 +24,12 @@
 	           </tr>
 	           {% empty %}
 	           <tr>
-	                <td colspan="2">No interfaces</td>
+	                <td colspan="2">{% trans "No interfaces" %}</td>
 	           </tr>
 	           {% endfor %}
 	       </tbody>
 	    </table>
     {% else %}
-       <em>No modules</em>
+       <em>{% trans "No modules" %}</em>
     {% endif %}
 {% endblock content %}
