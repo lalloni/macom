@@ -9,20 +9,23 @@
 
 	<body>
 	
+		<div id="header">
+		    <span class="title">macom</span>
+		    <span class="logo"><img src="{% url media 'img/grass.png' %}"/></span>
+		</div>
+	
         <div id="shortcuts" class="no-print">
-           <ul>
-               <li><a href="{% url system_list %}">Systems</a></li>
-               <li><a href="{% url module_list %}">Modules</a></li>
-               <li><a href="{% url interface_list %}">Interfaces</a></li>
-           </ul>
+            <ul>
+                <li><a href="{% url system_list %}">Systems</a></li>
+                <li><a href="{% url module_list %}">Modules</a></li>
+                <li><a href="{% url interface_list %}">Interfaces</a></li>
+            </ul>
         </div>
         
-        <div id="location">
-           {% block location %}&nbsp;{% endblock %}
-        </div>
+        <div id="location">{% block location %}:){% endblock %}</div>
 	    
 		<div id="content">
-		   {% block content %}{% endblock %}
+		    {% block content %}{% endblock %}
 		</div>
 		
 	</body>
