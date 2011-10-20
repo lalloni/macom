@@ -18,8 +18,8 @@
 	           <tr>
 	               <td><a href="{% url system_detail object.system.pk %}">{{ object.system.name }}</a>{% include 'third-party-object.html' with object=object.system %}</td>
 	               <td><a href="{% url module_detail object.pk %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
-	               <td>{{ object.goal|default:"_No goal_"|markdown }}</td>
-	           </tr>
+                   <td>{% if object.goal%}{{ object.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}</td>
+                </tr>
 	           {% endfor %}
 	       </tbody>
 	    </table>

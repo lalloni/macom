@@ -1,6 +1,7 @@
 {% extends "base-web.html" %}
 {% load markup %}
 {% load i18n %}
+{% load diagrams %}
 {% block title %} - {% trans "Dependency" %} {{ object }}{% endblock %}
 {% block location %}<a href="{% url system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Dependency to" %} {{ object.interface }}{% endblock %}
 {% block content %}
@@ -11,22 +12,22 @@
     </div>
     <div id="dependency-direction">
         <h3>{% trans "Direction" %}</h3>
-        <p>{% if object.direction_inbound or object.direction_outbound %}{% if object.direction_inbound %}in{% endif %}{% if object.direction_outbound %}out{% endif %}{% else %}<em>No direction</em>{% endif %}</p>
+        <p>{% if object|direction%}{{ object|direction }}{% else %}<em>{% trans "No direction" %}</em>{% endif %}</p>
     </div>
     <div id="dependency-description">
 	    <h3>{% trans "Goal" %}</h3>
-        {{ object.goal|default:"_No goal_"|markdown }}
+       {% if object.goal%}{{ object.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}
     </div>
     <div id="dependency-documentation">
 	    <h3>{% trans "Documentation" %}</h3>
-        {{ object.documentation|default:"_No documentation_"|markdown }}
+        {% if object.documentation%}{{ object.documentation|markdown }}{% else %}<em>{% trans "No documentation" %}</em>{% endif %}
     </div>
     <div id="dependency-referents">
         <h3>{% trans "Referents" %}</h3>
-        {{ object.referents|default:"_No referents_"|markdown }}
+        {% if object.referents %}{{ object.referents|markdown }}{% else %}<em>{% trans "No referents" %}</em>{% endif %}
     </div>
     <div id="dependency-technology">
-        <h3>Technology</h3>
-        {{ object.technology|default:"_No technology_"|markdown }}
+        <h3>{% trans "Technology" %}</h3>
+        {% if object.technology%}{{ object.technology|markdown }}{% else %}<em>{% trans "No technology" %}</em>{% endif %}
     </div>
 {% endblock content %}

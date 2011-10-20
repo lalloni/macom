@@ -8,26 +8,26 @@
     <h2>{% trans "Interface" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_interface_history object.pk %}">{% trans "history" %}</a> <a href="{% url admin:diagrama_interface_change object.pk %}">{% trans "edit" %}</a></span></h2>
     <div id="interface-direction">
         <h3>{% trans "Direction" %}</h3>
-        <p>{{ object|direction|default:"No direction" }}</p>
+        <p>{% if object|direction%}{{ object|direction }}{% else %}<em>{% trans "No direction" %}</em>{% endif %}</p>
     </div>
     <div id="interface-description">
 	    <h3>{% trans "Goal" %}</h3>
-        {{ object.goal|default:"_No goal_"|markdown }}
+        {% if object.goal%}{{ object.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}
     </div>
     <div id="interface-documentation">
 	    <h3>{% trans "Documentation" %}</h3>
-        {{ object.documentation|default:"_No documentation_"|markdown }}
+        {% if object.documentation%}{{ object.documentation|markdown }}{% else %}<em>{% trans "No documentation" %}</em>{% endif %}
     </div>
     <div id="interface-referents">
         <h3>{% trans "Referents" %}</h3>
-        {{ object.referents|default:"_No referents_"|markdown }}
+        {% if object.referents %}{{ object.referents|markdown }}{% else %}<em>{% trans "No referents" %}</em>{% endif %}
     </div>
     <div id="interface-technology">
-        <h3>Technology</h3>
-        {{ object.technology|default:"_No technology_"|markdown }}
+        <h3>{% trans "Technology" %}</h3>
+        {% if object.technology%}{{ object.technology|markdown }}{% else %}<em>{% trans "No technology" %}</em>{% endif %}
     </div>
     <div id="interface-dependents">
-        <h3>Dependent {% trans "Modules" %}</h3>
+        <h3>{% trans "Dependent Modules" %}</h3>
         {% if dependencies %}
 	        <table>
 	           <thead>
@@ -43,8 +43,8 @@
 	               <tr>
 	                   <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
 	                   <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
-	                   <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
-	                   <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+	                   <td>{{ dependency.goal|markdown }}</td>
+	                   <td>{{ dependency|direction }}</p>
 	               </tr>
 	               {% endfor %}
 	           </tbody>

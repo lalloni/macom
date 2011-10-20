@@ -18,8 +18,8 @@
 	           {% for object in object_list %}
 	           <tr>
 	               <td><a href="{% url system_detail object.id %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
-	               <td>{{ object.description|default:"_No description_"|markdown }}</td>
-	           </tr>
+                   <td>{% if object.description %}{{ object.description|markdown }}{% else %}<em>{% trans "No description" %}</em>{% endif %}</td>
+                </tr>
 	           {% endfor %}
 	       </tbody>
 	    </table>

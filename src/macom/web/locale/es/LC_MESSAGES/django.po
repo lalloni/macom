@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-20 11:37-0300\n"
+"POT-Creation-Date: 2011-10-20 11:41-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,8 +23,8 @@ msgstr ""
 msgid "Systems"
 msgstr "Sistemas"
 
-#: templates/base-web.html:21 templates/diagrama/interface_detail.html:30
-#: templates/diagrama/module_list.html:4 templates/diagrama/module_list.html:6
+#: templates/base-web.html:21 templates/diagrama/module_list.html:4
+#: templates/diagrama/module_list.html:6
 #: templates/diagrama/system_detail.html:22
 msgid "Modules"
 msgstr "Módulos"
@@ -48,15 +48,15 @@ msgstr "Externo: Implementado o mantenido fuera de la DIT"
 msgid "third-party"
 msgstr "externo"
 
-#: templates/diagrama/dependency_detail.html:4
-#: templates/diagrama/dependency_detail.html:7
+#: templates/diagrama/dependency_detail.html:5
+#: templates/diagrama/dependency_detail.html:8
 #: templates/diagrama/interface_detail.html:35
 #: templates/diagrama/module_detail.html:54
 #: templates/diagrama/system_detail.html:77
 msgid "Dependency"
 msgstr "Dependencia"
 
-#: templates/diagrama/dependency_detail.html:5
+#: templates/diagrama/dependency_detail.html:6
 #: templates/diagrama/interface_detail.html:6
 #: templates/diagrama/interface_list.html:11
 #: templates/diagrama/module_detail.html:6
@@ -67,7 +67,7 @@ msgstr "Dependencia"
 msgid "System"
 msgstr "Sistema"
 
-#: templates/diagrama/dependency_detail.html:5
+#: templates/diagrama/dependency_detail.html:6
 #: templates/diagrama/interface_detail.html:6
 #: templates/diagrama/interface_list.html:12
 #: templates/diagrama/module_detail.html:5
@@ -78,31 +78,31 @@ msgstr "Sistema"
 msgid "Module"
 msgstr "Módulo"
 
-#: templates/diagrama/dependency_detail.html:5
+#: templates/diagrama/dependency_detail.html:6
 msgid "Dependency to"
 msgstr "Dependencia a"
 
-#: templates/diagrama/dependency_detail.html:7
+#: templates/diagrama/dependency_detail.html:8
 #: templates/diagrama/interface_detail.html:8
 #: templates/diagrama/module_detail.html:8
 #: templates/diagrama/system_detail.html:8
 msgid "history"
 msgstr "historial"
 
-#: templates/diagrama/dependency_detail.html:7
+#: templates/diagrama/dependency_detail.html:8
 #: templates/diagrama/interface_detail.html:8
 #: templates/diagrama/module_detail.html:8
 #: templates/diagrama/system_detail.html:8
 msgid "edit"
 msgstr "editar"
 
-#: templates/diagrama/dependency_detail.html:9
+#: templates/diagrama/dependency_detail.html:10
 #: templates/diagrama/module_detail.html:55
 #: templates/diagrama/system_detail.html:79
 msgid "Target Interface"
-msgstr "Interfaz destino"
+msgstr "Interfaz utilizada"
 
-#: templates/diagrama/dependency_detail.html:13
+#: templates/diagrama/dependency_detail.html:14
 #: templates/diagrama/interface_detail.html:10
 #: templates/diagrama/interface_detail.html:38
 #: templates/diagrama/module_detail.html:30
@@ -112,7 +112,12 @@ msgstr "Interfaz destino"
 msgid "Direction"
 msgstr "Dirección"
 
-#: templates/diagrama/dependency_detail.html:17
+#: templates/diagrama/dependency_detail.html:15
+#: templates/diagrama/interface_detail.html:11
+msgid "No direction"
+msgstr "Sin dirección"
+
+#: templates/diagrama/dependency_detail.html:18
 #: templates/diagrama/interface_detail.html:14
 #: templates/diagrama/interface_detail.html:37
 #: templates/diagrama/interface_list.html:14
@@ -126,19 +131,54 @@ msgstr "Dirección"
 msgid "Goal"
 msgstr "Objetivo"
 
-#: templates/diagrama/dependency_detail.html:21
+#: templates/diagrama/dependency_detail.html:19
+#: templates/diagrama/interface_detail.html:15
+#: templates/diagrama/interface_list.html:23
+#: templates/diagrama/module_detail.html:11
+#: templates/diagrama/module_detail.html:37
+#: templates/diagrama/module_list.html:21
+#: templates/diagrama/system_detail.html:36
+#: templates/diagrama/system_detail.html:61
+msgid "No goal"
+msgstr "Sin objetivo"
+
+#: templates/diagrama/dependency_detail.html:22
 #: templates/diagrama/interface_detail.html:18
 #: templates/diagrama/module_detail.html:14
 #: templates/diagrama/system_detail.html:14
 msgid "Documentation"
 msgstr "Documentación"
 
-#: templates/diagrama/dependency_detail.html:25
+#: templates/diagrama/dependency_detail.html:23
+#: templates/diagrama/interface_detail.html:19
+#: templates/diagrama/module_detail.html:15
+#: templates/diagrama/system_detail.html:15
+msgid "No documentation"
+msgstr "Sin Documentación"
+
+#: templates/diagrama/dependency_detail.html:26
 #: templates/diagrama/interface_detail.html:22
 #: templates/diagrama/module_detail.html:18
 #: templates/diagrama/system_detail.html:18
 msgid "Referents"
 msgstr "Referentes"
+
+#: templates/diagrama/dependency_detail.html:27
+#: templates/diagrama/interface_detail.html:23
+#: templates/diagrama/module_detail.html:19
+#: templates/diagrama/system_detail.html:19
+msgid "No referents"
+msgstr "Sin referentes"
+
+#: templates/diagrama/dependency_detail.html:30
+#: templates/diagrama/interface_detail.html:26
+msgid "Technology"
+msgstr "Tecnología"
+
+#: templates/diagrama/dependency_detail.html:31
+#: templates/diagrama/interface_detail.html:27
+msgid "No technology"
+msgstr "Tecnología no definida"
 
 #: templates/diagrama/interface_detail.html:5
 #: templates/diagrama/interface_detail.html:6
@@ -146,6 +186,10 @@ msgstr "Referentes"
 #: templates/diagrama/interface_list.html:13
 msgid "Interface"
 msgstr "Interfaz"
+
+#: templates/diagrama/interface_detail.html:30
+msgid "Dependent Modules"
+msgstr "Módulos dependientes"
 
 #: templates/diagrama/interface_detail.html:36
 #: templates/diagrama/system_detail.html:78
@@ -193,6 +237,11 @@ msgstr "Sin dependencias"
 #: templates/diagrama/system_list.html:14
 msgid "Description"
 msgstr "Descripción"
+
+#: templates/diagrama/system_detail.html:11
+#: templates/diagrama/system_list.html:21
+msgid "No description"
+msgstr "Sin descripción"
 
 #: templates/diagrama/system_detail.html:72
 msgid "Dependencies to other systems"

@@ -8,15 +8,15 @@
     <h2>{% trans "System" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_system_history object.pk %}">{% trans "history" %}</a> <a href="{% url admin:diagrama_system_change object.pk %}">{% trans "edit" %}</a></span></h2>
     <div id="system-description">
 	    <h3>{% trans "Description" %}</h3>
-        {{ object.description|default:"_No description_"|markdown }}
+        {% if object.description %}{{ object.description|markdown }}{% else %}<em>{% trans "No description" %}</em>{% endif %}
     </div>
     <div id="system-documentation">
 	    <h3>{% trans "Documentation" %}</h3>
-        {{ object.documentation|default:"_No documentation_"|markdown }}
+        {% if object.documentation %}{{ object.documentation|markdown }}{% else %}<em>{% trans "No documentation" %}</em>{% endif %}
     </div>
     <div id="system-referents">
         <h3>{% trans "Referents" %}</h3>
-        {{ object.referents|default:"_No referents_"|markdown }}
+        {% if object.referents %}{{ object.referents|markdown }}{% else %}<em>{% trans "No referents" %}</em>{% endif %}
     </div>
     <div id="system-modules">
 	    <h3>{% trans "Modules" %}</h3>
@@ -33,7 +33,7 @@
 		           {% for module in modules %}
 		           <tr>
 		               <td><a href="{% url module_detail module.pk %}">{{ module }}</a>{% include 'third-party-object.html' with object=module %}</td>
-		               <td>{{ module.goal|default:"_No goal_"|markdown }}</td>
+	                   <td>{% if module.goal %}{{ module.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}</td>
 		           </tr>
 		           {% endfor %}
 		       </tbody>
@@ -58,7 +58,7 @@
 	               {% for interface in interfaces %}
 	               <tr>
 	                   <td><a href="{% url interface_detail interface.pk %}">{{ interface }}</a></td>
-	                   <td>{{ interface.goal|default:"_No goal_"|markdown }}</td>
+	                   <td>{% if interface.goal %}{{ interface.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}</td>
 	                   <td>{% if interface.direction_inbound %}in{% endif %}{% if interface.direction_outbound %}out{% endif %}</td>
 	               </tr>
 	               {% endfor %}
@@ -87,8 +87,8 @@
                        <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
                        <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
                        <td><a href="{% url interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
-                       <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
-                       <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+	                   <td>{{ dependency.goal|markdown }}</td>
+	                   <td>{{ dependency|direction }}</p>
                    </tr>
                    {% endfor %}
                </tbody>
@@ -131,3 +131,4 @@
         {% diagram system_diagram object.pk %}
     </div>
 {% endblock content %}
+    
