@@ -5,11 +5,12 @@ Created on 06/10/2011
 '''
 from django.conf.urls.defaults import patterns, url
 from piston.resource import Resource
-from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler
+from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler
 
 system_resource = Resource(SystemHandler)
 module_resource = Resource(ModuleHandler)
 interface_resource = Resource(InterfaceHandler)
+dependency_resource = Resource(DependencyHandler)
 
 urlpatterns = patterns('',
 
@@ -21,6 +22,9 @@ urlpatterns = patterns('',
 
     url(r'^interface[s/]?$', interface_resource, { 'emitter_format': 'json' }, name='api_interface_list'),
     url(r'^interface/(?P<id>\d+)$', interface_resource, { 'emitter_format': 'json' }, name='api_interface'),
+
+    url(r'^dependency[s/]?$', dependency_resource, { 'emitter_format': 'json' }, name='api_dependency_list'),
+    url(r'^dependency/(?P<id>\d+)$', dependency_resource, { 'emitter_format': 'json' }, name='api_dependency'),
 
     url(r'^model$', Resource(ModelHandler), { 'emitter_format': 'json' }, name='api_model'),
 

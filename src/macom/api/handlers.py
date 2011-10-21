@@ -4,17 +4,45 @@ Created on 06/10/2011
 @author: plalloni
 '''
 from piston.handler import BaseHandler
-from macom.diagrama.models import System, Module, Interface
+from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
 
-class SystemHandler(BaseHandler):
+class Defaults(BaseHandler):
+    allowed_methods = ('GET',)
+    @classmethod
+    def kind(cls, m):
+        return cls.model._meta.object_name.lower()
+    @classmethod
+    def full_name(cls, m):
+        return unicode(m)
+
+class SystemHandler(Defaults):
     model = System
-
-class ModuleHandler(BaseHandler):
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()))
+    
+class ModuleHandler(Defaults):
+    allowed_methods = ('GET',)
     model = Module
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies')
+    @classmethod
+    def dependencies(cls, module):
+        return module.dependency_objects()
 
-class InterfaceHandler(BaseHandler):
+class InterfaceHandler(Defaults):
+    allowed_methods = ('GET',)
     model = Interface
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction')
+    @classmethod
+    def direction(cls, interface):
+        return interface.direction() 
+
+class DependencyHandler(Defaults):
+    allowed_methods = ('GET',)
+    model = Dependency
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
+    @classmethod
+    def direction(cls, dep):
+        return dep.direction() 
     
 class ModelHandler(BaseHandler):
     def read(self, request):
