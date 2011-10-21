@@ -56,14 +56,15 @@ class Module(Base):
         return Dependency.objects.filter(module=self)
 
 class Directionality:
-    def direction(self, inbound_str="read", outbound_str="write"):
-        inbound = ""
-        outbound = ""
-        if self.direction_inbound:
-            inbound = inbound_str
-        if self.direction_outbound:
-            outbound = outbound_str
-        return  inbound + outbound
+    def direction(self, s_in='in', s_out='out', s_sep='-'):
+        if self.direction_inbound and self.direction_outbound:
+            return s_in + s_sep + s_out
+        elif self.direction_inbound:
+            return s_in
+        elif self.direction_outbound:
+            return s_out
+        else:
+            return ''
 
 class Interface(Base, Directionality):
     module = models.ForeignKey(Module, related_name='interfaces', verbose_name=_('module'))
