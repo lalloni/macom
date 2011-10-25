@@ -8,20 +8,22 @@ from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
 
 class Defaults(BaseHandler):
-    allowed_methods = ('GET',)
+    allowed_methods = ('GET',) # sólo lectura
     @classmethod
     def kind(cls, m):
         return cls.model._meta.object_name.lower()
     @classmethod
     def full_name(cls, m):
         return unicode(m)
+    @classmethod
+    def direction(cls, m):
+        return m.direction() 
 
 class SystemHandler(Defaults):
     model = System
     fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()))
     
 class ModuleHandler(Defaults):
-    allowed_methods = ('GET',)
     model = Module
     fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies')
     @classmethod
@@ -29,20 +31,12 @@ class ModuleHandler(Defaults):
         return module.dependency_objects()
 
 class InterfaceHandler(Defaults):
-    allowed_methods = ('GET',)
     model = Interface
     fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction')
-    @classmethod
-    def direction(cls, interface):
-        return interface.direction() 
 
 class DependencyHandler(Defaults):
-    allowed_methods = ('GET',)
     model = Dependency
     fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
-    @classmethod
-    def direction(cls, dep):
-        return dep.direction() 
     
 class ModelHandler(BaseHandler):
     def read(self, request):
