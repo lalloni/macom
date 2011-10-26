@@ -69,3 +69,11 @@ def direction(value):
 @register.filter
 def single(value):
     return value.replace('\n', r'\n').replace('\r', r'\n')
+
+@register.filter
+def edit_url(model):
+    return reverse('admin:%s_%s_change' % (model._meta.app_label, model._meta.module_name), args=[model.pk])
+
+@register.filter
+def history_url(model):
+    return reverse('admin:%s_%s_history' % (model._meta.app_label, model._meta.module_name), args=[model.pk])
