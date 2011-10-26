@@ -34,15 +34,15 @@ msgstr "Módulos"
 #: templates/diagrama/module_detail.html:22
 #: templates/diagrama/system_detail.html:47
 msgid "Interfaces"
-msgstr "Interfaces"
+msgstr "Interfases"
 
 #: templates/diagram.html:5
 msgid "source"
-msgstr "codigo fuente"
+msgstr "código fuente"
 
 #: templates/third-party-object.html:2
-msgid "Third-Party: Implemented or maintained outside DIT"
-msgstr "Externo: Implementado o mantenido fuera de la DIT"
+msgid "Third-Party (implemented or maintained outside DIT)"
+msgstr "Externo (implementado o mantenido fuera de la DIT)"
 
 #: templates/third-party-object.html:2
 msgid "third-party"
@@ -80,7 +80,7 @@ msgstr "Módulo"
 
 #: templates/diagrama/dependency_detail.html:6
 msgid "Dependency to"
-msgstr "Dependencia a"
+msgstr "Dependencia hacia"
 
 #: templates/diagrama/dependency_detail.html:8
 #: templates/diagrama/interface_detail.html:8
@@ -210,13 +210,13 @@ msgstr "Diagrama"
 #: templates/diagrama/module_detail.html:44
 #: templates/diagrama/system_detail.html:68
 msgid "No interfaces"
-msgstr "Sin interfaces"
+msgstr "Sin interfases"
 
 #: templates/diagrama/interface_list.html:33
 #: templates/diagrama/module_list.html:27
 #: templates/diagrama/system_detail.html:42
 msgid "No modules"
-msgstr "Sin modulos"
+msgstr "Sin módulos"
 
 #: templates/diagrama/module_detail.html:28
 #: templates/diagrama/system_detail.html:52
@@ -263,3 +263,4 @@ msgstr "Sistemas dependientes"
 #: templates/diagrama/system_list.html:33
 msgid "(no third-party)"
 msgstr "(sin externos)"
+
