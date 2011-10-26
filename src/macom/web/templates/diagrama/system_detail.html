@@ -5,7 +5,7 @@
 {% block title %} - {% trans "System" %} {{ object }}{% endblock %}
 {% block location %}{% trans "System" %} {{ object.name }}{% endblock %}
 {% block content %}
-    <h2>{% trans "System" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_system_history object.pk %}">{% trans "history" %}</a> <a href="{% url admin:diagrama_system_change object.pk %}">{% trans "edit" %}</a></span></h2>
+    <h2>{% trans "System" %} <b>{{ object.name }}</b> {% include 'object-controls.html' %}</h2>
     <div id="system-description">
 	    <h3>{% trans "Description" %}</h3>
         {% if object.description %}{{ object.description|markdown }}{% else %}<em>{% trans "No description" %}</em>{% endif %}

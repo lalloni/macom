@@ -5,7 +5,7 @@
 {% block title %} - {% trans "Interface" %} {{ object }}{% endblock %}
 {% block location %}<a href="{% url system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Interface" %} {{ object.name }}{% endblock %}
 {% block content %}
-    <h2>{% trans "Interface" %} <b>{{ object.name }}</b> {% include 'third-party-object.html' %} <span class="super no-print"><a href="{% url admin:diagrama_interface_history object.pk %}">{% trans "history" %}</a> <a href="{% url admin:diagrama_interface_change object.pk %}">{% trans "edit" %}</a></span></h2>
+    <h2>{% trans "Interface" %} <b>{{ object.name }}</b> {% include 'object-controls.html' %}</h2>
     <div id="interface-direction">
         <h3>{% trans "Direction" %}</h3>
         <p>{% if object|direction%}{{ object|direction }}{% else %}<em>{% trans "No direction" %}</em>{% endif %}</p>

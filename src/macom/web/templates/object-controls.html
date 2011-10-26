@@ -1,0 +1,7 @@
+{% load i18n %}
+{% load diagrams %}
+{% include 'third-party-object.html' %} 
+<span class="no-print">
+    <a href="{{ object|history_url }}"><img src="{% url media 'img/morocho/history.png' %}" title="{% trans 'history' %}" alt="{% trans 'history' %}"/></a> 
+    <a href="{{ object|edit_url }}"><img src="{% url media 'img/morocho/edit.png' %}" title="{% trans 'edit' %}" alt="{% trans 'edit' %}"/></a>
+</span>
