@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django.views.generic.detail import DetailView
 from macom.diagrama.models import Module, Dependency, Interface, System
 from django.shortcuts import render_to_response

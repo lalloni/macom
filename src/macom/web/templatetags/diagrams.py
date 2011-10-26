@@ -1,8 +1,5 @@
-'''
-Created on 13/10/2011
+# -*- coding: UTF-8 -*-
 
-@author: plalloni
-'''
 from django.template.base import Library, Node, TemplateSyntaxError
 from django.utils.encoding import smart_str
 from django.template.loader import get_template

@@ -1,8 +1,5 @@
-'''
-Created on 09/03/2011
+# -*- coding: UTF-8 -*-
 
-@author: sebas
-'''
 from django.conf.urls.defaults import patterns, url #@UnusedImport
 
 urlpatterns = patterns('',

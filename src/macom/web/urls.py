@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 
 from django.conf.urls.defaults import patterns, url 
 from django.views.generic import ListView

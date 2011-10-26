@@ -1,8 +1,4 @@
-'''
-Created on 06/10/2011
-
-@author: plalloni
-'''
+# -*- coding: UTF-8 -*-
 from django.conf.urls.defaults import patterns, url
 from piston.resource import Resource
 from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler

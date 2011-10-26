@@ -1,8 +1,4 @@
-'''
-Created on 06/10/2011
-
-@author: plalloni
-'''
+# -*- coding: UTF-8 -*-
 from os import path
 from django.conf.urls.defaults import patterns, url
 from macom.app.views import app, script_template

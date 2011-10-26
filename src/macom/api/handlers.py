@@ -1,8 +1,4 @@
-'''
-Created on 06/10/2011
-
-@author: plalloni
-'''
+# -*- coding: UTF-8 -*-
 from piston.handler import BaseHandler
 from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse

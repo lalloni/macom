@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
-Created on 17/03/2011
 
-@author: sebas
-'''
 from subprocess import Popen
 from tempfile import SpooledTemporaryFile
 from pydot import graph_from_dot_data
