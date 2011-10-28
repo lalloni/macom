@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-20 11:41-0300\n"
+"POT-Creation-Date: 2011-10-27 14:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,6 +53,7 @@ msgstr "externo"
 #: templates/diagrama/interface_detail.html:35
 #: templates/diagrama/module_detail.html:54
 #: templates/diagrama/system_detail.html:77
+#: templates/diagrama/system_detail.html:106
 msgid "Dependency"
 msgstr "Dependencia"
 
@@ -99,6 +100,7 @@ msgstr "editar"
 #: templates/diagrama/dependency_detail.html:10
 #: templates/diagrama/module_detail.html:55
 #: templates/diagrama/system_detail.html:79
+#: templates/diagrama/system_detail.html:108
 msgid "Target Interface"
 msgstr "Interfaz utilizada"
 
@@ -109,6 +111,7 @@ msgstr "Interfaz utilizada"
 #: templates/diagrama/module_detail.html:57
 #: templates/diagrama/system_detail.html:54
 #: templates/diagrama/system_detail.html:81
+#: templates/diagrama/system_detail.html:110
 msgid "Direction"
 msgstr "Dirección"
 
@@ -128,6 +131,7 @@ msgstr "Sin dirección"
 #: templates/diagrama/system_detail.html:29
 #: templates/diagrama/system_detail.html:53
 #: templates/diagrama/system_detail.html:80
+#: templates/diagrama/system_detail.html:109
 msgid "Goal"
 msgstr "Objetivo"
 
@@ -193,6 +197,7 @@ msgstr "Módulos dependientes"
 
 #: templates/diagrama/interface_detail.html:36
 #: templates/diagrama/system_detail.html:78
+#: templates/diagrama/system_detail.html:107
 msgid "Dependent Module"
 msgstr "Módulo dependiente"
 
@@ -230,6 +235,7 @@ msgstr "Dependencias"
 
 #: templates/diagrama/module_detail.html:72
 #: templates/diagrama/system_detail.html:97
+#: templates/diagrama/system_detail.html:126
 msgid "No dependencies"
 msgstr "Sin dependencias"
 
@@ -247,6 +253,10 @@ msgstr "Sin descripción"
 msgid "Dependencies to other systems"
 msgstr "Dependencias a otros sistemas"
 
+#: templates/diagrama/system_detail.html:101
+msgid "Dependencies from other systems"
+msgstr "Dependencias desde otros sistemas"
+
 #: templates/diagrama/system_list.html:27
 msgid "No systems"
 msgstr "Sin sistemas"
@@ -263,4 +273,3 @@ msgstr "Sistemas dependientes"
 #: templates/diagrama/system_list.html:33
 msgid "(no third-party)"
 msgstr "(sin externos)"
-

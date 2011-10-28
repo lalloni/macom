@@ -98,16 +98,16 @@
         {% endif %}
     </div>
     <div id="system-dependencies">
-        <h3>Dependencies from other systems</h3>
+        <h3>{% trans "Dependencies from other systems" %}</h3>
         {% if dependents %}
             <table>
                <thead>
                    <tr>
-                       <th>Dependency</th>
-                       <th>Dependent Module</th>
-                       <th>Target Interface</th>
-                       <th>Goal</th>
-                       <th>Direction</th>
+                       <th>{% trans "Dependency" %}</th>
+                       <th>{% trans "Dependent Module" %}</th>
+                       <th>{% trans "Target Interface" %}</th>
+                       <th>{% trans "Goal" %}</th>
+                       <th>{% trans "Direction" %}</th>
                    </tr>
                </thead>
                <tbody>
@@ -116,14 +116,14 @@
                        <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
                        <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
                        <td><a href="{% url interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
-                       <td>{{ dependency.goal|default:"_No goal_"|markdown }}</td>
-                       <td>{% if dependency.direction_inbound %}in{% endif %}{% if dependency.direction_outbound %}out{% endif %}</td>
+                       <td>{{ dependency.goal|markdown }}</td>
+                       <td>{{ dependency|direction }}</p>
                    </tr>
                    {% endfor %}
                </tbody>
             </table>
         {% else %}
-            <em>No dependencies</em>
+            <em>{% trans "No dependencies" %}</em>
         {% endif %}
     </div>
     <div id="system-diagram">
