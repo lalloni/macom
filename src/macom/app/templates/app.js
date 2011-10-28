@@ -102,15 +102,16 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
  function processSystem(data, id){
     var system = data[0];
     var modules = system.modules;
-    var module_interfaces = new Array();
-    var module_dependencies = new Array();
 
+    var module_interfaces = new Array();
     for (var i =0; i<modules.length; i++) {
+/*
         if ( modules[i].dependencies != null ) {
             for (var j =0; j<modules[i].dependencies.length; j++) {
                 module_dependencies.push(modules[i].dependencies[j]);
             }
         }
+*/
         if ( modules[i].interfaces != null ) {
             for (var j =0; j<modules[i].interfaces.length; j++) {
                 module_interfaces.push(modules[i].interfaces[j]);
@@ -122,11 +123,11 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
         isc.VLayout.create({
             height : "*",
             members: [ 
+                isc.Label.create( {contents: system.kind , height: 1 } ),
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data: system,
                     fields : [
-                        { name : "kind", title : "Tipo" },
                         { name : "name", title : "Nombre" },
                         { name : "description", title : "Descripción" },
                         { name : "referents", title : "Referentes" },
@@ -135,49 +136,53 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
                     ]
                 }),
                 isc.LayoutSpacer.create( {height:"10" } ),
-                isc.Label.create({
-                    contents: "Módulos (" + modules.length + ")",
-                    height: "1"
-                }),
-                isc.ListGrid.create({
-                    autoFetchData : true,
-                    data : modules,
-                    fields : [
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "external", title : "Externo", width: "50" }
+                isc.TabSet.create({
+                    tabs: [ {
+                        title: "Módulos (" + modules.length + ")", 
+                        pane: isc.ListGrid.create({
+                            autoFetchData : true,
+                            data : modules,
+                            fields : [
+                                { name : "full_name", title : "Nombre" },
+                                { name : "goal", title : "Objetivo" },
+                                { name : "external", title : "Externo", width: "50" }
+                            ] })
+                        }, {
+                        title: "Interfaces (" + module_interfaces.length + ")", 
+                        pane: isc.ListGrid.create({
+                            autoFetchData : true,
+                            data : module_interfaces,
+                            fields : [
+                                { name : "full_name", title : "Nombre" },
+                                { name : "goal", title : "Objetivo" },
+                                { name : "technology", title : "Tecnología", width: "100" },
+                                { name : "direction", title : "Dirección", width: "60" }
+                            ] })
+                        }, {
+                        title: "Dependencias (" + system.dependencies.length + ")", 
+                        pane: isc.ListGrid.create({
+                            autoFetchData : true,
+                            data : system.dependencies,
+                            fields : [
+                                { name : "full_name", title : "Nombre" },
+                                { name : "goal", title : "Objetivo" },
+                                { name : "technology", title : "Tecnología", width: "100" },
+                                { name : "direction", title : "Dirección", width: "60" }
+                            ] })
+                        }, {
+                        title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
+                        pane: isc.ListGrid.create({
+                            autoFetchData : true,
+                            data : system.dependents,
+                            fields : [
+                                { name : "full_name", title : "Nombre" },
+                                { name : "goal", title : "Objetivo" },
+                                { name : "technology", title : "Tecnología", width: "100" },
+                                { name : "direction", title : "Dirección", width: "60" }
+                            ] })
+                        }
                     ]
-                }),
-                isc.LayoutSpacer.create( {height:"10" } ),
-                isc.Label.create({
-                    contents: "Interfaces (" + module_interfaces.length + ")",
-                    height: "1"
-                }),
-                isc.ListGrid.create({
-                    autoFetchData : true,
-                    data : module_interfaces,
-                    fields : [
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "technology", title : "Tecnología", width: "100" },
-                        { name : "direction", title : "Dirección", width: "60" }
-                    ]
-                }),
-                isc.LayoutSpacer.create( {height:"10" } ),
-                isc.Label.create({
-                    contents: "Dependencias (" + module_dependencies.length + ")",
-                    height: "1"
-                }),
-                isc.ListGrid.create({
-                    autoFetchData : true,
-                    data : module_dependencies,
-                    fields : [
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "technology", title : "Tecnología", width: "100" },
-                        { name : "direction", title : "Dirección", width: "60" }
-                    ]
-                })                
+                })
             ]
         })
     );
