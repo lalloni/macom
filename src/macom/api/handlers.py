@@ -17,8 +17,14 @@ class Defaults(BaseHandler):
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()))
-    
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies')
+    @classmethod
+    def dependents(cls, system):
+        return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
+    @classmethod
+    def dependencies(cls, system):
+        return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
+
 class ModuleHandler(Defaults):
     model = Module
     fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies')
