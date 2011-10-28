@@ -4,7 +4,7 @@ from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
 
 class Defaults(BaseHandler):
-    allowed_methods = ('GET',) # sólo lectura
+    allowed_methods = ('GET',) # solo lectura
     @classmethod
     def _kind(cls):
         return cls.model._meta.object_name.lower()
@@ -48,29 +48,29 @@ class InterfaceHandler(Defaults):
 class DependencyHandler(Defaults):
     model = Dependency
     fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
-    
+
 class ModelHandler(BaseHandler):
     def read(self, request):
         res = []
         for syst in System.objects.values('id', 'name'):
-            syst['type'] = "system"
-            syst['nid'] = syst['id']
-            syst['id'] = syst['type'] + str(syst['id'])
-            syst['readurl'] = reverse('api_system', args=[syst['nid']])
+            syst['kind'] = "system"
+            syst_id = syst['id']
+            syst['id'] = reverse('api_system', args=[syst_id])
+            syst['full_name']  = syst['name']
             res.append(syst)
             modus = []
-            for modu in Module.objects.filter(system__id=syst['nid']).values('id', 'name'):
-                modu['type'] = "module"
-                modu['nid'] = modu['id']
-                modu['id'] = modu['type'] + str(modu['id'])
-                modu['readurl'] = reverse('api_module', args=[modu['nid']])
+            for modu in Module.objects.filter(system__id=syst_id).values('id', 'name'):
+                modu['kind'] = "module"
+                modu_id = modu['id']
+                modu['id'] = reverse('api_module', args=[modu_id])
+                modu['full_name'] = "%s:%s" % (modu['name'], syst['name'])
                 modus.append(modu)
                 intes = [] 
-                for inte in Interface.objects.filter(module__id=modu['nid']).values('id', 'name'):
-                    inte['type'] = "interface"
-                    inte['nid'] = inte['id']
-                    inte['id'] = inte['type'] + str(inte['id'])
-                    inte['readurl'] = reverse('api_interface', args=[inte['nid']])
+                for inte in Interface.objects.filter(module__id=modu_id).values('id', 'name'):
+                    inte['kind'] = "interface"
+                    inte_id = inte['id']
+                    inte['id'] = reverse('api_interface', args=[inte_id])
+                    inte['full_name'] = "%s:%s" % (modu['full_name'], inte['name'])
                     intes.append(inte)
                 modu['children'] = intes
             syst['children'] = modus
