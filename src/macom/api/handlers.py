@@ -27,7 +27,6 @@ class Defaults(BaseHandler):
 class SystemHandler(Defaults):
     model = System
     fields = ('kind', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram_uri')
-
     @classmethod
     def dependents(cls, system):
         return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
@@ -44,7 +43,6 @@ class ModuleHandler(Defaults):
 
 class InterfaceHandler(Defaults):
     model = Interface
-
     fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'diagram_uri')
 
 class DependencyHandler(Defaults):
