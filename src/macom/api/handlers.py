@@ -4,7 +4,7 @@ from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
 
 class Defaults(BaseHandler):
-    allowed_methods = ('GET',) # solo lectura
+    allowed_methods = ('GET',) # sólo lectura
     @classmethod
     def _kind(cls):
         return cls.model._meta.object_name.lower()
@@ -16,10 +16,10 @@ class Defaults(BaseHandler):
         return unicode(m)
     @classmethod
     def direction(cls, m):
-        return m.direction() 
+        return m.direction()
     @classmethod
     def diagram_uri(cls, m):
-        return reverse('web:%s_diagram' % cls._kind(), args=[m.pk]) 
+        return reverse('web:%s_diagram' % cls._kind(), args=[m.pk])
     @classmethod
     def resource_uri(cls):
         return ('api_%s' % cls._kind(), ['pk'])
@@ -33,7 +33,7 @@ class SystemHandler(Defaults):
     @classmethod
     def dependencies(cls, system):
         return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
-        
+
 class ModuleHandler(Defaults):
     model = Module
     fields = ('kind', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram_uri')
@@ -56,7 +56,7 @@ class ModelHandler(BaseHandler):
             syst['kind'] = "system"
             syst_id = syst['id']
             syst['id'] = reverse('api_system', args=[syst_id])
-            syst['full_name']  = syst['name']
+            syst['full_name'] = syst['name']
             res.append(syst)
             modus = []
             for modu in Module.objects.filter(system__id=syst_id).values('id', 'name'):
@@ -65,7 +65,7 @@ class ModelHandler(BaseHandler):
                 modu['id'] = reverse('api_module', args=[modu_id])
                 modu['full_name'] = "%s:%s" % (modu['name'], syst['name'])
                 modus.append(modu)
-                intes = [] 
+                intes = []
                 for inte in Interface.objects.filter(module__id=modu_id).values('id', 'name'):
                     inte['kind'] = "interface"
                     inte_id = inte['id']

@@ -59,7 +59,10 @@ isc.VLayout.create({
 	 }) ]
  });
 
-function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	// buscar tab q tenga el mismo record
+/**
+ * buscar tab q tenga el mismo record
+ */
+function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
     var tab = ContentTabSet.getTab(record.id);
 
 	// si no se encuentra generar uno nuevo con titulo = record.name
