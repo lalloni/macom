@@ -14,10 +14,13 @@ class Defaults(BaseHandler):
     @classmethod
     def direction(cls, m):
         return m.direction() 
+    @classmethod
+    def diagram(cls, m):
+        return reverse('web:%s_diagram' % cls.kind(m), args=[m.pk]) 
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies')
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram')
     @classmethod
     def dependents(cls, system):
         return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
@@ -27,14 +30,14 @@ class SystemHandler(Defaults):
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies')
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram')
     @classmethod
     def dependencies(cls, module):
         return module.dependency_objects()
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction')
+    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'diagram')
 
 class DependencyHandler(Defaults):
     model = Dependency

@@ -17,6 +17,6 @@ urlpatterns = patterns('',
     
     url(r'^app/', include('macom.app.urls')),
     url(r'^api/', include('macom.api.urls')),
-    url(r'^web/', include('macom.web.urls')),
+    url(r'^web/', include('macom.web.urls', 'web', 'web')),
     
 )
