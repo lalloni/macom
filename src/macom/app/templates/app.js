@@ -1,11 +1,9 @@
 // UTILS
-
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
 }
 
 // INTERFACE
-
 isc.DataSource.create({
 	ID : "ds_model",
 	dataURL : "{% url api_model %}",
@@ -20,7 +18,7 @@ isc.VLayout.create({
 	height : "100%",
 	members : [ isc.HStack.create({
 		ID : "HeaderSection",
-		height : 48,
+		height : 48,    
 		hPolicy : "fill",
 		members : [ isc.Label.create({
 			contents : "macom",
@@ -61,8 +59,7 @@ isc.VLayout.create({
 	 }) ]
  });
 
-function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
-	// buscar tab q tenga el mismo record
+function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	// buscar tab q tenga el mismo record
     var tab = ContentTabSet.getTab(record.id);
 
 	// si no se encuentra generar uno nuevo con titulo = record.name
@@ -86,7 +83,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
 	ContentTabSet.selectTab(tab);
  }
 
- function createDS(record){
+function createDS(record){
     isc.DataSource.create({
         ID : record.id,
         dataURL : record.id,
@@ -99,19 +96,13 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
     });
 }
 
- function processSystem(data, id){
+function processSystem(data, id){
+    // Variables de datos
     var system = data[0];
     var modules = system.modules;
 
     var module_interfaces = new Array();
     for (var i =0; i<modules.length; i++) {
-/*
-        if ( modules[i].dependencies != null ) {
-            for (var j =0; j<modules[i].dependencies.length; j++) {
-                module_dependencies.push(modules[i].dependencies[j]);
-            }
-        }
-*/
         if ( modules[i].interfaces != null ) {
             for (var j =0; j<modules[i].interfaces.length; j++) {
                 module_interfaces.push(modules[i].interfaces[j]);
@@ -119,6 +110,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
         }
     }
 
+    // Representación
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
@@ -142,6 +134,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
                         pane: isc.ListGrid.create({
                             autoFetchData : true,
                             data : modules,
+                            recordClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -152,6 +145,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
                         pane: isc.ListGrid.create({
                             autoFetchData : true,
                             data : module_interfaces,
+                            recordClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -163,6 +157,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
                         pane: isc.ListGrid.create({
                             autoFetchData : true,
                             data : system.dependencies,
+                            recordClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -174,6 +169,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
                         pane: isc.ListGrid.create({
                             autoFetchData : true,
                             data : system.dependents,
+                            recordClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -189,15 +185,18 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
 }
 
 function processModule( data, id ){
-         ContentTabSet.getTab(id).setPane(
+    var module = data[0];
+    var interfaces = module.interfaces;
+    
+    ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
             members: [
+                isc.Label.create( {contents: module.kind , height: 1 } ),
                 isc.DetailViewer.create({
                     autoFetchData : true,
-                     data: data[0],
+                    data: module,
                     fields : [
-                        { name : "kind", title : "Tipo" },
                         { name : "full_name", title : "Nombre" },
                         { name : "goal", title : "Objetivo" },
                         { name : "referents", title : "Referentes" }, 
@@ -207,13 +206,78 @@ function processModule( data, id ){
                     ]
                 }),
                 isc.LayoutSpacer.create( {height:"10" } ),
-                isc.Label.create({
-                    contents: "Interfaces",
-                    height: "1"
-                }),
-                isc.ListGrid.create({
+                isc.TabSet.create({
+                    tabs: [{
+                        title: "Interfaces (" + interfaces.length + ")", 
+                        pane: isc.ListGrid.create({
+                            autoFetchData : true,
+                            data : interfaces,
+                            recordClick: openTab,
+                            fields : [
+                                { name : "full_name", title : "Nombre" },
+                                { name : "goal", title : "Objetivo" },
+                                { name : "direction", title : "Dirección" },
+                                { name : "technology", title : "Tecnología" },
+                                { name : "documentation", title : "Documentación" },
+                                { name : "referents", title : "Referentes" },
+                                { name : "external", title : "Externo", width: "50" }
+                            ]
+                        })
+                    }]
+                })
+            ]
+        })
+    );
+ }
+
+function processInterface( data, id ){
+    var interface = data[0];
+    
+    ContentTabSet.getTab(id).setPane(
+        isc.VLayout.create({
+            height : "*",
+            members: isc.DetailViewer.create({
+                autoFetchData : true,
+                data : interface,
+                fields : [
+                    { name : "full_name", title : "Nombre" }, 
+                    { name : "goal", title : "Objetivo" },
+                    { name : "referents", title : "Referentes" },
+                    { name : "documentation", title : "Documentación" },
+                    { name : "technology", title : "Tecnología" },
+                    { name : "direction", title : "Dirección" }
+                ]
+             })
+    }));
+ }
+
+function processDependency( data, id ){
+    var dependency = data[0];
+    var interface = dependency.interface;
+    
+    ContentTabSet.getTab(id).setPane(
+        isc.VLayout.create({
+            height : "*",
+            members: [
+                isc.Label.create( {contents: dependency.kind , height: 1 } ),
+                isc.DetailViewer.create({
                     autoFetchData : true,
-                    data : data[0].interfaces,
+                    data: dependency,
+                    fields : [
+                        { name : "full_name", title : "Nombre" },
+                        { name : "goal", title : "Objetivo" },
+                        { name : "referents", title : "Referentes" }, 
+                        { name : "documentation", title : "Documentación" },
+                        { name : "technology", title : "Tecnoligía" },
+                        { name : "direction", title : "Dirección" },
+                    ]
+                }),
+                isc.LayoutSpacer.create( {height:"10" } ),
+                isc.Label.create( {contents: "Interfaz utilizada" , height: 1 } ),
+                isc.DetailViewer.create({
+                    autoFetchData : true,
+                    data : interface,
+                    recordClick: openTab,
                     fields : [
                         { name : "full_name", title : "Nombre" },
                         { name : "goal", title : "Objetivo" },
@@ -225,25 +289,6 @@ function processModule( data, id ){
                     ]
                 })
             ]
-        }));
- }
-
-function processInterface( data, id ){
-     ContentTabSet.getTab(id).setPane(
-        isc.VLayout.create({
-            height : "*",
-            members: isc.DetailViewer.create({
-                autoFetchData : true,
-                data : data[0],
-                fields : [
-                    { name : "kind", title : "Tipo", valueMap : { system:"Sistema", module:"Módulo", interface:"Interfaz" } },
-                    { name : "full_name", title : "Nombre" }, 
-                    { name : "goal", title : "Objetivo" },
-                    { name : "referents", title : "Referentes" },
-                    { name : "documentation", title : "Documentación" },
-                    { name : "technology", title : "Tecnología" },
-                    { name : "direction", title : "Dirección" }
-                ]
-             })
-    }));
+        })
+    );
  }
