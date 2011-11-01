@@ -6,8 +6,11 @@ from django.core.urlresolvers import reverse
 class Defaults(BaseHandler):
     allowed_methods = ('GET',) # sólo lectura
     @classmethod
-    def kind(cls, m):
+    def _kind(cls):
         return cls.model._meta.object_name.lower()
+    @classmethod
+    def kind(cls, m):
+        return cls._kind()
     @classmethod
     def full_name(cls, m):
         return unicode(m)
@@ -15,33 +18,36 @@ class Defaults(BaseHandler):
     def direction(cls, m):
         return m.direction() 
     @classmethod
-    def diagram(cls, m):
-        return reverse('web:%s_diagram' % cls.kind(m), args=[m.pk]) 
+    def diagram_uri(cls, m):
+        return reverse('web:%s_diagram' % cls._kind(), args=[m.pk]) 
+    @classmethod
+    def resource_uri(cls):
+        return ('api_%s' % cls._kind(), ['pk'])
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram')
+    fields = ('kind', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram_uri')
     @classmethod
     def dependents(cls, system):
         return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
     @classmethod
     def dependencies(cls, system):
         return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
-
+        
 class ModuleHandler(Defaults):
     model = Module
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram')
+    fields = ('kind', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram_uri')
     @classmethod
     def dependencies(cls, module):
         return module.dependency_objects()
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'diagram')
+    fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'diagram_uri')
 
 class DependencyHandler(Defaults):
     model = Dependency
-    fields = ('kind', 'absolute_uri', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
+    fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
     
 class ModelHandler(BaseHandler):
     def read(self, request):
