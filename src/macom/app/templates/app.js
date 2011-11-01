@@ -110,18 +110,21 @@ function processSystem(data, id){
         }
     }
 
+    // crea un link al sitio
+    system.full_name = Canvas.linkHTML(system.absolute_uri, system.full_name);
+    
     // Representación
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
             members: [ 
-                isc.Label.create( {contents: system.kind , height: 1 } ),
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data: system,
                     fields : [
-                        { name : "name", title : "Nombre" },
-                        { name : "description", title : "Descripción" },
+                        { value : "Sistema", type : "header"},
+                        { name : "full_name", title : "Nombre" },
+                        { name : "description", title : "Descripción" },    
                         { name : "referents", title : "Referentes" },
                         { name : "documentation", title : "Documentación" },
                         { name : "external", title : "Externo" }
@@ -188,15 +191,18 @@ function processModule( data, id ){
     var module = data[0];
     var interfaces = module.interfaces;
     
+    // crea un link al sitio
+    module.full_name = Canvas.linkHTML(module.absolute_uri, module.full_name);
+    
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
             members: [
-                isc.Label.create( {contents: module.kind , height: 1 } ),
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data: module,
                     fields : [
+                        { value : "Módulo", type : "header"},    
                         { name : "full_name", title : "Nombre" },
                         { name : "goal", title : "Objetivo" },
                         { name : "referents", title : "Referentes" }, 
@@ -232,7 +238,10 @@ function processModule( data, id ){
 
 function processInterface( data, id ){
     var interface = data[0];
-    
+
+    // crea un link al sitio
+    interface.full_name = Canvas.linkHTML(interface.absolute_uri, interface.full_name);
+
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
@@ -240,6 +249,7 @@ function processInterface( data, id ){
                 autoFetchData : true,
                 data : interface,
                 fields : [
+                    { value : "Interfaz", type : "header"},
                     { name : "full_name", title : "Nombre" }, 
                     { name : "goal", title : "Objetivo" },
                     { name : "referents", title : "Referentes" },
@@ -254,16 +264,20 @@ function processInterface( data, id ){
 function processDependency( data, id ){
     var dependency = data[0];
     var interface = dependency.interface;
-    
+
+    // crea un link al sitio
+    dependency.full_name = Canvas.linkHTML(dependency.absolute_uri, dependency.full_name);
+    interface.full_name = Canvas.linkHTML(interface.absolute_uri, interface.full_name);
+
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
             members: [
-                isc.Label.create( {contents: dependency.kind , height: 1 } ),
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data: dependency,
                     fields : [
+                        { value : "Dependencia", type : "header"},
                         { name : "full_name", title : "Nombre" },
                         { name : "goal", title : "Objetivo" },
                         { name : "referents", title : "Referentes" }, 
@@ -273,12 +287,12 @@ function processDependency( data, id ){
                     ]
                 }),
                 isc.LayoutSpacer.create( {height:"10" } ),
-                isc.Label.create( {contents: "Interfaz utilizada" , height: 1 } ),
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data : interface,
                     recordClick: openTab,
                     fields : [
+                        { value : "Interfaz utilizada", type : "header"},    
                         { name : "full_name", title : "Nombre" },
                         { name : "goal", title : "Objetivo" },
                         { name : "direction", title : "Dirección" },
