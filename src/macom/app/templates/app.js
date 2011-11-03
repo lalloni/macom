@@ -38,10 +38,14 @@ isc.VLayout.create({
             width : 300,
 			dataSource : "ds_model",
 			autoFetchData : true,
+            dataProperties: {openProperty: "isOpen"},
 			loadDataOnDemand : false,
 			defaultIsFolder : false,
 			showResizeBar : true,
 			generateClickOnEnter : true,
+            dataArrived: function ( p ) {
+                openTab( null, p.children[0] );
+            },
 			fields : [ {
 				name : 'name',
 				recordDoubleClick : openTab
@@ -59,44 +63,69 @@ isc.VLayout.create({
 	 }) ]
  });
 
-/**
- * buscar tab q tenga el mismo record
- */
-function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
-    var tab = ContentTabSet.getTab(record.id);
+function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	// buscar tab q tenga el mismo record
+    var tab = ContentTabSet.getTab(record.resource_uri);
 
 	// si no se encuentra generar uno nuevo con titulo = record.name
 	if ( tab == null || typeof (tab) == 'undefined') {
         ContentTabSet.addTab({
-			ID: record.id,
+			ID: record.resource_uri,
             title : ( record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name ),
 			record : record,
 			canClose : true,
 		});
         // Busca el tab recien creado
-		tab = ContentTabSet.getTab(record.id);
-        
-        // Crea el datasource
-        createDS(record);
-        
-        // Llena los datos segun el tipo
-        isc.DataSource.get(record.id).fetchData(null, "process"+record.kind.capitalize()+"(data, \""+ record.id +"\")");
+		tab = ContentTabSet.getTab(record.resource_uri);
 
+        // Se fija el record.kind
+        switch (record.kind){
+            case 'root': // Si es root:
+                // muetra items del root
+                processRoot(tab, record);
+                break;
+            
+            default: // Si es system, module, dependency o interface
+                // Crea el datasource
+                createDS(record);
+                
+                // Llena los datos segun el tipo
+                isc.DataSource.get(record.resource_uri).fetchData(null, "process"+record.kind.capitalize()+"(data, \""+ record.resource_uri +"\")");
+        }
 	 }
 	ContentTabSet.selectTab(tab);
  }
 
 function createDS(record){
     isc.DataSource.create({
-        ID : record.id,
-        dataURL : record.id,
+        ID : record.resource_uri,
+        dataURL : record.resource_uri,
         dataFormat : "json",
         dataProtocol : "getParams",
-        fields : [
-            { name : "external", valueMap : { false:"No", true :"Sí" } },
-            { name : "kind", valueMap : { system:"Sistema", module:"Módulo", interface:"Interfaz" } }
-        ]
     });
+}
+
+function processRoot ( tab, record ){
+    tab.setPane(
+        isc.TabSet.create({
+            tabs:  getTabs( record.diagrams )
+        })
+    );
+}
+
+function getTabs ( tabs ){
+    var tabset = new Array();
+
+    for  ( var i = 0; i < tabs.length; i++ ){
+        tabset.push ( {
+            title: tabs[i].name,
+            pane:  isc.Img.create( {
+                    src: tabs[i].resource_uri,
+                    imageType : "natural"
+            } )
+        } )
+    }
+
+    return tabset;
 }
 
 function processSystem(data, id){
@@ -113,9 +142,6 @@ function processSystem(data, id){
         }
     }
 
-    // crea un link al sitio
-    system.full_name = Canvas.linkHTML(system.absolute_uri, system.full_name);
-    
     // Representación
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
@@ -138,9 +164,10 @@ function processSystem(data, id){
                     tabs: [ {
                         title: "Módulos (" + modules.length + ")", 
                         pane: isc.ListGrid.create({
+                            alternateRecordStyles:true,
                             autoFetchData : true,
                             data : modules,
-                            recordClick: openTab,
+                            recordDoubleClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -149,9 +176,10 @@ function processSystem(data, id){
                         }, {
                         title: "Interfaces (" + module_interfaces.length + ")", 
                         pane: isc.ListGrid.create({
+                            alternateRecordStyles:true,
                             autoFetchData : true,
                             data : module_interfaces,
-                            recordClick: openTab,
+                            recordDoubleClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -161,9 +189,10 @@ function processSystem(data, id){
                         }, {
                         title: "Dependencias (" + system.dependencies.length + ")", 
                         pane: isc.ListGrid.create({
+                            alternateRecordStyles:true,
                             autoFetchData : true,
                             data : system.dependencies,
-                            recordClick: openTab,
+                            recordDoubleClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -173,9 +202,10 @@ function processSystem(data, id){
                         }, {
                         title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
                         pane: isc.ListGrid.create({
+                            alternateRecordStyles:true,
                             autoFetchData : true,
                             data : system.dependents,
-                            recordClick: openTab,
+                            recordDoubleClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -193,10 +223,7 @@ function processSystem(data, id){
 function processModule( data, id ){
     var module = data[0];
     var interfaces = module.interfaces;
-    
-    // crea un link al sitio
-    module.full_name = Canvas.linkHTML(module.absolute_uri, module.full_name);
-    
+
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
@@ -219,9 +246,10 @@ function processModule( data, id ){
                     tabs: [{
                         title: "Interfaces (" + interfaces.length + ")", 
                         pane: isc.ListGrid.create({
+                            alternateRecordStyles:true,
                             autoFetchData : true,
                             data : interfaces,
-                            recordClick: openTab,
+                            recordDoubleClick: openTab,
                             fields : [
                                 { name : "full_name", title : "Nombre" },
                                 { name : "goal", title : "Objetivo" },
@@ -241,9 +269,6 @@ function processModule( data, id ){
 
 function processInterface( data, id ){
     var interface = data[0];
-
-    // crea un link al sitio
-    interface.full_name = Canvas.linkHTML(interface.absolute_uri, interface.full_name);
 
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
@@ -268,10 +293,6 @@ function processDependency( data, id ){
     var dependency = data[0];
     var interface = dependency.interface;
 
-    // crea un link al sitio
-    dependency.full_name = Canvas.linkHTML(dependency.absolute_uri, dependency.full_name);
-    interface.full_name = Canvas.linkHTML(interface.absolute_uri, interface.full_name);
-
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
@@ -293,7 +314,7 @@ function processDependency( data, id ){
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data : interface,
-                    recordClick: openTab,
+                    recordDoubleClick: openTab,
                     fields : [
                         { value : "Interfaz utilizada", type : "header"},    
                         { name : "full_name", title : "Nombre" },
