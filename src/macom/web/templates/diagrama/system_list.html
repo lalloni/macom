@@ -17,7 +17,7 @@
 	       <tbody>
 	           {% for object in object_list %}
 	           <tr>
-	               <td><a href="{% url system_detail object.id %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
+	               <td><a href="{% url web:system_detail object.id %}">{{ object.name }}</a>{% include 'third-party-object.html' %}</td>
                    <td>{% if object.description %}{{ object.description|markdown }}{% else %}<em>{% trans "No description" %}</em>{% endif %}</td>
                 </tr>
 	           {% endfor %}
@@ -29,7 +29,7 @@
 
     <h2>{% trans "Diagrams" %}</h2>
      <h3>{% trans "System Dependencies" %}</h3>
-    {% diagram systems_dependencies_diagram %}
+    {% diagram web:systems_dependencies_diagram %}
     <h3>{% trans "System Dependencies" %} {% trans "(no third-party)" %}</h3>
-    {% diagram systems_no_thirdparty_dependencies_diagram %}
+    {% diagram web:systems_no_thirdparty_dependencies_diagram %}
 {% endblock content %}

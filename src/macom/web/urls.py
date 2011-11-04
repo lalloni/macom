@@ -11,7 +11,7 @@ from macom.web.views import SystemDetailView, ModuleDetailView, \
     systems_no_thirdparty_dependencies_diagram
     
 urlpatterns = patterns('',
-     url(r'^$', lambda x: redirect('system_list')),
+     url(r'^$', lambda x: redirect('web:system_list')),
      url(r'^system/(?P<pk>\d+)/diagram', system_diagram, name='system_diagram'),
      url(r'^system/(?P<pk>\d+)', SystemDetailView.as_view(), name='system_detail'),
      url(r'^system[s]?/diagram/dependencies$', systems_dependencies_diagram, name='systems_dependencies_diagram'),

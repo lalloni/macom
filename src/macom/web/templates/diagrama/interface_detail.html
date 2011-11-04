@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load diagrams %}
 {% block title %} - {% trans "Interface" %} {{ object }}{% endblock %}
-{% block location %}<a href="{% url system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Interface" %} {{ object.name }}{% endblock %}
+{% block location %}<a href="{% url web:system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url web:module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Interface" %} {{ object.name }}{% endblock %}
 {% block content %}
     <h2>{% trans "Interface" %} <b>{{ object.name }}</b> {% include 'object-controls.html' %}</h2>
     <div id="interface-direction">
@@ -41,8 +41,8 @@
 	           <tbody>
 	               {% for dependency in dependencies %}
 	               <tr>
-	                   <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
-	                   <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+	                   <td><a href="{% url web:dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+	                   <td><a href="{% url web:module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
 	                   <td>{{ dependency.goal|markdown }}</td>
 	                   <td>{{ dependency|direction }}</p>
 	               </tr>
@@ -55,6 +55,6 @@
     </div>
     <div id="interface-diagram">
         <h3>{% trans "Diagram" %}</h3>
-        {% diagram interface_diagram object.pk %}
+        {% diagram web:interface_diagram object.pk %}
     </div>
 {% endblock content %}

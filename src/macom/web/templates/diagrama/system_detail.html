@@ -32,7 +32,7 @@
 		       <tbody>
 		           {% for module in modules %}
 		           <tr>
-		               <td><a href="{% url module_detail module.pk %}">{{ module }}</a>{% include 'third-party-object.html' with object=module %}</td>
+		               <td><a href="{% url web:module_detail module.pk %}">{{ module }}</a>{% include 'third-party-object.html' with object=module %}</td>
 	                   <td>{% if module.goal %}{{ module.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}</td>
 		           </tr>
 		           {% endfor %}
@@ -57,7 +57,7 @@
 	           <tbody>
 	               {% for interface in interfaces %}
 	               <tr>
-	                   <td><a href="{% url interface_detail interface.pk %}">{{ interface }}</a></td>
+	                   <td><a href="{% url web:interface_detail interface.pk %}">{{ interface }}</a></td>
 	                   <td>{% if interface.goal %}{{ interface.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}</td>
 	                   <td>{% if interface.direction_inbound %}in{% endif %}{% if interface.direction_outbound %}out{% endif %}</td>
 	               </tr>
@@ -84,9 +84,9 @@
                <tbody>
                    {% for dependency in dependencies %}
                    <tr>
-                       <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
-                       <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
-                       <td><a href="{% url interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
+                       <td><a href="{% url web:dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+                       <td><a href="{% url web:module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+                       <td><a href="{% url web:interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
 	                   <td>{{ dependency.goal|markdown }}</td>
 	                   <td>{{ dependency|direction }}</p>
                    </tr>
@@ -113,9 +113,9 @@
                <tbody>
                    {% for dependency in dependents %}
                    <tr>
-                       <td><a href="{% url dependency_detail dependency.pk %}">{{ dependency }}</a></td>
-                       <td><a href="{% url module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
-                       <td><a href="{% url interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
+                       <td><a href="{% url web:dependency_detail dependency.pk %}">{{ dependency }}</a></td>
+                       <td><a href="{% url web:module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
+                       <td><a href="{% url web:interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
                        <td>{{ dependency.goal|markdown }}</td>
                        <td>{{ dependency|direction }}</p>
                    </tr>
@@ -128,7 +128,7 @@
     </div>
     <div id="system-diagram">
         <h3>{% trans "Diagram" %}</h3>
-        {% diagram system_diagram object.pk %}
+        {% diagram web:system_diagram object.pk %}
     </div>
 {% endblock content %}
     
