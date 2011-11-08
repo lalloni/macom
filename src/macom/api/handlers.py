@@ -6,7 +6,7 @@ from django.template.context import Context
 from django.conf import settings 
 
 class Defaults(BaseHandler):
-    allowed_methods = ('GET',) # sólo lectura
+    allowed_methods = ('GET',) # solo lectura
     @classmethod
     def _kind(cls):
         return cls.model._meta.object_name.lower()
@@ -23,7 +23,7 @@ class Defaults(BaseHandler):
     def diagram_uri(cls, m):
         return reverse('web:%s_diagram' % cls._kind(), args=[m.pk])
     @classmethod
-    def resource_uri(cls):
+    def resource_uri(cls, m):
         return ('api_%s' % cls._kind(), ['pk'])
 
 class SystemHandler(Defaults):
