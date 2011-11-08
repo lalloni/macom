@@ -2,67 +2,7 @@
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
 }
-
-// INTERFACE
-isc.DataSource.create({
-	ID : "ds_model",
-	dataURL : "{% url api_model %}",
-	dataFormat : "json",
-	fields : [ {
-		name : "name"
-	 }, ]
- });
-
-isc.VLayout.create({
-	width : "100%",
-	height : "100%",
-	members : [ isc.HStack.create({
-		ID : "HeaderSection",
-		height : 48,    
-		hPolicy : "fill",
-		members : [ isc.Label.create({
-			contents : "macom",
-			baseStyle : "header"
-		 }), isc.LayoutSpacer.create({
-			width : "*"
-		 }), isc.Img.create({
-			src : "grass.png",
-			imageType : "normal"
-		 }) ]
-	 }), isc.HLayout.create({
-		ID : "ContentSection",
-		height : "*",
-		showEdges : "true",
-		members : [ isc.TreeGrid.create({
-			ID : "NavigationTree",
-            width : 300,
-			dataSource : "ds_model",
-			autoFetchData : true,
-            dataProperties: {openProperty: "isOpen"},
-			loadDataOnDemand : false,
-			defaultIsFolder : false,
-			showResizeBar : true,
-			generateClickOnEnter : true,
-            dataArrived: function ( p ) {
-                openTab( null, p.children[0] );
-            },
-			fields : [ {
-				name : 'name',
-				recordDoubleClick : openTab
-			 } ],
-		 }), isc.TabSet.create({
-			ID : 'ContentTabSet'
-		 }) ]
-	 }), isc.HStack.create({
-		ID : "FooterSection",
-		height : "1",
-		members : [ isc.IButton.create({
-			title : "Console",
-			click : "isc.showConsole()"
-		 }) ]
-	 }) ]
- });
-
+ 
 function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	// buscar tab q tenga el mismo record
     var tab = ContentTabSet.getTab(record.resource_uri);
 
@@ -72,7 +12,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
 			ID: record.resource_uri,
             title : ( record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name ),
 			record : record,
-			canClose : true,
+			canClose : true
 		});
         // Busca el tab recien creado
 		tab = ContentTabSet.getTab(record.resource_uri);
@@ -100,7 +40,7 @@ function createDS(record){
         ID : record.resource_uri,
         dataURL : record.resource_uri,
         dataFormat : "json",
-        dataProtocol : "getParams",
+        dataProtocol : "getParams"
     });
 }
 
@@ -329,4 +269,69 @@ function processDependency( data, id ){
             ]
         })
     );
+ }
+
+ function startApp () {
+
+	// INTERFACE
+	isc.DataSource.create({
+		ID : "ds_model",
+		addGlobalId: "false",
+		dataURL : "{% url api_model %}",
+		dataFormat : "json",
+		fields : [ {
+			name : "name"
+		 }, ]
+	 });
+
+	isc.VLayout.create({
+		width : "100%",
+		height : "100%",
+		members : [ isc.HStack.create({
+			ID : "HeaderSection",
+			height : 48,    
+			hPolicy : "fill",
+			members : [ isc.Label.create({
+				contents : "macom",
+				baseStyle : "header"
+			 }), isc.LayoutSpacer.create({
+				width : "*"
+			 }), isc.Img.create({
+				src : "grass.png",
+				imageType : "normal"
+			 }) ]
+		 }), isc.HLayout.create({
+			ID : "ContentSection",
+			height : "*",
+			showEdges : "true",
+			members : [ isc.TreeGrid.create({
+				ID : "NavigationTree",
+				width : 300,
+				dataSource : "ds_model",
+				autoFetchData : true,
+				dataProperties: {openProperty: "isOpen"},
+				loadDataOnDemand : false,
+				defaultIsFolder : false,
+				showResizeBar : true,
+				generateClickOnEnter : true,
+				dataArrived: function ( p ) {
+					openTab( null, p.children[0] );
+				},
+				fields : [{
+					name : "name",
+					recordDoubleClick : openTab
+				}]
+			}), isc.TabSet.create({
+				ID : "ContentTabSet"
+			})
+			]
+		 }), isc.HStack.create({
+			ID : "FooterSection",
+			height : "1",
+			members : [ isc.IButton.create({
+				title : "Console",
+				click : "isc.showConsole()"
+			 }) ]
+		 }) ]
+	 });
  }
