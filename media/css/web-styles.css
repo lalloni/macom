@@ -16,7 +16,7 @@
 		background-color: #EEE;
 	}
 	body {
-		font-family: sans;
+		font-family: sans, Verdana, Arial;
 		font-size: 9pt;
 	}
 	.hcenter {
@@ -36,6 +36,7 @@
 		background-color: #FFA;
 		padding: .2em 2em .2em 2em;
 		font-weight: bolder;
+		behavior: url(/media/css/border-radius.htc);
 		border-radius: 1em 4em 1em 4em;
 		border: 1px silver solid;
 		background-color: #FFA;
@@ -58,6 +59,7 @@
 		padding: .2em 2em .2em 2em;
 		font-weight: bolder;
 		font-size: -2;
+		behavior: url(/media/css/border-radius.htc);
 		border-radius: 4em 1em 4em 1em;
 		border: 1px silver solid;
 		background-color: #FFA;
@@ -69,6 +71,7 @@
 	}
 	#content h1,#content h2,#content h3,#content h4,#content h5 {
 		border: 1px silver solid;
+		behavior: url(/media/css/border-radius.htc);
 		border-radius: 4em 4em 1em 1em;
 		padding-left: 1em;
 		padding-right: 4em;
@@ -76,6 +79,7 @@
 	}
 	#header {
 		padding: .3em 1em .3em 1em;
+		behavior: url(/media/css/border-radius.htc);
 		border-radius: 4em;
 		border: 1px silver solid;
 		background-color: #ABF;
