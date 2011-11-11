@@ -1,16 +1,8 @@
-<html>
-	<head>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head profile="http://gmpg.org/xfn/11">
 		<!--META http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
 		<title>Macom Browser</title>
-		<script type="text/javascript">var isomorphicDir="{% url media 'isomorphic/' %}";</script>
-		<script type="text/javascript" src="{% url media 'isomorphic/system/modules/ISC_Core.js' %}"></script>
-		<script type="text/javascript" src="{% url media 'isomorphic/system/modules/ISC_Foundation.js' %}"></script>
-		<script type="text/javascript" src="{% url media 'isomorphic/system/modules/ISC_Containers.js' %}"></script>
-		<script type="text/javascript" src="{% url media 'isomorphic/system/modules/ISC_Grids.js' %}"></script>
-		<script type="text/javascript" src="{% url media 'isomorphic/system/modules/ISC_Forms.js' %}"></script>
-		<script type="text/javascript" src="{% url media 'isomorphic/system/modules/ISC_DataBinding.js' %}"></script>
-		<script type="text/javascript" src="{% url media 'isomorphic/skins/Enterprise/load_skin.js' %}"></script>
-		<script type="text/javascript" src="{% url script_template 'app.js' %}"></script>
+        <script type="text/javascript">var isomorphicDir="{% url media 'isomorphic/' %}";</script>
 		<style type="text/css">
 		  body { background-color: #CDF }
 		  .header {
@@ -20,10 +12,16 @@
 		      padding-left: 20px;
 		  }
 		</style>
-	</head>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Core.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Foundation.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Containers.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Grids.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Forms.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_DataBinding.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/skins/Enterprise/load_skin.js' %}"></script>
+		<script type="text/javascript" src="{% url script_template 'app.js' %}"></script>
+    </head>
 	<body>
-		<script type="text/javascript">
-			startApp();
-		</script>
+        <script type="text/javascript">startApp();</script>
 	</body>
 </html>

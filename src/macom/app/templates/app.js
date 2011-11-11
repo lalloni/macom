@@ -276,14 +276,14 @@ function processDependency( data, id ){
 	// INTERFACE
 	isc.DataSource.create({
 		ID : "ds_model",
-		addGlobalId: "false",
 		dataURL : "{% url api_model %}",
 		dataFormat : "json",
 		fields : [ {
 			name : "name"
-		 }, ]
+		 }]
 	 });
 
+     
 	isc.VLayout.create({
 		width : "100%",
 		height : "100%",
