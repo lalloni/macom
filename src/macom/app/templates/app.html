@@ -19,9 +19,8 @@
 		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Forms.js' %}"></script>
 		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_DataBinding.js' %}"></script>
 		<script type="text/javascript" src="{% url media 'isomorphic/skins/Enterprise/load_skin.js' %}"></script>
-		<script type="text/javascript" src="{% url script_template 'app.js' %}"></script>
     </head>
 	<body>
-        <script type="text/javascript">startApp();</script>
+        <script type="text/javascript" src="{% url script_template 'app.js' %}"></script>
 	</body>
 </html>
