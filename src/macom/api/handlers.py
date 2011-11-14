@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 from piston.handler import BaseHandler
 from macom.diagrama.models import System, Module, Interface, Dependency
@@ -79,8 +80,8 @@ class ModelHandler(BaseHandler):
                 modu['children'] = intes
             syst['children'] = modus
         return {'kind': 'root', 
-                        'name' : 'Sistema',
-                        'full_name':'Sistema',
+                        'name' : 'Sistemas',
+                        'full_name':'Sistemas',
                         'resource_uri': 'root',
                         'isOpen': 'true',
                         'diagrams' : ( { 'name': 'Sistemas con dependencias',
