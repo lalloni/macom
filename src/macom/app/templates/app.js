@@ -106,6 +106,8 @@ function processSystem(data, id){
                         pane: isc.ListGrid.create({
                             alternateRecordStyles:true,
                             autoFetchData : true,
+                            showFilterEditor: true,
+                            filterOnKeypress: true,
                             canExpandRecords: true,
                             expansionMode: "details",
                             dataSource : isc.DataSource.create({
@@ -126,6 +128,8 @@ function processSystem(data, id){
                             alternateRecordStyles:true,
                             autoFetchData : true,
                             recordDoubleClick: openTab,
+                            showFilterEditor: true,
+                            filterOnKeypress: true,
                             canExpandRecords: true,
                             expansionMode: "details",
                             dataSource :  isc.DataSource.create({
@@ -149,6 +153,8 @@ function processSystem(data, id){
                             alternateRecordStyles:true,
                             autoFetchData : true,
                             recordDoubleClick: openTab,
+                            showFilterEditor: true,
+                            filterOnKeypress: true,
                             canExpandRecords: true,
                             expansionMode: "details",
                             dataSource :  isc.DataSource.create({
@@ -172,6 +178,8 @@ function processSystem(data, id){
                             alternateRecordStyles:true,
                             autoFetchData : true,
                             recordDoubleClick: openTab,
+                            showFilterEditor: true,
+                            filterOnKeypress: true,
                             canExpandRecords: true,
                             expansionMode: "details",
                             dataSource :  isc.DataSource.create({
@@ -225,6 +233,8 @@ function processModule( data, id ){
                             alternateRecordStyles:true,
                             autoFetchData : true,
                             recordDoubleClick: openTab,
+                            showFilterEditor: true,
+                            filterOnKeypress: true,
                             canExpandRecords: true,
                             expansionMode: "details",
                             dataSource :  isc.DataSource.create({
