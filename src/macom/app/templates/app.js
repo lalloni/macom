@@ -16,33 +16,30 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
         switch (record.kind){
             case 'root': // Si es root:
                 // muetra items del root
-                processRoot(tab, record);
+                showViewRoot(tab, record);
                 break;
             
             default: // Si es system, module, dependency o interface
-                // Crea el datasource
-                createDS(record);
+                // DATASOURCE
+                isc.DataSource.create({
+                    ID : record.resource_uri,
+                    dataURL : record.resource_uri,
+                    dataFormat : "json",
+                    dataProtocol : "getParams"
+                });
                 
-                // Llena los datos segun el tipo
+                // VIEW
                 isc.DataSource.get(record.resource_uri)
                     .fetchData(null,
-                                    "process"+record.kind.charAt(0).toUpperCase() + record.kind.slice(1).toLowerCase()+"(data, \""+ record.resource_uri +"\")" // Callback
+                                    "showView"+record.kind.charAt(0).toUpperCase() + record.kind.slice(1).toLowerCase()+"(data, \""+ record.resource_uri +"\")" // Callback
                 );
         }
 	 }
 	ContentTabSet.selectTab(tab);
  }
 
-function createDS(record){
-    isc.DataSource.create({
-        ID : record.resource_uri,
-        dataURL : record.resource_uri,
-        dataFormat : "json",
-        dataProtocol : "getParams"
-    });
-}
 
-function processRoot ( tab, record ){
+function showViewRoot ( tab, record ){
     tab.setPane(
         isc.TabSet.create({
             tabs:  getTabs( record.diagrams )
@@ -66,7 +63,7 @@ function getTabs ( tabs ){
     return tabset;
 }
 
-function processSystem(data, id){
+function showViewSystem(data, id){
     // Variables de datos
     var system = data[0];
     var modules = system.modules;
@@ -126,7 +123,7 @@ function processSystem(data, id){
                                     { name : "external", title : "Externo", width: "50" }
                                     ] }),
                             fields : [
-                                { name : "full_name", title : "Nombre" }
+                                { name : "full_name" }, { name : "external" }
                             ] })
                         }, {
                         title: "Interfaces (" + module_interfaces.length + ")", 
@@ -151,7 +148,7 @@ function processSystem(data, id){
                                 ]
                             }),
                             fields : [
-                                { name : "full_name", title : "Nombre" }
+                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
                             ] })
                         }, {
                         title: "Dependencias (" + system.dependencies.length + ")", 
@@ -176,7 +173,7 @@ function processSystem(data, id){
                                 ]
                             }),
                             fields : [
-                                { name : "full_name", title : "Nombre" },
+                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
                             ] })
                         }, {
                         title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
@@ -201,7 +198,7 @@ function processSystem(data, id){
                                 ]
                             }),
                             fields : [
-                                { name : "full_name", title : "Nombre" },
+                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
                             ] })
                         }
                     ]
@@ -211,7 +208,7 @@ function processSystem(data, id){
     );
 }
 
-function processModule( data, id ){
+function showViewModule( data, id ){
     var module = data[0];
 
     ContentTabSet.getTab(id).setPane(
@@ -262,7 +259,7 @@ function processModule( data, id ){
                                 ]
                             }),
                             fields : [
-                                { name : "full_name", title : "Nombre" }
+                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
                             ] 
                         })
                     }]
@@ -272,7 +269,7 @@ function processModule( data, id ){
     );
  }
 
-function processInterface( data, id ){
+function showViewInterface( data, id ){
     var interface = data[0];
 
     ContentTabSet.getTab(id).setPane(
@@ -307,7 +304,7 @@ function processInterface( data, id ){
     );
  }
 
-function processDependency( data, id ){
+function showViewDependency( data, id ){
     var dependency = data[0];
     var interface = dependency.interface;
 
