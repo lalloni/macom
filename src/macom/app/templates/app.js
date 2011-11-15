@@ -1,3 +1,44 @@
+//Settings
+var diagramServiceUrl = "{{diagram_service_url}}/{{localuri}}";
+diagramServiceUrl = diagramServiceUrl.substring(0,diagramServiceUrl.length-1); // Le saca la / del final
+
+// Fields Predefinidos
+var fieldName = { name : "full_name", title : "Nombre" };
+var fieldDescription = { name : "description", title : "Descripci&oacute;n" };
+var fieldGoal = { name : "goal", title : "Objetivo" };
+var fieldReferents = { name : "referents", title : "Referentes" };
+var fieldDocumentation = { name : "documentation", title : "Documentaci&oacute;n" };
+var fieldTechnology = { name : "technology", title : "Tecnolog&iacute;a", width: "100" };
+var fieldDirection = { name : "direction", title : "Direcci&oacute;n", width: "60", type:"image", imageURLPrefix:"/media/img/morocho/icon", imageURLSuffix:".png" };
+var fieldExternal =  { name : "external", title : "Externo", width: "50", type:"image", imageURLPrefix:"/media/img/", imageURLSuffix:"-icon.gif"};
+
+var fieldsBasic =  [fieldName, fieldGoal, fieldReferents, fieldDocumentation];
+
+// Conjunto de fields por tipo
+var fieldsSystem = [fieldName, fieldDescription, fieldReferents, fieldDocumentation,fieldExternal]
+var fieldsModule = fieldsBasic.concat(fieldExternal);
+var fieldsInterface = fieldsBasic.concat([fieldTechnology, fieldDirection]);
+
+// Objetos predefinidos
+isc.defineClass("DetailGrid", "ListGrid");
+isc.DetailGrid.addProperties({
+    recordDoubleClick: openTab,
+    alternateRecordStyles:true,
+    autoFetchData : true,
+    showFilterEditor: true,
+    filterOnKeypress: true,
+    canExpandRecords: true,
+    expansionMode: "details"
+});
+
+isc.defineClass("InterfaceDataSource", "DataSource");
+isc.InterfaceDataSource.addProperties({
+        clientOnly: true,
+        fields : fieldsInterface
+});
+
+// APPLICATION
+
 function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	// buscar tab q tenga el mismo record
     var tab = ContentTabSet.getTab(record.resource_uri);
 
@@ -54,7 +95,7 @@ function getTabs ( tabs ){
         tabset.push ({
             title: tabs[i].name,
             pane:  isc.Img.create({
-                    src: "{{diagram_service_url}}/{{localuri}}."+tabs[i].diagram_uri,
+                    src: diagramServiceUrl+tabs[i].diagram_uri,
                     imageType : "natural"
             })
         })
@@ -85,121 +126,54 @@ function showViewSystem(data, id){
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data: system,
-                    fields : [
-                        { value : "Sistema", type : "header"},
-                        { name : "full_name", title : "Nombre" },
-                        { name : "description", title : "Descripci&oacute;n" },    
-                        { name : "referents", title : "Referentes" },
-                        { name : "documentation", title : "Documentaci&oacute;n" },
-                        { name : "external", title : "Externo" }
-                    ]
+                    fields : [{ value : "Sistema", type : "header"}].concat(fieldsSystem)
                 }),
                 isc.LayoutSpacer.create({height:"10" }),
                 isc.TabSet.create({
                     tabs: [ {
                         title: "Diagrama",
                         pane: isc.Img.create({
-                            src: "{{diagram_service_url}}/{{localuri}}."+system.diagram_uri,
+                            src: diagramServiceUrl+system.diagram_uri,
                             imageType : "natural"
                             })
                         }, {
-                        title: "M&oacute;dulos (" + modules.length + ")", 
-                        pane: isc.ListGrid.create({
-                            recordDoubleClick: openTab,
-                            alternateRecordStyles:true,
-                            autoFetchData : true,
-                            showFilterEditor: true,
-                            filterOnKeypress: true,
-                            canExpandRecords: true,
-                            expansionMode: "details",
-                            dataSource : isc.DataSource.create({
-                                testData: modules,
-                                clientOnly: true,
+                            title: "M&oacute;dulos (" + modules.length + ")", 
+                            pane: isc.DetailGrid.create({
+                                dataSource : isc.DataSource.create({
+                                    testData: modules,
+                                    clientOnly: true,
+                                    fields : fieldsModule
+                                }),
                                 fields : [
-                                    { name : "full_name", title : "Nombre" },
-                                    { name : "goal", title : "Objetivo" },
-                                    { name : "referents", title : "Referentes" },
-                                    { name : "documentation", title : "Documentaci&oacute;n" },
-                                    { name : "external", title : "Externo", width: "50" }
-                                    ] }),
-                            fields : [
-                                { name : "full_name" }, { name : "external" }
-                            ] })
-                        }, {
-                        title: "Interfaces (" + module_interfaces.length + ")", 
-                        pane: isc.ListGrid.create({
-                            recordDoubleClick: openTab,
-                            alternateRecordStyles:true,
-                            autoFetchData : true,
-                            showFilterEditor: true,
-                            filterOnKeypress: true,
-                            canExpandRecords: true,
-                            expansionMode: "details",
-                            dataSource :  isc.DataSource.create({
-                                testData: module_interfaces,
-                                clientOnly: true,
-                                fields : [
-                                    { name : "full_name", title : "Nombre" },
-                                    { name : "goal", title : "Objetivo" },
-                                    { name : "technology", title : "Tecnolog&iacute;a", width: "100" },
-                                    { name : "direction", title : "Direcci&oacute;n", width: "60" },
-                                    { name : "referents", title : "Referentes" },
-                                    { name : "documentation", title : "Documentaci&oacute;n" }
+                                    { name : "full_name" }, { name : "external" }
                                 ]
-                            }),
-                            fields : [
-                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
-                            ] })
+                            })
                         }, {
-                        title: "Dependencias (" + system.dependencies.length + ")", 
-                        pane: isc.ListGrid.create({
-                            recordDoubleClick: openTab,
-                            alternateRecordStyles:true,
-                            autoFetchData : true,
-                            showFilterEditor: true,
-                            filterOnKeypress: true,
-                            canExpandRecords: true,
-                            expansionMode: "details",
-                            dataSource :  isc.DataSource.create({
-                                testData: system.dependencies,
-                                clientOnly: true,
-                                fields : [
-                                    { name : "full_name", title : "Nombre" },
-                                    { name : "goal", title : "Objetivo" },
-                                    { name : "technology", title : "Tecnolog&iacute;a", width: "100" },
-                                    { name : "direction", title : "Direcci&oacute;n", width: "60" },
-                                    { name : "referents", title : "Referentes" },
-                                    { name : "documentation", title : "Documentaci&oacute;n" }
-                                ]
-                            }),
-                            fields : [
-                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
-                            ] })
+                            title: "Interfaces (" + module_interfaces.length + ")", 
+                            pane: isc.DetailGrid.create({
+                                dataSource :  isc.InterfaceDataSource.create({
+                                    testData: module_interfaces
+                                }) ,
+                                fields : [ { name : "full_name" }, { name : "technology"}, { name : "direction" } ] 
+                            })
                         }, {
-                        title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
-                        pane: isc.ListGrid.create({
-                            recordDoubleClick: openTab,
-                            alternateRecordStyles:true,
-                            autoFetchData : true,
-                            showFilterEditor: true,
-                            filterOnKeypress: true,
-                            canExpandRecords: true,
-                            expansionMode: "details",
-                            dataSource :  isc.DataSource.create({
-                                testData: system.dependents,
-                                clientOnly: true,
-                                fields : [
-                                    { name : "full_name", title : "Nombre" },
-                                    { name : "goal", title : "Objetivo" },
-                                    { name : "technology", title : "Tecnolog&iacute;a", width: "100" },
-                                    { name : "direction", title : "Direcci&oacute;n", width: "60" },
-                                    { name : "referents", title : "Referentes" },
-                                    { name : "documentation", title : "Documentaci&oacute;n" }
-                                ]
-                            }),
-                            fields : [
-                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
-                            ] })
+                            title: "Dependencias (" + system.dependencies.length + ")", 
+                            pane: isc.DetailGrid.create({
+                                ID: "Dependencies",
+                                dataSource :  isc.InterfaceDataSource.create({
+                                    testData: system.dependencies
+                                }) ,
+                                fields : [ { name : "full_name" }, { name : "technology"}, { name : "direction" } ] 
+                            })
+                        }, {
+                            title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
+                            pane: isc.DetailGrid.create({
+                                ID: "Dependents",
+                                dataSource :  isc.InterfaceDataSource.create({
+                                    testData: system.dependents
+                                }) ,
+                                fields : [ { name : "full_name" }, { name : "technology"}, { name : "direction" } ] 
+                            })
                         }
                     ]
                 })
@@ -218,49 +192,23 @@ function showViewModule( data, id ){
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data: module,
-                    fields : [
-                        { value : "M&oacute;dulo", type : "header"},    
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "referents", title : "Referentes" }, 
-                        { name : "documentation", title : "Documentaci&oacute;n" },
-                        { name : "external", title : "Externo" },
-                        { name : "criticity", title : "Criticidad" }
-                    ]
+                    fields : [{ value : "M&oacute;dulo", type : "header"}].concat(fieldsModule)
                 }),
                 isc.LayoutSpacer.create({height:"10" }),
                 isc.TabSet.create({
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Img.create({
-                            src: "{{diagram_service_url}}/{{localuri}}."+module.diagram_uri,
+                            src: diagramServiceUrl+module.diagram_uri,
                             imageType : "natural"
                             })
                         }, {
                         title: "Interfaces (" + module.interfaces.length + ")", 
-                        pane: isc.ListGrid.create({
-                            recordDoubleClick: openTab,
-                            alternateRecordStyles:true,
-                            autoFetchData : true,
-                            showFilterEditor: true,
-                            filterOnKeypress: true,
-                            canExpandRecords: true,
-                            expansionMode: "details",
-                            dataSource :  isc.DataSource.create({
-                                testData: module.interfaces,
-                                clientOnly: true,
-                                fields : [
-                                    { name : "full_name", title : "Nombre" },
-                                    { name : "goal", title : "Objetivo" },
-                                    { name : "technology", title : "Tecnolog&iacute;a", width: "100" },
-                                    { name : "direction", title : "Direcci&oacute;n", width: "60" },
-                                    { name : "referents", title : "Referentes" },
-                                    { name : "documentation", title : "Documentaci&oacute;n" }
-                                ]
-                            }),
-                            fields : [
-                                { name : "full_name" }, { name : "technology"}, { name : "direction" }
-                            ] 
+                        pane: isc.DetailGrid.create({
+                            dataSource :  isc.InterfaceDataSource.create({
+                                testData: module.interfaces
+                            }) ,
+                            fields : [ { name : "full_name" }, { name : "technology"}, { name : "direction" } ] 
                         })
                     }]
                 })
@@ -279,22 +227,14 @@ function showViewInterface( data, id ){
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data : interface,
-                    fields : [
-                        { value : "Interfaz", type : "header"},
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "referents", title : "Referentes" },
-                        { name : "documentation", title : "Documentaci&oacute;n" },
-                        { name : "technology", title : "Tecnolog&iacute;a" },
-                        { name : "direction", title : "Direcci&oacute;n" }
-                    ]
+                    fields : [{ value : "Interface", type : "header"}].concat(fieldsInterface)
                  }) ,
                 isc.LayoutSpacer.create({height:"10" }),
                 isc.TabSet.create({
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Img.create({
-                            src: "{{diagram_service_url}}/{{localuri}}."+interface.diagram_uri,
+                            src: diagramServiceUrl+interface.diagram_uri,
                             imageType : "natural"
                         })
                     }]
@@ -317,29 +257,14 @@ function showViewDependency( data, id ){
                     data: dependency,
                     canExpandRecords: true,
                     expansionMode: "details",
-                    fields : [
-                        { value : "Dependencia", type : "header"},
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "technology", title : "Tecnolig&iacute;a" },
-                        { name : "direction", title : "Direcci&oacute;n" },
-                    ]
+                    fields : [{ value : "Dependencia", type : "header"}].concat(fieldsInterface)
                 }),
                 isc.LayoutSpacer.create({height:"10" }),
                 isc.DetailViewer.create({
                     autoFetchData : true,
                     data : interface,
                     recordDoubleClick: openTab,
-                    fields : [
-                        { value : "Interfaz utilizada", type : "header"},
-                        { name : "full_name", title : "Nombre" },
-                        { name : "goal", title : "Objetivo" },
-                        { name : "direction", title : "Direcci&oacute;n" },
-                        { name : "technology", title : "Tecnolog&iacute;a" },
-                        { name : "documentation", title : "Documentaci&oacute;n" },
-                        { name : "referents", title : "Referentes" },
-                        { name : "external", title : "Externo", width: "50" }
-                    ]
+                    fields : [{ value : "Interfaz utilizada", type : "header"}].concat(fieldsInterface)
                 })
             ]
         })
