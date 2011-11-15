@@ -19,6 +19,20 @@ var fieldsSystem = [fieldName, fieldDescription, fieldReferents, fieldDocumentat
 var fieldsModule = fieldsBasic.concat(fieldExternal);
 var fieldsInterface = fieldsBasic.concat([fieldTechnology, fieldDirection]);
 
+// Propiedades default en objetos de SmartClient
+isc.Img.addProperties({
+    imageType : "natural"
+});
+
+isc.DataSource.addProperties({
+    dataFormat : "json",
+    dataProtocol : "getParams"
+})
+
+isc.DetailViewer.addProperties({
+    autoFetchData : true
+})
+
 // Objetos predefinidos
 isc.defineClass("DetailGrid", "ListGrid");
 isc.DetailGrid.addProperties({
@@ -36,6 +50,7 @@ isc.InterfaceDataSource.addProperties({
         clientOnly: true,
         fields : fieldsInterface
 });
+
 
 // APPLICATION
 
@@ -64,9 +79,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
                 // DATASOURCE
                 isc.DataSource.create({
                     ID : record.resource_uri,
-                    dataURL : record.resource_uri,
-                    dataFormat : "json",
-                    dataProtocol : "getParams"
+                    dataURL : record.resource_uri
                 });
                 
                 // VIEW
@@ -95,8 +108,7 @@ function getTabs ( tabs ){
         tabset.push ({
             title: tabs[i].name,
             pane:  isc.Img.create({
-                    src: diagramServiceUrl+tabs[i].diagram_uri,
-                    imageType : "natural"
+                    src: diagramServiceUrl+tabs[i].diagram_uri
             })
         })
     }
@@ -124,7 +136,6 @@ function showViewSystem(data, id){
             height : "*",
             members: [ 
                 isc.DetailViewer.create({
-                    autoFetchData : true,
                     data: system,
                     fields : [{ value : "Sistema", type : "header"}].concat(fieldsSystem)
                 }),
@@ -133,8 +144,7 @@ function showViewSystem(data, id){
                     tabs: [ {
                         title: "Diagrama",
                         pane: isc.Img.create({
-                            src: diagramServiceUrl+system.diagram_uri,
-                            imageType : "natural"
+                            src: diagramServiceUrl+system.diagram_uri
                             })
                         }, {
                             title: "M&oacute;dulos (" + modules.length + ")", 
@@ -190,7 +200,6 @@ function showViewModule( data, id ){
             height : "*",
             members: [
                 isc.DetailViewer.create({
-                    autoFetchData : true,
                     data: module,
                     fields : [{ value : "M&oacute;dulo", type : "header"}].concat(fieldsModule)
                 }),
@@ -199,8 +208,7 @@ function showViewModule( data, id ){
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Img.create({
-                            src: diagramServiceUrl+module.diagram_uri,
-                            imageType : "natural"
+                            src: diagramServiceUrl+module.diagram_uri
                             })
                         }, {
                         title: "Interfaces (" + module.interfaces.length + ")", 
@@ -225,7 +233,6 @@ function showViewInterface( data, id ){
             height : "*",
             members: [
                 isc.DetailViewer.create({
-                    autoFetchData : true,
                     data : interface,
                     fields : [{ value : "Interface", type : "header"}].concat(fieldsInterface)
                  }) ,
@@ -234,8 +241,7 @@ function showViewInterface( data, id ){
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Img.create({
-                            src: diagramServiceUrl+interface.diagram_uri,
-                            imageType : "natural"
+                            src: diagramServiceUrl+interface.diagram_uri
                         })
                     }]
                 })
@@ -246,25 +252,29 @@ function showViewInterface( data, id ){
 
 function showViewDependency( data, id ){
     var dependency = data[0];
-    var interface = dependency.interface;
+    var interface = new Array(dependency.interface);
 
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
             members: [
                 isc.DetailViewer.create({
-                    autoFetchData : true,
                     data: dependency,
                     canExpandRecords: true,
                     expansionMode: "details",
                     fields : [{ value : "Dependencia", type : "header"}].concat(fieldsInterface)
                 }),
                 isc.LayoutSpacer.create({height:"10" }),
-                isc.DetailViewer.create({
-                    autoFetchData : true,
-                    data : interface,
-                    recordDoubleClick: openTab,
-                    fields : [{ value : "Interfaz utilizada", type : "header"}].concat(fieldsInterface)
+                isc.TabSet.create({
+                    tabs: [{
+                        title: "Interfaz utilizada", 
+                        pane: isc.DetailGrid.create({
+                            dataSource :  isc.InterfaceDataSource.create({
+                                testData: interface
+                            }) ,
+                            fields : [ { name : "full_name" }, { name : "technology"}, { name : "direction" } ] 
+                        })
+                    }]
                 })
             ]
         })
@@ -286,7 +296,6 @@ isc.VLayout.create({
             width : "*"
          }), isc.Img.create({
             src : "grass.png",
-            imageType : "normal"
          }) ]
      }), isc.HLayout.create({
         ID : "ContentSection",
@@ -297,7 +306,6 @@ isc.VLayout.create({
             width : 300,
             dataSource : isc.DataSource.create({
                 dataURL : "{% url api_model %}",
-                dataFormat : "json",
                 fields : [ {
                     name : "name"
                  }]
