@@ -1,13 +1,10 @@
-
 # -*- coding: UTF-8 -*-
 from piston.handler import BaseHandler
 from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
-from django.template.context import Context
-from django.conf import settings 
 
 class Defaults(BaseHandler):
-    allowed_methods = ('GET',) # solo lectura
+    allowed_methods = ('GET',) # sólo lectura
     @classmethod
     def _kind(cls):
         return cls.model._meta.object_name.lower()
@@ -24,7 +21,7 @@ class Defaults(BaseHandler):
     def diagram_uri(cls, m):
         return reverse('web:%s_diagram' % cls._kind(), args=[m.pk])
     @classmethod
-    def resource_uri(cls, m):
+    def resource_uri(cls):
         return ('api_%s' % cls._kind(), ['pk'])
 
 class SystemHandler(Defaults):
@@ -85,10 +82,8 @@ class ModelHandler(BaseHandler):
                         'resource_uri': 'root',
                         'isOpen': 'true',
                         'diagrams' : ( { 'name': 'Sistemas con dependencias',
-                                                      'resource_uri': self.getUrl('web:systems_dependencies_diagram', request)  },
-                                                  { 'name': 'Sistemas sin dependencias externas',
-                                                     'resource_uri': self.getUrl('web:systems_no_thirdparty_dependencies_diagram', request) } ),
+                                                  'diagram_uri': reverse('web:systems_dependencies_diagram') },
+                                               { 'name': 'Sistemas sin dependencias externas',
+                                                  'diagram_uri': reverse('web:systems_no_thirdparty_dependencies_diagram') }
+                                             ),
                         'children' : res }
-        
-    def getUrl(self, url, request):
-        return  "%s/%s" % (settings.DIAGRAM_SERVICE_URL, request.build_absolute_uri(reverse(url)))

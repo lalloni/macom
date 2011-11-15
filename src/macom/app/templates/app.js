@@ -1,8 +1,3 @@
-// UTILS
-String.prototype.capitalize = function () {
-    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
-}
-
 function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	// buscar tab q tenga el mismo record
     var tab = ContentTabSet.getTab(record.resource_uri);
 
@@ -29,7 +24,10 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
                 createDS(record);
                 
                 // Llena los datos segun el tipo
-                isc.DataSource.get(record.resource_uri).fetchData(null, "process"+record.kind.capitalize()+"(data, \""+ record.resource_uri +"\")");
+                isc.DataSource.get(record.resource_uri)
+                    .fetchData(null,
+                                    "process"+record.kind.charAt(0).toUpperCase() + record.kind.slice(1).toLowerCase()+"(data, \""+ record.resource_uri +"\")" // Callback
+                );
         }
 	 }
 	ContentTabSet.selectTab(tab);
@@ -59,7 +57,7 @@ function getTabs ( tabs ){
         tabset.push ({
             title: tabs[i].name,
             pane:  isc.Img.create({
-                    src: tabs[i].resource_uri,
+                    src: "{{diagram_service_url}}/{{localuri}}."+tabs[i].diagram_uri,
                     imageType : "natural"
             })
         })
@@ -102,8 +100,15 @@ function processSystem(data, id){
                 isc.LayoutSpacer.create({height:"10" }),
                 isc.TabSet.create({
                     tabs: [ {
+                        title: "Diagrama",
+                        pane: isc.Img.create({
+                            src: "{{diagram_service_url}}/{{localuri}}."+system.diagram_uri,
+                            imageType : "natural"
+                            })
+                        }, {
                         title: "M&oacute;dulos (" + modules.length + ")", 
                         pane: isc.ListGrid.create({
+                            recordDoubleClick: openTab,
                             alternateRecordStyles:true,
                             autoFetchData : true,
                             showFilterEditor: true,
@@ -116,18 +121,19 @@ function processSystem(data, id){
                                 fields : [
                                     { name : "full_name", title : "Nombre" },
                                     { name : "goal", title : "Objetivo" },
+                                    { name : "referents", title : "Referentes" },
+                                    { name : "documentation", title : "Documentaci&oacute;n" },
                                     { name : "external", title : "Externo", width: "50" }
-                                ] }),
-                            recordDoubleClick: openTab,
+                                    ] }),
                             fields : [
                                 { name : "full_name", title : "Nombre" }
                             ] })
                         }, {
                         title: "Interfaces (" + module_interfaces.length + ")", 
                         pane: isc.ListGrid.create({
+                            recordDoubleClick: openTab,
                             alternateRecordStyles:true,
                             autoFetchData : true,
-                            recordDoubleClick: openTab,
                             showFilterEditor: true,
                             filterOnKeypress: true,
                             canExpandRecords: true,
@@ -150,9 +156,9 @@ function processSystem(data, id){
                         }, {
                         title: "Dependencias (" + system.dependencies.length + ")", 
                         pane: isc.ListGrid.create({
+                            recordDoubleClick: openTab,
                             alternateRecordStyles:true,
                             autoFetchData : true,
-                            recordDoubleClick: openTab,
                             showFilterEditor: true,
                             filterOnKeypress: true,
                             canExpandRecords: true,
@@ -175,9 +181,9 @@ function processSystem(data, id){
                         }, {
                         title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
                         pane: isc.ListGrid.create({
+                            recordDoubleClick: openTab,
                             alternateRecordStyles:true,
                             autoFetchData : true,
-                            recordDoubleClick: openTab,
                             showFilterEditor: true,
                             filterOnKeypress: true,
                             canExpandRecords: true,
@@ -228,11 +234,17 @@ function processModule( data, id ){
                 isc.LayoutSpacer.create({height:"10" }),
                 isc.TabSet.create({
                     tabs: [{
+                        title: "Diagrama",
+                        pane: isc.Img.create({
+                            src: "{{diagram_service_url}}/{{localuri}}."+module.diagram_uri,
+                            imageType : "natural"
+                            })
+                        }, {
                         title: "Interfaces (" + module.interfaces.length + ")", 
                         pane: isc.ListGrid.create({
+                            recordDoubleClick: openTab,
                             alternateRecordStyles:true,
                             autoFetchData : true,
-                            recordDoubleClick: openTab,
                             showFilterEditor: true,
                             filterOnKeypress: true,
                             canExpandRecords: true,
@@ -266,20 +278,33 @@ function processInterface( data, id ){
     ContentTabSet.getTab(id).setPane(
         isc.VLayout.create({
             height : "*",
-            members: isc.DetailViewer.create({
-                autoFetchData : true,
-                data : interface,
-                fields : [
-                    { value : "Interfaz", type : "header"},
-                    { name : "full_name", title : "Nombre" },
-                    { name : "goal", title : "Objetivo" },
-                    { name : "referents", title : "Referentes" },
-                    { name : "documentation", title : "Documentaci&oacute;n" },
-                    { name : "technology", title : "Tecnolog&iacute;a" },
-                    { name : "direction", title : "Direcci&oacute;n" }
-                ]
-             })
-    }));
+            members: [
+                isc.DetailViewer.create({
+                    autoFetchData : true,
+                    data : interface,
+                    fields : [
+                        { value : "Interfaz", type : "header"},
+                        { name : "full_name", title : "Nombre" },
+                        { name : "goal", title : "Objetivo" },
+                        { name : "referents", title : "Referentes" },
+                        { name : "documentation", title : "Documentaci&oacute;n" },
+                        { name : "technology", title : "Tecnolog&iacute;a" },
+                        { name : "direction", title : "Direcci&oacute;n" }
+                    ]
+                 }) ,
+                isc.LayoutSpacer.create({height:"10" }),
+                isc.TabSet.create({
+                    tabs: [{
+                        title: "Diagrama",
+                        pane: isc.Img.create({
+                            src: "{{diagram_service_url}}/{{localuri}}."+interface.diagram_uri,
+                            imageType : "natural"
+                        })
+                    }]
+                })
+            ]
+        })
+    );
  }
 
 function processDependency( data, id ){
