@@ -269,25 +269,29 @@ isc.VLayout.create({
         members : [ isc.TreeGrid.create({
             ID : "NavigationTree",
             width : 300,
-            dataSource : isc.JsonDataSource.create({
-                dataURL : "{% url api_model %}",
-                fields : [ {
-                    name : "name"
-                 }]
-            }),
             autoFetchData : true,
             dataProperties: {openProperty: "isOpen"},
             loadDataOnDemand : false,
             defaultIsFolder : false,
             showResizeBar : true,
             generateClickOnEnter : true,
+            getIcon: function (node){
+                    return "/media/img/morocho/" + node.kind + ".png";
+            },
+            dataSource : isc.JsonDataSource.create({
+                dataURL : "{% url api_model %}",
+                fields : [ {
+                    name : "name"
+                 }]
+            }),
             dataArrived: function ( p ) {
                 openTab( null, p.children[0] );
             },
             fields : [{
                 name : "name",
                 recordDoubleClick : openTab
-            }]
+            }],
+            recordDoubleClick : function(){} // Elimina el evento de dobleClick por default
         }), isc.TabSet.create({
             ID : "ContentTabSet"
         })
