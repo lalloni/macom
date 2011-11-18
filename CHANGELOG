@@ -1,0 +1,7 @@
+2011-11-18
+    plalloni: Integrated django-taggit
+        - Install django-taggit executing:
+            pip install django-taggit 
+        - Create taggit tables executing:
+            manage.py syncdb
+        - Added tags field to System model as example

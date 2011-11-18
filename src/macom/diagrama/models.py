@@ -3,6 +3,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
+from taggit.managers import TaggableManager
 
 class Base(models.Model):
     class Meta:
@@ -23,6 +24,7 @@ class System(Base):
     referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     external = models.BooleanField(_('external'), help_text=_('external-help'))
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('system')
         verbose_name_plural = _('systems')

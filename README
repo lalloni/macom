@@ -2,6 +2,7 @@ Requerimientos:
 
  - django:1.3.1
  - django-piston:0.2.2
+ - django-taggit:0.9.3 
  - south:0.7.3
  - python-markdown:2.0.3
  - python-pydot:1.0.2
