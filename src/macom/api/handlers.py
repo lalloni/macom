@@ -44,10 +44,30 @@ class ModuleHandler(Defaults):
 class InterfaceHandler(Defaults):
     model = Interface
     fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'diagram_uri')
+    @classmethod
+    def read(cls, req, interface=None, system=None, module=None):
+        if interface:
+            return Interface.objects.get(id=interface)
+        if module:
+            return Interface.objects.filter(module=module)
+        if system:
+            return Interface.objects.filter(module__system=system, published=True)
+        else:
+            return Interface.objects.all()
 
 class DependencyHandler(Defaults):
     model = Dependency
     fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
+    @classmethod
+    def read(cls, req, dependency=None, system=None, module=None, interface=None):
+        if dependency:
+            return Dependency.objects.get(id=dependency)
+        if interface:
+            return Dependency.objects.filter(interface=interface)
+        if module:
+            return Dependency.objects.filter(module=module)
+        if system:
+            return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
 
 class ModelHandler(BaseHandler):
     def read(self, request):
@@ -55,7 +75,7 @@ class ModelHandler(BaseHandler):
         for syst in System.objects.values('id', 'name'):
             syst['kind'] = "system"
             syst['resource_uri'] = reverse('api_system', args=[syst['id']])
-            syst['full_name']  = syst['name']
+            syst['full_name'] = syst['name']
             syst_id = syst['id']
             syst['id'] = "%s%s" % (syst['kind'], syst_id)
             res.append(syst)
@@ -72,16 +92,16 @@ class ModelHandler(BaseHandler):
                     inte['kind'] = "interface"
                     inte['full_name'] = "%s:%s" % (modu['full_name'], inte['name'])
                     inte['resource_uri'] = reverse('api_interface', args=[inte['id']])
-                    inte['id'] = "%s%s" % (inte['kind'],inte['id'])
+                    inte['id'] = "%s%s" % (inte['kind'], inte['id'])
                     intes.append(inte)
                 modu['children'] = intes
             syst['children'] = modus
-        return {'kind': 'root', 
+        return {'kind': 'root',
                         'name' : 'Sistemas',
                         'full_name':'Sistemas',
                         'resource_uri': 'root',
                         'isOpen': 'true',
-                        'diagrams' : ( { 'name': 'Sistemas con dependencias',
+                        'diagrams' : ({ 'name': 'Sistemas con dependencias',
                                                   'diagram_uri': reverse('web:systems_dependencies_diagram') },
                                                { 'name': 'Sistemas sin dependencias externas',
                                                   'diagram_uri': reverse('web:systems_no_thirdparty_dependencies_diagram') }

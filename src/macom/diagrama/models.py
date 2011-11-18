@@ -77,6 +77,7 @@ class Interface(Base, Directionality):
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('interface-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('interface-outbound-help'))
+    published = models.BooleanField(_('Published'), help_text=_('Published for use outside the system'))
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')
