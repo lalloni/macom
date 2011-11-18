@@ -11,20 +11,19 @@ var fieldExternal = { name : "external", title : " ", width: "20", type:"image",
 // Propiedades default en objetos de SmartClient
 isc.defineClass("Diagram", "VLayout").addProperties({
     height: "*",
-    
     initWidget: function () {
-        this.Super("initWidget", arguments);
-        
         this.diagramImage = isc.Img.create({
             src: "{{diagram_service_url}}/"+window.location.protocol+"//"+window.location.host + this.src,
-            imageType : "natural",
+            imageType: "normal",
             height: "*",
             cursor: "pointer",
             click : function(){
                 window.open ( this.src );
             }
         });
-        
+
+        setDelayImgSize("{{diagram_service_url}}/"+window.location.protocol+"//"+window.location.host + this.src, this.diagramImage.ID);
+
         this.sourceButton = isc.IButton.create({
             title: "Source",
             diagramSrc: this.src,
@@ -39,8 +38,28 @@ isc.defineClass("Diagram", "VLayout").addProperties({
         });
 
         this.addMembers([this.diagramImage, this.sourceButton]);
+        
+        return this.Super("initWidget", arguments);
     }
 });
+// Esta funcion espera que este las dimenciones de la imagen y la impacta en el control de imp
+// Se genero el wirkarround para chromium por tener un gran delay en las dimenciones de la imagen y no poner correctamente las barras de scroll
+function setDelayImgSize(imgSrc, obj, iteration) {
+    if ( !iteration) iteration = 0;
+    
+    var img = new Image();
+    img.src = imgSrc;
+    
+    if ( img.width == 0 )
+        if ( iteration < 5 ) window.setTimeout('setDelayImgSize("'+ imgSrc + '","' + obj + '")', 100, iteration++);
+    else {
+        var o = eval(obj);
+        o.imageWidth = img.width;
+        o.imageHeight = img.height;
+        o.resetSrc();
+        o.redraw();
+    }
+}
 
 isc.Window.create({
     ID: "modalWindow",
@@ -122,8 +141,8 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
                                     "showView"+record.kind.charAt(0).toUpperCase() + record.kind.slice(1).toLowerCase()+"(data, \""+ record.resource_uri +"\")" // Callback
                 );
         }
-	 }
-	ContentTabSet.selectTab(tab);
+    }
+    ContentTabSet.selectTab(tab);
  }
 
 
@@ -180,24 +199,26 @@ function showViewSystem(data, id){
                         }, {
                             title: "M&oacute;dulos (" + modules.length + ")", 
                             pane: isc.DetailGrid.create({
+                                ID: "systemModules" + system.full_name,
                                 data : modules,
                                 fields : [ fieldExternal, fieldFullName, fieldGoal ]
                             })
                         }, {
                             title: "Interfaces (" + module_interfaces.length + ")", 
                             pane: isc.DetailGridInterface.create({
+                                 ID: "systemInterfaces" + system.full_name,
                                 data: module_interfaces
                             })
                         }, {
                             title: "Dependencias (" + system.dependencies.length + ")", 
                             pane: isc.DetailGridDependency.create({
-                                ID: "Dependencies",
+                                ID: "systemDependencies" + system.full_name,
                                 data: system.dependencies
                             })
                         }, {
                             title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
                             pane: isc.DetailGridDependency.create({
-                                ID: "Dependents",
+                                ID: "systemDependents" + system.full_name,
                                 data: system.dependents
                             })
                         }
@@ -225,12 +246,14 @@ function showViewModule( data, id ){
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Diagram.create({
+                            ID: "moduleDiagram" + module.full_name,
                             src: module.diagram_uri
-                            })
-                        }, {
+                        })
+                    }, {
                         title: "Interfaces (" + module.interfaces.length + ")", 
                         pane: isc.DetailGridInterface.create({
-                                data: module.interfaces
+                            ID: "moduleInterfaces" + module.full_name,
+                            data: module.interfaces
                         })
                     }]
                 })
@@ -256,6 +279,7 @@ function showViewInterface( data, id ){
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Diagram.create({
+                            ID: "interfaceDiagram" + interface.full_name,
                             src: interface.diagram_uri
                         })
                     }]
@@ -359,4 +383,5 @@ isc.VLayout.create({
         })]
     })]
  });
+ 
  
