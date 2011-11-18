@@ -63,7 +63,7 @@
 	                   <td><a href="{% url web:dependency_detail dependency.pk %}">{{ dependency }}</a></td>
 	                   <td><a href="{% url web:interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
 	                   <td>{{ dependency.goal|markdown }}</td>
-	                   <td>{{ dependency|direction }}</p>
+	                   <td>{{ dependency|direction }}</td>
 	               </tr>
 	               {% endfor %}
 	           </tbody>

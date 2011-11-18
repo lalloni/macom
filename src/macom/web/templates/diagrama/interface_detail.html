@@ -44,7 +44,7 @@
 	                   <td><a href="{% url web:dependency_detail dependency.pk %}">{{ dependency }}</a></td>
 	                   <td><a href="{% url web:module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
 	                   <td>{{ dependency.goal|markdown }}</td>
-	                   <td>{{ dependency|direction }}</p>
+	                   <td>{{ dependency|direction }}</td>
 	               </tr>
 	               {% endfor %}
 	           </tbody>

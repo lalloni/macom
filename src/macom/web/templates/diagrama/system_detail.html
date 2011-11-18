@@ -97,7 +97,7 @@
             <em>{% trans "No dependencies" %}</em>
         {% endif %}
     </div>
-    <div id="system-dependencies">
+    <div id="system-dependents">
         <h3>{% trans "Dependencies from other systems" %}</h3>
         {% if dependents %}
             <table>
@@ -117,7 +117,7 @@
                        <td><a href="{% url web:module_detail dependency.module.pk %}">{{ dependency.module }}</a></td>
                        <td><a href="{% url web:interface_detail dependency.interface.pk %}">{{ dependency.interface }}</a></td>
                        <td>{{ dependency.goal|markdown }}</td>
-                       <td>{{ dependency|direction }}</p>
+                       <td>{{ dependency|direction }}</td>
                    </tr>
                    {% endfor %}
                </tbody>
