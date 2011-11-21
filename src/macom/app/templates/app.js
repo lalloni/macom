@@ -96,8 +96,9 @@ function setDelayImgSize(imgSrc, obj, iteration) {
   var img = new Image();
   img.src = imgSrc;
 
-  if (img.width == 0) if (iteration < 5) window.setTimeout('setDelayImgSize("' + imgSrc + '","' + obj + '")', 100, iteration++);
-  else {
+  if (img.width == 0){
+      if (iteration < 5) window.setTimeout('setDelayImgSize("' + imgSrc + '","' + obj + '")', 100, iteration++);
+  } else {
     var o = eval(obj);
     o.imageWidth = img.width;
     o.imageHeight = img.height;
