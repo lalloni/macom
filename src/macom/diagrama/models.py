@@ -48,6 +48,7 @@ class Module(Base):
     dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependants')
     moduletypecases = models.ManyToManyField('ModuleType', through='ModuleTypeCase', related_name='moduletypecases')
     architecturalpatterncases = models.ManyToManyField('ArchitecturalPattern', through='ArchitecturalPatternCase', related_name='architecturalpatterncases')
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('module')
         verbose_name_plural = _('modules')
@@ -78,6 +79,7 @@ class Interface(Base, Directionality):
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('interface-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('interface-outbound-help'))
     published = models.BooleanField(_('Published'), help_text=_('Published for use outside the system'))
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')
@@ -105,6 +107,7 @@ class Dependency(Base, Directionality):
 class ArchitecturalPattern(Base):
     name = models.CharField(_('name'), help_text=_('architecturalpattern-name-help'), max_length=100)
     description = models.TextField(_('description'), help_text=_('architecturalpattern-description-help') , blank=True)
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('architectural pattern')
         verbose_name_plural = _('architectural patterns')
