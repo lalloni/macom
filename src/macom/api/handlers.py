@@ -23,23 +23,32 @@ class Defaults(BaseHandler):
     @classmethod
     def resource_uri(cls):
         return ('api_%s' % cls._kind(), ['pk'])
+    @classmethod
+    def kind_of(cls, m):
+        return m.__class__._meta.object_name.lower()
+    @classmethod
+    def resource_uri_of(cls, m):
+        return reverse('api_%s' % cls.kind_of(m), args=[m.pk])
+    @classmethod
+    def short_of(cls, m):
+        return dict(kind=cls.kind_of(m), name=cls.full_name(m), resource_uri=cls.resource_uri_of(m))
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'name', 'full_name', 'external', 'description', 'functional_referents', 'implementation_referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'external', 'description', 'functional_referents', 'implementation_referents', 'documentation', ('modules', ('kind', 'name',)), 'dependents', 'dependencies', 'diagram_uri')
     @classmethod
     def dependents(cls, system):
-        return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
+        return map(cls.short_of, Dependency.objects.filter(interface__module__system=system).exclude(module__system=system))
     @classmethod
     def dependencies(cls, system):
-        return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
+        return cls.resource_uri_of(system) + '/dependencies'
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = ('kind', 'name', 'full_name', 'external', 'goal', 'functional_referents', 'implementation_referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'external', 'goal', 'functional_referents', 'implementation_referents', 'documentation', ('interfaces', ('kind', 'name',)), 'dependencies', 'diagram_uri')
     @classmethod
     def dependencies(cls, module):
-        return module.dependency_objects()
+        return map(cls.short_of, module.dependency_objects())
 
 class InterfaceHandler(Defaults):
     model = Interface
@@ -57,7 +66,7 @@ class InterfaceHandler(Defaults):
 
 class DependencyHandler(Defaults):
     model = Dependency
-    fields = ('kind', 'name', 'full_name', 'goal', 'functional_referents', 'implementation_referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
+    fields = ('kind', 'name', 'full_name', 'goal', 'functional_referents', 'implementation_referents', 'documentation', 'technology', 'direction', 'loadestimate', ('interface', ('kind', 'name',)))
     @classmethod
     def read(cls, req, dependency=None, system=None, module=None, interface=None):
         if dependency:

@@ -32,7 +32,7 @@ class CSVEmitter(Emitter):
             field_value = element[field_name]
             if type(field_value) in [bool, int, long]:
                 field_value = unicode(field_value)
-            if 'encode' in dir(type(field_value)):
+            if 'encode' in dir(field_value):
                 record.append(field_value)
         return record
     def render(self, request):
