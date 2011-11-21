@@ -1,6 +1,3 @@
-//Settings
-var diagramServiceUrl = "{{diagram_service_url}}/"+window.location.protocol+"//"+window.location.host;
-
 // Fields Predefinidos
 var fieldFullName = { name : "full_name", title : "Nombre" };
 var fieldDescription = { name : "description", title : "Descripci&oacute;n" };
@@ -8,13 +5,59 @@ var fieldGoal = { name : "goal", title : "Objetivo" };
 var fieldReferents = { name : "referents", title : "Referentes" };
 var fieldDocumentation = { name : "documentation", title : "Documentaci&oacute;n" };
 var fieldTechnology = { name : "technology", title : "Tecnolog&iacute;a", width: "100" };
-var fieldDirection = { name : "direction", title : " ", width: "20", type:"image", imageURLPrefix:"/media/img/morocho/icon", imageURLSuffix:".png" };
+var fieldDirection = { name : "direction", title : " ", width: "20", type:"image", imageURLPrefix:"/media/img/icon", imageURLSuffix:".png" };
 var fieldExternal = { name : "external", title : " ", width: "20", type:"image", imageURLPrefix:"/media/img/external", imageURLSuffix:"-icon.gif" };
 
 // Propiedades default en objetos de SmartClient
-isc.defineClass("Diagram", "Img").addProperties({
-    imageType : "natural",
-    height: "*"
+isc.defineClass("Diagram", "VLayout").addProperties({
+    height: "*",
+    
+    initWidget: function () {
+        this.Super("initWidget", arguments);
+        
+        this.diagramImage = isc.Img.create({
+            src: "{{diagram_service_url}}/"+window.location.protocol+"//"+window.location.host + this.src,
+            imageType : "natural",
+            height: "*",
+            cursor: "pointer",
+            click : function(){
+                window.open ( this.src );
+            }
+        });
+        
+        this.sourceButton = isc.IButton.create({
+            title: "Source",
+            diagramSrc: this.src,
+            top: 35,
+            left: 75,
+            click : function () {
+                modalWindow.setTitle("Source");
+                modalWindow.show();
+                modalWindowPane.setContentsURL( window.location.protocol+"//"+window.location.host + this.diagramSrc );
+                modalWindowPane.setHeight(modalWindow.getHeight()); //Fix, no me funciona bien el alto
+            }
+        });
+
+        this.addMembers([this.diagramImage, this.sourceButton]);
+    }
+});
+
+isc.Window.create({
+    ID: "modalWindow",
+    autoSize: true,
+    autoCenter: true,
+    width: "95%",
+    height: "95%",
+    isModal: true,
+    showModalMask: true,
+    autoDraw: false,
+    showMinimizeButton: false,
+    items: isc.HTMLPane.create({
+        ID:"modalWindowPane",
+        width: "100%",
+        height: "100%",
+        contentsType:"page"
+    })
 });
 
 isc.DetailViewer.addProperties({
@@ -34,6 +77,10 @@ isc.defineClass("DetailGridInterface", "DetailGrid").addProperties({
     fields : [ fieldDirection, fieldFullName, fieldTechnology, fieldGoal ]
 });
 
+isc.defineClass("DetailGridDependency", "DetailGrid").addProperties({
+    fields : [ fieldDirection, fieldFullName, fieldTechnology, fieldGoal ]
+});
+
 isc.defineClass("JsonDataSource", "DataSource").addProperties({
     dataFormat : "json",
     dataProtocol : "getParams"
@@ -47,13 +94,13 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {	
 	// si no se encuentra generar uno nuevo con titulo = record.name
 	if ( tab == null || typeof (tab) == 'undefined') {
         ContentTabSet.addTab({
-			ID: record.resource_uri,
-            title : ( record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name ),
-			record : record,
-			canClose : true
-		});
+            ID: record.resource_uri,
+            title : isc.Canvas.imgHTML(getIconByKind(record)) +"  "+ ( record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name ),
+            record : record
+        });
+        
         // Busca el tab recien creado
-		tab = ContentTabSet.getTab(record.resource_uri);
+        tab = ContentTabSet.getTab(record.resource_uri);
 
         // Se fija el record.kind
         switch (record.kind){
@@ -87,7 +134,7 @@ function showViewRoot ( tab, record ){
         tabset.push ({
             title: record.diagrams[i].name,
             pane:  isc.Diagram.create({
-                src: diagramServiceUrl+record.diagrams[i].diagram_uri
+                src: record.diagrams[i].diagram_uri
             })
         })
     }
@@ -120,7 +167,7 @@ function showViewSystem(data, id){
             members: [ 
                 isc.DetailViewer.create({
                     data: system,
-                    fields : [{ value : (system.external?isc.Canvas.imgHTML( "/media/img/external-icon.gif" )+" ":"") + "Sistema "+ system.full_name, type : "header"},
+                    fields : [{ value : "Sistema "+ system.full_name + (system.external?" "+isc.Canvas.imgHTML( "/media/img/external-icon.gif" ):""), type : "header"},
                                 fieldDescription, fieldReferents, fieldDocumentation]
                 }),
                 isc.LayoutSpacer.create({height:"10" }),
@@ -128,7 +175,7 @@ function showViewSystem(data, id){
                     tabs: [ {
                         title: "Diagrama",
                         pane: isc.Diagram.create({
-                            src: diagramServiceUrl+system.diagram_uri
+                            src: system.diagram_uri
                             })
                         }, {
                             title: "M&oacute;dulos (" + modules.length + ")", 
@@ -143,13 +190,13 @@ function showViewSystem(data, id){
                             })
                         }, {
                             title: "Dependencias (" + system.dependencies.length + ")", 
-                            pane: isc.DetailGridInterface.create({
+                            pane: isc.DetailGridDependency.create({
                                 ID: "Dependencies",
                                 data: system.dependencies
                             })
                         }, {
                             title: "Dependencias desde otros sistemas (" + system.dependents.length + ")", 
-                            pane: isc.DetailGridInterface.create({
+                            pane: isc.DetailGridDependency.create({
                                 ID: "Dependents",
                                 data: system.dependents
                             })
@@ -170,7 +217,7 @@ function showViewModule( data, id ){
             members: [
                 isc.DetailViewer.create({
                     data: module,
-                    fields : [{ value : (module.external?isc.Canvas.imgHTML( "/media/img/external-icon.gif" )+" ":"") + "M&oacute;dulo "+ module.full_name, type : "header"},
+                    fields : [{ value : "M&oacute;dulo "+ module.full_name + (module.external?" "+isc.Canvas.imgHTML( "/media/img/external-icon.gif" ):""), type : "header"},
                                 fieldGoal, fieldReferents, fieldDocumentation]
                 }),
                 isc.LayoutSpacer.create({height:"10" }),
@@ -178,7 +225,7 @@ function showViewModule( data, id ){
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Diagram.create({
-                            src: diagramServiceUrl+module.diagram_uri
+                            src: module.diagram_uri
                             })
                         }, {
                         title: "Interfaces (" + module.interfaces.length + ")", 
@@ -200,7 +247,7 @@ function showViewInterface( data, id ){
             height : "*",
             members: [
                 isc.DetailViewer.create({
-                    fields : [{ value : (interface.direction?isc.Canvas.imgHTML( "/media/img/morocho/icon"+interface.direction+".png" )+" "+" ":"") + "Interface " + interface.full_name, type : "header"},
+                    fields : [{ value : "Interface " + interface.full_name + (interface.direction?" "+isc.Canvas.imgHTML( "/media/img/icon"+interface.direction+".png" )+" ":""), type : "header"},
                                 fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology],
                     data : interface
                  }) ,
@@ -209,7 +256,7 @@ function showViewInterface( data, id ){
                     tabs: [{
                         title: "Diagrama",
                         pane: isc.Diagram.create({
-                            src: diagramServiceUrl+interface.diagram_uri
+                            src: interface.diagram_uri
                         })
                     }]
                 })
@@ -227,7 +274,7 @@ function showViewDependency( data, id ){
             height : "*",
             members: [
                 isc.DetailViewer.create({
-                    fields : [{ value : (dependency.direction?isc.Canvas.imgHTML( "/media/img/morocho/icon"+dependency.direction+".png" )+" "+" ":"") + "Dependencia " + dependency.full_name, type : "header"},
+                    fields : [{ value : "Dependencia " + dependency.full_name + (dependency.direction?" "+isc.Canvas.imgHTML( "/media/img/icon"+dependency.direction+".png" )+" ":""), type : "header"},
                                 fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology],
                     data: dependency
                 }),
@@ -243,8 +290,12 @@ function showViewDependency( data, id ){
             ]
         })
     );
- }
+}
 
+function getIconByKind( node ){
+    return "/media/img/" + node.kind + ( node.external?"-external":"") + ".png";
+}
+ 
 // INTERFACE
 isc.VLayout.create({
     width : "100%",
@@ -262,13 +313,22 @@ isc.VLayout.create({
             imageType : "natural",
              src : "grass.png",
          }) ]
-     }), isc.HLayout.create({
+    }), isc.HLayout.create({
         ID : "ContentSection",
         height : "*",
         showEdges : "true",
         members : [ isc.TreeGrid.create({
             ID : "NavigationTree",
+            getIcon: function (node){
+                    return "/media/img/morocho/" + node.kind + ".png";
+            },
             width : 300,
+            dataSource : isc.JsonDataSource.create({
+                dataURL : "{% url api_model %}",
+                fields : [
+                    { name : "name", title: "Sistemas" },
+                 ]
+            }),
             autoFetchData : true,
             dataProperties: {openProperty: "isOpen"},
             loadDataOnDemand : false,
@@ -276,7 +336,7 @@ isc.VLayout.create({
             showResizeBar : true,
             generateClickOnEnter : true,
             getIcon: function (node){
-                    return "/media/img/morocho/" + node.kind + ".png";
+                return getIconByKind(node);
             },
             dataSource : isc.JsonDataSource.create({
                 dataURL : "{% url api_model %}",
@@ -293,15 +353,10 @@ isc.VLayout.create({
             }],
             recordDoubleClick : function(){} // Elimina el evento de dobleClick por default
         }), isc.TabSet.create({
-            ID : "ContentTabSet"
-        })
-        ]
-     }), isc.HStack.create({
-        ID : "FooterSection",
-        height : "1",
-        members : [ isc.IButton.create({
-            title : "Console",
-            click : "isc.showConsole()"
-         }) ]
-     }) ]
+            ID : "ContentTabSet",
+            canCloseTabs : true,
+            closeTabIconSize: 12
+        })]
+    })]
  });
+ 

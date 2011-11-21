@@ -72,7 +72,7 @@ class DependencyHandler(Defaults):
 class ModelHandler(BaseHandler):
     def read(self, request):
         res = []
-        for syst in System.objects.values('id', 'name'):
+        for syst in System.objects.values('id', 'name', 'external'):
             syst['kind'] = "system"
             syst['resource_uri'] = reverse('api_system', args=[syst['id']])
             syst['full_name'] = syst['name']
@@ -80,7 +80,7 @@ class ModelHandler(BaseHandler):
             syst['id'] = "%s%s" % (syst['kind'], syst_id)
             res.append(syst)
             modus = []
-            for modu in Module.objects.filter(system__id=syst_id).values('id', 'name'):
+            for modu in Module.objects.filter(system__id=syst_id).values('id', 'name', 'external'):
                 modu['kind'] = "module"
                 modu['resource_uri'] = reverse('api_module', args=[modu['id']])
                 modu['full_name'] = "%s:%s" % (modu['name'], syst['name'])
