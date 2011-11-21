@@ -344,7 +344,7 @@ isc.VLayout.create({
         members : [ isc.TreeGrid.create({
             ID : "NavigationTree",
             getIcon: function (node){
-                    return "/media/img/morocho/" + node.kind + ".png";
+                    return "/media/img/" + node.kind + ".png";
             },
             width : 300,
             dataSource : isc.JsonDataSource.create({
