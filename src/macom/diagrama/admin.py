@@ -29,11 +29,11 @@ class InlineDependency(admin.StackedInline):
         }),
         ('Detail', {
             'classes': ('collapse',),
-            'fields': ('goal','technology','direction_inbound', 'direction_outbound','referents', 'documentation')
+            'fields': ('goal','technology','direction_inbound', 'direction_outbound','functional_referents','implementation_referents', 'documentation')
         }),
     )
-    list_display = ['interface', 'goal', 'referents', 'documentation']
-    search_fields = ['module__name', 'name','referents', 'documentation','technology']
+    list_display = ['interface', 'goal', 'functional_referents', 'implementation_referents', 'documentation']
+    search_fields = ['module__name', 'name','functional_referents','implementation_referents', 'documentation','technology']
     ordering = ['module__system__name']
 
 class InlineModuleTypeCase(admin.TabularInline):
@@ -77,24 +77,24 @@ class ModuleAdmin(admin.ModelAdmin):
         }),
         ('Detail', {
             'classes': ('collapse',),
-            'fields': ('goal','criticity','referents', 'documentation', 'tags')
+            'fields': ('goal','criticity','functional_referents','implementation_referents', 'documentation', 'tags')
         }),
     )
 
     list_display = ['system', 'name', 'goal', 'external']
     list_display_links = ['name']
     
-    search_fields = ['system__name','name', 'goal','referents', 'documentation', 'tags']
+    search_fields = ['system__name','name', 'goal','functional_referents','implementation_referents', 'documentation', 'tags']
     inlines = [InlineInterface, InlineDependency, InlineModuleTypeCase, InlineArchitecturalPatternCase]
 
 class SystemAdmin(admin.ModelAdmin):
     fieldsets = (
         ('', {
-            'fields': ('name',  'description', 'referents', 'documentation', 'external', 'tags')
+            'fields': ('name',  'description', 'functional_referents', 'implementation_referents', 'documentation', 'external', 'tags')
         }),
     )
-    list_display = ['name', 'description', 'referents', 'documentation', 'external']
-    search_fields = ['name', 'description','referents', 'documentation', 'tags']
+    list_display = ['name', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'external']
+    search_fields = ['name', 'description','functional_referents','implementation_referents', 'documentation', 'tags']
     
 class InterfaceAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -107,13 +107,13 @@ class InterfaceAdmin(admin.ModelAdmin):
         }),
         ('Detail', {
             'classes': ('collapse',),
-            'fields': ('goal','technology','referents', 'documentation', 'tags'),
+            'fields': ('goal','technology','functional_referents','implementation_referents', 'documentation', 'tags'),
         }),
     )
-    list_display = ['module', 'name', 'goal', 'referents', 'documentation']
+    list_display = ['module', 'name', 'goal', 'functional_referents', 'implementation_referents', 'documentation']
     list_display_links = ['name']
     ordering = ['module__system__name']
-    search_fields = ['module__name', 'name','referents', 'documentation', 'tags']
+    search_fields = ['module__name', 'name','functional_referents','implementation_referents', 'documentation', 'tags']
 
 class DependencyAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -126,13 +126,13 @@ class DependencyAdmin(admin.ModelAdmin):
         }),
         ('Detail', {
             'classes': ('collapse',),
-            'fields': ('goal','technology','loadestimate', 'referents', 'documentation')
+            'fields': ('goal','technology','loadestimate', 'functional_referents', 'implementation_referents', 'documentation')
         }),
     )
-    list_display = ['module', 'interface', 'goal', 'referents', 'documentation']
+    list_display = ['module', 'interface', 'goal', 'functional_referents', 'implementation_referents', 'documentation']
     list_display_links = ['module']
     ordering = ['module__system__name']
-    search_fields = ['module__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','referents', 'documentation']
+    search_fields = ['module__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','functional_referents','implementation_referents', 'documentation']
 
 class ModuleTypeAdmin(admin.ModelAdmin):
     fieldsets = (
