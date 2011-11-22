@@ -1,9 +1,28 @@
 # -*- coding: utf-8 -*-
-
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
+from django.forms.widgets import Textarea
+from django.utils.translation import ugettext_lazy as _
+from south.modelsinspector import add_introspection_rules
 from taggit.managers import TaggableManager
+
+# DEPRECADO: se deja por compatibilidad con migrations <= 0004
+add_introspection_rules([], ["^diagrama\.models\.TextField60"])
+add_introspection_rules([], ["^diagrama\.models\.TextField40"])
+
+# DEPRECADO: se deja por compatibilidad con migrations <= 0004
+class TextField60(models.TextField):
+    # A more reasonably sized textarea                                                                                                            
+    def formfield(self, **kwargs):
+        kwargs.update(dict(widget=Textarea(attrs=dict(rows=7, cols=60))))
+        return super(TextField60, self).formfield(**kwargs)
+
+# DEPRECADO: se deja por compatibilidad con migrations <= 0004
+class TextField40(models.TextField):
+    # A more reasonably sized textarea                                                                                                            
+    def formfield(self, **kwargs):
+        kwargs.update(dict(widget=Textarea(attrs=dict(rows=7, cols=40))))
+        return super(TextField40, self).formfield(**kwargs)
 
 class Base(models.Model):
     class Meta:
