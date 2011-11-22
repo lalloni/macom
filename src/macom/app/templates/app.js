@@ -50,7 +50,6 @@ var fieldExternal = {
 };
 
 // Propiedades default en objetos de SmartClient
-
 isc.defineClass("Diagram", "VLayout").addProperties({
   height : "*",
   diagramRenderServiceURL : "{{diagram_service_url}}/",
@@ -105,6 +104,7 @@ function setDelayImgSize(imgSrc, obj, iteration) {
     o.resetSrc();
     o.redraw();
   }
+  img.src = imgSrc;
 }
 
 isc.Window.create({
@@ -152,6 +152,14 @@ isc.defineClass("JsonDataSource", "DataSource").addProperties({
   dataProtocol : "getParams"
 });
 
+function getIcon( iconSrc ){
+    return isc.Canvas.imgHTML( iconSrc, 16, 16 );
+}
+
+function getIconByKind(node) {
+  return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
+}
+
 // APPLICATION
 
 function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) { // buscar tab q tenga el mismo record
@@ -161,7 +169,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) { 
   if (tab == null || typeof (tab) == 'undefined') {
     ContentTabSet.addTab({
       ID : record.resource_uri,
-      title : isc.Canvas.imgHTML(getIconByKind(record)) + "  "
+      title : getIcon(getIconByKind(record)) + "  "
           + (record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name),
       record : record
     });
@@ -231,7 +239,7 @@ function showViewSystem(data, id) {
     members : [ isc.DetailViewer.create({
       data : system,
       fields : [ {
-        value : "Sistema " + system.full_name + (system.external ? " " + isc.Canvas.imgHTML("/media/img/external-icon.gif") : ""),
+        value : "Sistema " + system.full_name + (system.external ? " " + getIcon("/media/img/external-icon.gif") : ""),
         type : "header"
       }, fieldDescription, fieldReferents, fieldDocumentation ]
     }), isc.LayoutSpacer.create({
@@ -284,7 +292,7 @@ function showViewModule(data, id) {
               fields : [
                   {
                     value : "M&oacute;dulo " + module.full_name
-                        + (module.external ? " " + isc.Canvas.imgHTML("/media/img/external-icon.gif") : ""),
+                        + (module.external ? " " + getIcon("/media/img/external-icon.gif") : ""),
                     type : "header"
                   }, fieldGoal, fieldReferents, fieldDocumentation ]
             }), isc.LayoutSpacer.create({
@@ -319,7 +327,7 @@ function showViewInterface(data, id) {
                   {
                     value : "Interface "
                         + interface.full_name
-                        + (interface.direction ? " " + isc.Canvas.imgHTML("/media/img/icon" + interface.direction + ".png") + " "
+                        + (interface.direction ? " " + getIcon("/media/img/icon" + interface.direction + ".png") + " "
                             : ""),
                     type : "header"
                   }, fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ],
@@ -351,7 +359,7 @@ function showViewDependency(data, id) {
                   {
                     value : "Dependencia "
                         + dependency.full_name
-                        + (dependency.direction ? " " + isc.Canvas.imgHTML("/media/img/icon" + dependency.direction + ".png") + " "
+                        + (dependency.direction ? " " + getIcon("/media/img/icon" + dependency.direction + ".png") + " "
                             : ""),
                     type : "header"
                   }, fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ],
@@ -367,10 +375,6 @@ function showViewDependency(data, id) {
               } ]
             }) ]
       }));
-}
-
-function getIconByKind(node) {
-  return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
 }
 
 // INTERFACE
