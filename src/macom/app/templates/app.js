@@ -51,53 +51,53 @@ var fieldExternal = {
 
 // Propiedades default en objetos de SmartClient
 
-isc.defineClass("Diagram", "VLayout").addProperties(
-    {
-      height : "*",
-      initWidget : function() {
-        this.diagramImage = isc.Img.create({
-          src : "{{diagram_service_url}}/" + window.location.protocol + "//" + window.location.host + this.src,
-          imageType : "normal",
-          height : "*",
-          cursor : "pointer",
-          click : function() {
-            window.open(this.src);
-          }
-        });
-
-        setDelayImgSize("{{diagram_service_url}}/" + window.location.protocol + "//" + window.location.host + this.src,
-            this.diagramImage.ID);
-
-        this.sourceButton = isc.IButton.create({
-          title : "Source",
-          diagramSrc : this.src,
-          top : 35,
-          left : 75,
-          click : function() {
-            modalWindow.setTitle("Source");
-            modalWindow.show();
-            modalWindowPane.setContentsURL(window.location.protocol + "//" + window.location.host + this.diagramSrc);
-            modalWindowPane.setHeight(modalWindow.getHeight()); // Fix, no me funciona bien el alto
-          }
-        });
-
-        this.addMembers([ this.diagramImage, this.sourceButton ]);
-
-        return this.Super("initWidget", arguments);
+isc.defineClass("Diagram", "VLayout").addProperties({
+  height : "*",
+  diagramRenderServiceURL : "{{diagram_service_url}}/",
+  initWidget : function() {
+    this.diagramSourceURL = window.location.protocol + "//" + window.location.host + this.src;
+    this.diagramImageURL = this.diagramRenderServiceURL + this.diagramSourceURL;
+    this.diagramImage = isc.Img.create({
+      src : this.diagramImageURL
+    });
+    this.diagramSourceButton = isc.IButton.create({
+      title : "View source",
+      diagramSourceURL : this.diagramSourceURL,
+      click : function() {
+        modalWindow.setTitle("Diagram Source");
+        modalWindow.show();
+        modalWindowPane.setContentsURL(this.diagramSourceURL);
       }
     });
+    this.checkImgSize = function() {
+      var image = new Image();
+      image.src = this.diagramImageURL;
+      if (image.width != 0) {
+        this.diagramImage.imageWidth = image.width;
+        this.diagramImage.imageHeight = image.height;
+        this.diagramImage.src = this.diagramImageURL;
+      } else {
+        window.setTimeout(this.ID + ".checkImgSize()", 200);
+      }
+    }
+    this.addMembers([ this.diagramImage, this.sourceButton ]);
+    this.checkImgSize();
+    return this.Super("initWidget", arguments);
+  }
+});
 
 // Esta funcion espera que este las dimenciones de la imagen y la impacta en el control de imp
 // Se genero el wirkarround para chromium por tener un gran delay en las dimenciones de la imagen y no poner correctamente las
 // barras de scroll
 function setDelayImgSize(imgSrc, obj, iteration) {
+  alert("Unused!");
   if (!iteration) iteration = 0;
 
   var img = new Image();
   img.src = imgSrc;
 
-  if (img.width == 0){
-      if (iteration < 5) window.setTimeout('setDelayImgSize("' + imgSrc + '","' + obj + '")', 100, iteration++);
+  if (img.width == 0) {
+    if (iteration < 5) window.setTimeout('setDelayImgSize("' + imgSrc + '","' + obj + '")', 100, iteration++);
   } else {
     var o = eval(obj);
     o.imageWidth = img.width;
