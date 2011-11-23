@@ -49,64 +49,6 @@ var fieldExternal = {
   imageURLSuffix : "-icon.gif"
 };
 
-// Propiedades default en objetos de SmartClient
-isc.defineClass("Diagram", "VLayout").addProperties({
-  height : "*",
-  diagramRenderServiceURL : "{{diagram_service_url}}/",
-  initWidget : function() {
-    this.diagramSourceURL = window.location.protocol + "//" + window.location.host + this.src;
-    this.diagramImageURL = this.diagramRenderServiceURL + this.diagramSourceURL;
-    this.diagramImage = isc.Img.create({
-      src : this.diagramImageURL
-    });
-    this.diagramSourceButton = isc.IButton.create({
-      title : "View source",
-      diagramSourceURL : this.diagramSourceURL,
-      click : function() {
-        modalWindow.setTitle("Diagram Source");
-        modalWindow.show();
-        modalWindowPane.setContentsURL(this.diagramSourceURL);
-      }
-    });
-    this.checkImgSize = function() {
-      var image = new Image();
-      image.src = this.diagramImageURL;
-      if (image.width != 0) {
-        this.diagramImage.imageWidth = image.width;
-        this.diagramImage.imageHeight = image.height;
-        this.diagramImage.src = this.diagramImageURL;
-      } else {
-        window.setTimeout(this.ID + ".checkImgSize()", 200);
-      }
-    }
-    this.addMembers([ this.diagramImage, this.sourceButton ]);
-    this.checkImgSize();
-    return this.Super("initWidget", arguments);
-  }
-});
-
-// Esta funcion espera que este las dimenciones de la imagen y la impacta en el control de imp
-// Se genero el wirkarround para chromium por tener un gran delay en las dimenciones de la imagen y no poner correctamente las
-// barras de scroll
-function setDelayImgSize(imgSrc, obj, iteration) {
-  alert("Unused!");
-  if (!iteration) iteration = 0;
-
-  var img = new Image();
-  img.src = imgSrc;
-
-  if (img.width == 0) {
-    if (iteration < 5) window.setTimeout('setDelayImgSize("' + imgSrc + '","' + obj + '")', 100, iteration++);
-  } else {
-    var o = eval(obj);
-    o.imageWidth = img.width;
-    o.imageHeight = img.height;
-    o.resetSrc();
-    o.redraw();
-  }
-  img.src = imgSrc;
-}
-
 isc.Window.create({
   ID : "modalWindow",
   autoSize : true,
@@ -159,6 +101,97 @@ function getIcon( iconSrc ){
 function getIconByKind(node) {
   return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
 }
+
+// Custom controls
+
+isc.defineClass("Diagram", "VLayout").addProperties({
+  height : "*",
+  diagramRenderServiceURL : "{{diagram_service_url}}/",
+  initWidget : function() {
+    this.diagramSourceURL = window.location.protocol + "//" + window.location.host + this.src;
+    this.diagramImageURL = this.diagramRenderServiceURL + this.diagramSourceURL;
+    this.diagramImage = isc.Img.create({
+        imageType : "normal",
+        autoDraw: false
+    });
+    this.diagramSourceButton = isc.IButton.create({
+      title : "View source",
+      diagramSourceURL : this.diagramSourceURL,
+      click : function() {
+        modalWindow.setTitle("Diagram Source");
+        modalWindow.show();
+        modalWindowPane.setContentsURL(this.diagramSourceURL);
+      }
+    });
+    // Espera que este las dimenciones de la imagen y la impacta en el control de diagrama
+    this.checkImgSize = function() {
+        var diagram = this;
+        var image = new Image();
+        image.onload  = function () {
+            diagram.diagramImage.setWidth( this.width );
+            diagram.diagramImage.setHeight( this.height );
+            diagram.diagramImage.setSrc( this.src );
+            diagram.diagramImage.draw();
+        }
+        image.src = this.diagramImageURL;
+    }
+    this.addMembers([ this.diagramImage, this.diagramSourceButton ]);
+    this.checkImgSize();
+    return this.Super("initWidget", arguments);
+  }
+});
+
+isc.defineClass ( "ItemViewer", "VLayout").addProperties({
+    title: false,
+    data: false,  // Datos a mostrar del item
+    fields: false, // Definicion de los fields de la informacion del item
+    additionalInfo: false,
+
+    height : "*",
+    initWidget : function() {
+        // Detalles del Item
+        var infoFields = new Array();
+        // titulo
+        infoFields.push ({ 
+            value : ( this.title ? this.title + " ": "")
+                    + this.data.full_name
+                    + ( this.data.external ? " " + getIcon("/media/img/external-icon.gif") : "")
+                    + ( this.data.direction ? " " + getIcon("/media/img/icon" + this.data.direction + ".png") + " " : ""),
+            type : "header"
+        });
+        if ( this.fields ) infoFields = infoFields.concat( this.fields );         // Definicion de datos
+        
+        this.detail = isc.DetailViewer.create({
+            fields : infoFields,
+            data : this.data
+        });
+        
+        // Spacer
+        this.spacer = isc.LayoutSpacer.create({ height : "10" });
+
+        // Tabs de informacion
+        var tabsInfo = new Array();
+
+        if ( this.data.diagram_uri ){
+            tabsInfo.push ( {
+                title : "Diagrama",
+                pane : isc.Diagram.create({
+                    ID : this.data.full_name + "_" + this.ID,
+                    src : this.data.diagram_uri
+                })
+            });
+        }
+        if ( this.additionalInfo ) tabsInfo = tabsInfo.concat ( this.additionalInfo );
+        
+        this.tabs = isc.TabSet.create({
+            tabs : tabsInfo
+        });
+        
+        this.addMembers ( [ this.detail, this.spacer, this.tabs ] );
+        
+        return this.Super("initWidget", arguments);
+    }
+});
 
 // APPLICATION
 
@@ -221,9 +254,7 @@ function showViewRoot(tab, record) {
 
 function showViewSystem(data, id) {
   // Variables de datos
-  var system = data[0];
-  var modules = system.modules;
-
+  var modules = data[0].modules;
   var module_interfaces = new Array();
   for ( var i = 0; i < modules.length; i++) {
     if (modules[i].interfaces != null) {
@@ -234,150 +265,79 @@ function showViewSystem(data, id) {
   }
 
   // Representacion
-  ContentTabSet.getTab(id).setPane(isc.VLayout.create({
-    height : "*",
-    members : [ isc.DetailViewer.create({
-      data : system,
-      fields : [ {
-        value : "Sistema " + system.full_name + (system.external ? " " + getIcon("/media/img/external-icon.gif") : ""),
-        type : "header"
-      }, fieldDescription, fieldReferents, fieldDocumentation ]
-    }), isc.LayoutSpacer.create({
-      height : "10"
-    }), isc.TabSet.create({
-      tabs : [ {
-        title : "Diagrama",
-        pane : isc.Diagram.create({
-          src : system.diagram_uri
-        })
-      }, {
+  var system = data[0];
+  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
+    title : "Sistema",
+    data : system,
+    fields : [ fieldDescription, fieldReferents, fieldDocumentation ],
+    additionalInfo: [{
         title : "M&oacute;dulos (" + modules.length + ")",
         pane : isc.DetailGrid.create({
           ID : "systemModules" + system.full_name,
           data : modules,
           fields : [ fieldExternal, fieldFullName, fieldGoal ]
         })
-      }, {
+    }, {
         title : "Interfaces (" + module_interfaces.length + ")",
         pane : isc.DetailGridInterface.create({
           ID : "systemInterfaces" + system.full_name,
           data : module_interfaces
         })
-      }, {
+    }, {
         title : "Dependencias (" + system.dependencies.length + ")",
         pane : isc.DetailGridDependency.create({
           ID : "systemDependencies" + system.full_name,
           data : system.dependencies
         })
-      }, {
+    }, {
         title : "Dependencias desde otros sistemas (" + system.dependents.length + ")",
         pane : isc.DetailGridDependency.create({
           ID : "systemDependents" + system.full_name,
           data : system.dependents
         })
-      } ]
-    }) ]
+    }]
   }));
 }
 
 function showViewModule(data, id) {
   var module = data[0];
-
-  ContentTabSet.getTab(id).setPane(
-      isc.VLayout.create({
-        height : "*",
-        members : [
-            isc.DetailViewer.create({
-              data : module,
-              fields : [
-                  {
-                    value : "M&oacute;dulo " + module.full_name
-                        + (module.external ? " " + getIcon("/media/img/external-icon.gif") : ""),
-                    type : "header"
-                  }, fieldGoal, fieldReferents, fieldDocumentation ]
-            }), isc.LayoutSpacer.create({
-              height : "10"
-            }), isc.TabSet.create({
-              tabs : [ {
-                title : "Diagrama",
-                pane : isc.Diagram.create({
-                  ID : "moduleDiagram" + module.full_name,
-                  src : module.diagram_uri
-                })
-              }, {
-                title : "Interfaces (" + module.interfaces.length + ")",
-                pane : isc.DetailGridInterface.create({
-                  ID : "moduleInterfaces" + module.full_name,
-                  data : module.interfaces
-                })
-              } ]
-            }) ]
-      }));
+  ContentTabSet.getTab(id).setPane( isc.ItemViewer.create({
+    title : "M&oacute;dulo",
+    data : module,
+    fields : [ fieldGoal, fieldReferents, fieldDocumentation ],
+    additionalInfo: [{
+        title : "Interfaces (" + module.interfaces.length + ")",
+        pane : isc.DetailGridInterface.create({
+          ID : "moduleInterfaces" + module.full_name,
+          data : module.interfaces
+        })
+    }] 
+  }));
 }
 
 function showViewInterface(data, id) {
-  var interface = data[0];
-
-  ContentTabSet.getTab(id).setPane(
-      isc.VLayout.create({
-        height : "*",
-        members : [
-            isc.DetailViewer.create({
-              fields : [
-                  {
-                    value : "Interface "
-                        + interface.full_name
-                        + (interface.direction ? " " + getIcon("/media/img/icon" + interface.direction + ".png") + " "
-                            : ""),
-                    type : "header"
-                  }, fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ],
-              data : interface
-            }), isc.LayoutSpacer.create({
-              height : "10"
-            }), isc.TabSet.create({
-              tabs : [ {
-                title : "Diagrama",
-                pane : isc.Diagram.create({
-                  ID : "interfaceDiagram" + interface.full_name,
-                  src : interface.diagram_uri
-                })
-              } ]
-            }) ]
-      }));
+  ContentTabSet.getTab(id).setPane( isc.ItemViewer.create({
+    title : "Interface",
+    data : data[0],
+    fields : [ fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ]
+  }));
 }
 
 function showViewDependency(data, id) {
-  var dependency = data[0];
-  var interface = new Array(dependency.interface);
-
-  ContentTabSet.getTab(id).setPane(
-      isc.VLayout.create({
-        height : "*",
-        members : [
-            isc.DetailViewer.create({
-              fields : [
-                  {
-                    value : "Dependencia "
-                        + dependency.full_name
-                        + (dependency.direction ? " " + getIcon("/media/img/icon" + dependency.direction + ".png") + " "
-                            : ""),
-                    type : "header"
-                  }, fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ],
-              data : dependency
-            }), isc.LayoutSpacer.create({
-              height : "10"
-            }), isc.TabSet.create({
-              tabs : [ {
-                title : "Interfaz utilizada",
-                pane : isc.DetailGridInterface.create({
-                  data : interface
-                })
-              } ]
-            }) ]
-      }));
+  ContentTabSet.getTab(id).setPane( isc.ItemViewer.create({
+    title : "Dependencia",
+    data : data[0],
+    fields : [ fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ],
+    additionalInfo: [{
+        title : "Interfaz utilizada",
+        pane : isc.DetailGridInterface.create({
+          data : new Array(data[0].interface)
+        })
+    }] 
+  }));
 }
 
-// INTERFACE
+// Layout principal
 
 isc.VLayout.create({
   width : "100%",
@@ -401,9 +361,6 @@ isc.VLayout.create({
     showEdges : "true",
     members : [ isc.TreeGrid.create({
       ID : "NavigationTree",
-      getIcon : function(node) {
-        return "/media/img/" + node.kind + ".png";
-      },
       width : 300,
       dataSource : isc.JsonDataSource.create({
         dataURL : "{% url api_model %}",
