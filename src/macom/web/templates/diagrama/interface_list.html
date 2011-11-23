@@ -17,9 +17,9 @@
 	       <tbody>
 	           {% for object in object_list %}
 	           <tr>
-	               <td><a href="{% url system_detail object.module.system.pk %}">{{ object.module.system.name }}</a>{% include 'third-party-object.html' with object=object.module.system %}</td>
-	               <td><a href="{% url module_detail object.module.pk %}">{{ object.module.name }}</a>{% include 'third-party-object.html' with object=object.module %}</td>
-	               <td><a href="{% url interface_detail object.pk %}">{{ object.name }}</a></td>
+	               <td><a href="{% url web:system_detail object.module.system.pk %}">{{ object.module.system.name }}</a>{% include 'third-party-object.html' with object=object.module.system %}</td>
+	               <td><a href="{% url web:module_detail object.module.pk %}">{{ object.module.name }}</a>{% include 'third-party-object.html' with object=object.module %}</td>
+	               <td><a href="{% url web:interface_detail object.pk %}">{{ object.name }}</a></td>
 	               <td>{% if object.goal%}{{ object.goal|markdown }}{% else %}<em>{% trans "No goal" %}</em>{% endif %}</td>
 	           </tr>
 	           {% empty %}

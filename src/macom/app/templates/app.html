@@ -1,16 +1,7 @@
-<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
+    <head>
 		<title>Macom Browser</title>
-		<script>var isomorphicDir="{% url media 'isomorphic/' %}";</script>
-		<script src="{% url media 'isomorphic/system/modules/ISC_Core.js' %}"></script>
-		<script src="{% url media 'isomorphic/system/modules/ISC_Foundation.js' %}"></script>
-		<script src="{% url media 'isomorphic/system/modules/ISC_Containers.js' %}"></script>
-		<script src="{% url media 'isomorphic/system/modules/ISC_Grids.js' %}"></script>
-		<script src="{% url media 'isomorphic/system/modules/ISC_Forms.js' %}"></script>
-		<script src="{% url media 'isomorphic/system/modules/ISC_DataBinding.js' %}"></script>
-		<script src="{% url media 'isomorphic/skins/Enterprise/load_skin.js' %}"></script>
+        <script type="text/javascript">var isomorphicDir="{% url media 'isomorphic/' %}";</script>
 		<style type="text/css">
 		  body { background-color: #CDF }
 		  .header {
@@ -20,8 +11,18 @@
 		      padding-left: 20px;
 		  }
 		</style>
-	</head>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Core.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Foundation.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Containers.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Grids.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_Forms.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/system/development/ISC_DataBinding.js' %}"></script>
+		<script type="text/javascript" src="{% url media 'isomorphic/skins/Enterprise/load_skin.js' %}"></script>
+    </head>
 	<body>
-	    <script src="{% url script_template 'app.js' %}"></script>
+        <script type="text/javascript" src="{% url script_template 'macom.js' %}"></script>
+        <script type="text/javascript" src="{% url script_template 'fields.js' %}"></script>
+        <script type="text/javascript" src="{% url script_template 'controls.js' %}"></script>
+        <script type="text/javascript" src="{% url script_template 'app.js' %}"></script>
 	</body>
 </html>

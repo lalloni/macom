@@ -1,104 +1,108 @@
 @media all {
-    a:link {
-        text-decoration: none;
-    }
-    p {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-    table {
-        border-collapse: collapse;
-    }
-    table,td,th {
-        border: 1px silver solid;
-    }
-    th {
-        background-color: #EEE;
-    }
-    body {
-        font-family: sans;
-        font-size: 9pt;
-    }
-    .hcenter {
-        text-align: center;
-    }
-    .super {
-        vertical-align: super;
-        font-size: 0.5em;
-        font-weight: bold;
-    }
-    .diagram {
-       max-width: 100%;
-       overflow: auto;
-    }
-    #shortcuts {
-        float: right;
-        background-color: #FFA;
-        padding: .2em 2em .2em 2em;
-        font-weight: bolder;
-        border-radius: 1em 4em 1em 4em;
-        border: 1px silver solid;
-        background-color: #FFA;
-        margin-top: -1em;
-        margin-right: 1em;
-    }
-    #shortcuts ul {
-        padding: 0;
-        margin: 0;
-    }
-    #shortcuts li {
-        list-style-type: none;
-        display: inline;
-        padding-left: .5em;
-        padding-right: .5em;
-    }
-    #location {
-        float: left;
-        background-color: #FFA;
-        padding: .2em 2em .2em 2em;
-        font-weight: bolder;
-        font-size: -2;
-        border-radius: 4em 1em 4em 1em;
-        border: 1px silver solid;
-        background-color: #FFA;
-        margin-top: -1em;
-        margin-left: 2em;
-    }
-    #content {
-        clear: both;
-    }
-    #content h1, #content h2, #content h3, #content h4, #content h5 {
-        border: 1px silver solid;
-        border-radius: 4em 4em 1em 1em;
-        padding-left: 1em;
-        padding-right: 4em;
-        background-color: #CDF;
-    }
-    #header {
-        padding: .3em 1em .3em 1em;
-        border-radius: 4em;
-        border: 1px silver solid;
-        background-color: #ABF;
-        font-size: 20pt;
-        font-family: monospace;
-        font-weight: bold;
-    }
-    #header .title {
-        display: inline-block;
-        vertical-align: middle;
-    }
-    #header .logo {
-        display: inline-block;
-        vertical-align: middle;
-        float: right;
-    }
+	a:link {
+		text-decoration: none;
+	}
+	p {
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+	}
+	table {
+		border-collapse: collapse;
+	}
+	table,td,th {
+		border: 1px silver solid;
+	}
+	th {
+		background-color: #EEE;
+	}
+	body {
+		font-family: sans, Verdana, Arial;
+		font-size: 9pt;
+	}
+	.hcenter {
+		text-align: center;
+	}
+	.super {
+		vertical-align: super;
+		font-size: 0.5em;
+		font-weight: bold;
+	}
+	.diagram {
+		max-width: 100%;
+		overflow: auto;
+	}
+	#shortcuts {
+		float: right;
+		background-color: #FFA;
+		padding: .2em 2em .2em 2em;
+		font-weight: bolder;
+		behavior: url(/media/css/border-radius.htc);
+		border-radius: 1em 4em 1em 4em;
+		border: 1px silver solid;
+		background-color: #FFA;
+		margin-top: -1em;
+		margin-right: 1em;
+	}
+	#shortcuts ul {
+		padding: 0;
+		margin: 0;
+	}
+	#shortcuts li {
+		list-style-type: none;
+		display: inline;
+		padding-left: .5em;
+		padding-right: .5em;
+	}
+	#location {
+		float: left;
+		background-color: #FFA;
+		padding: .2em 2em .2em 2em;
+		font-weight: bolder;
+		font-size: -2;
+		behavior: url(/media/css/border-radius.htc);
+		border-radius: 4em 1em 4em 1em;
+		border: 1px silver solid;
+		background-color: #FFA;
+		margin-top: -1em;
+		margin-left: 2em;
+	}
+	#content {
+		clear: both;
+	}
+	#content h1,#content h2,#content h3,#content h4,#content h5 {
+		border: 1px silver solid;
+		behavior: url(/media/css/border-radius.htc);
+		border-radius: 4em 4em 1em 1em;
+		padding-left: 1em;
+		padding-right: 4em;
+		background-color: #CDF;
+	}
+	#header {
+		padding: .3em 1em .3em 1em;
+		behavior: url(/media/css/border-radius.htc);
+		border-radius: 4em;
+		border: 1px silver solid;
+		background-color: #ABF;
+		font-size: 20pt;
+		font-family: monospace;
+		font-weight: bold;
+	}
+	#header .title {
+		display: inline-block;
+		vertical-align: middle;
+	}
+	#header .logo {
+		display: inline-block;
+		vertical-align: middle;
+		float: right;
+	}
 }
 
 @media print {
-    .diagram img {
-       max-width: 100%;
-    }
-    .no-print {
-       display: none;
-    }
+	.diagram img {
+		max-width: 100%;
+	}
+	.no-print {
+		display: none;
+	}
 }

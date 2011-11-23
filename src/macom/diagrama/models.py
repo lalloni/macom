@@ -1,8 +1,28 @@
 # -*- coding: utf-8 -*-
-
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
+from django.forms.widgets import Textarea
+from django.utils.translation import ugettext_lazy as _
+from south.modelsinspector import add_introspection_rules
+from taggit.managers import TaggableManager
+
+# DEPRECADO: se deja por compatibilidad con migrations <= 0004
+add_introspection_rules([], ["^diagrama\.models\.TextField60"])
+add_introspection_rules([], ["^diagrama\.models\.TextField40"])
+
+# DEPRECADO: se deja por compatibilidad con migrations <= 0004
+class TextField60(models.TextField):
+    # A more reasonably sized textarea                                                                                                            
+    def formfield(self, **kwargs):
+        kwargs.update(dict(widget=Textarea(attrs=dict(rows=7, cols=60))))
+        return super(TextField60, self).formfield(**kwargs)
+
+# DEPRECADO: se deja por compatibilidad con migrations <= 0004
+class TextField40(models.TextField):
+    # A more reasonably sized textarea                                                                                                            
+    def formfield(self, **kwargs):
+        kwargs.update(dict(widget=Textarea(attrs=dict(rows=7, cols=40))))
+        return super(TextField40, self).formfield(**kwargs)
 
 class Base(models.Model):
     class Meta:
@@ -20,9 +40,11 @@ class Annotation(Base):
 class System(Base):
     name = models.CharField(_('name'), help_text=_('system-name-help'), max_length=100)
     description = models.TextField(_('description'), help_text=_('description-help'))
-    referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
+    functional_referents = models.TextField(_('functional_referents'), help_text=_('functional_referents-help'), blank=True)
+    implementation_referents = models.TextField(_('implementation_referents'), help_text=_('implementation_referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     external = models.BooleanField(_('external'), help_text=_('external-help'))
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('system')
         verbose_name_plural = _('systems')
@@ -40,12 +62,14 @@ class Module(Base):
     name = models.CharField(_('name'), help_text=_('module-name-help'), max_length=100)
     goal = models.TextField(_('goal'), help_text=_('module-goal-help'))
     external = models.BooleanField(_('external'), help_text=_('external-help'))
-    referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
+    functional_referents = models.TextField(_('functional_referents'), help_text=_('functional_referents-help'), blank=True)
+    implementation_referents = models.TextField(_('implementation_referents'), help_text=_('implementation_referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
     dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependants')
     moduletypecases = models.ManyToManyField('ModuleType', through='ModuleTypeCase', related_name='moduletypecases')
     architecturalpatterncases = models.ManyToManyField('ArchitecturalPattern', through='ArchitecturalPatternCase', related_name='architecturalpatterncases')
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('module')
         verbose_name_plural = _('modules')
@@ -71,10 +95,13 @@ class Interface(Base, Directionality):
     name = models.CharField(_('name'), help_text=_('interface-name-help'), max_length=100)
     goal = models.TextField(_('goal'), help_text=_('interface-goal-help'))
     technology = models.CharField(_('technology'), help_text=_('technology-help') , max_length=200, blank=True)
-    referents = models.TextField(_('referents'), help_text=_('referents-help'), blank=True)
+    functional_referents = models.TextField(_('functional_referents'), help_text=_('functional_referents-help'), blank=True)
+    implementation_referents = models.TextField(_('implementation_referents'), help_text=_('implementation_referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('interface-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('interface-outbound-help'))
+    published = models.BooleanField(_('Published'), help_text=_('Published for use outside the system'))
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('interface')
         verbose_name_plural = _('interfaces')
@@ -88,7 +115,8 @@ class Dependency(Base, Directionality):
     goal = models.TextField(_('goal'), help_text=_('dependency-goal-help') , blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('dependency-inbound-help'))
     direction_outbound = models.BooleanField(_('Outbound'), help_text=_('dependency-outbound-help'))
-    referents = models.TextField(_('referents'), help_text=_('referents-help') , blank=True)
+    functional_referents = models.TextField(_('functional_referents'), help_text=_('functional_referents-help'), blank=True)
+    implementation_referents = models.TextField(_('implementation_referents'), help_text=_('implementation_referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help') , blank=True)
     technology = models.CharField(_('technology'), help_text=_('technology-help') , max_length=200, blank=True)
     loadestimate = models.CharField(_('loadestimate'), help_text=_('loadestimate-help') , max_length=200, blank=True)
@@ -102,6 +130,7 @@ class Dependency(Base, Directionality):
 class ArchitecturalPattern(Base):
     name = models.CharField(_('name'), help_text=_('architecturalpattern-name-help'), max_length=100)
     description = models.TextField(_('description'), help_text=_('architecturalpattern-description-help') , blank=True)
+    tags = TaggableManager()
     class Meta:
         verbose_name = _('architectural pattern')
         verbose_name_plural = _('architectural patterns')

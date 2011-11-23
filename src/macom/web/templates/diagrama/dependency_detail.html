@@ -3,12 +3,12 @@
 {% load i18n %}
 {% load diagrams %}
 {% block title %} - {% trans "Dependency" %} {{ object }}{% endblock %}
-{% block location %}<a href="{% url system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Dependency to" %} {{ object.interface }}{% endblock %}
+{% block location %}<a href="{% url web:system_detail object.module.system.pk %}">{% trans "System" %} {{ object.module.system.name }}</a> : <a href="{% url web:module_detail object.module.pk %}">{% trans "Module" %} {{ object.module.name }}</a> : {% trans "Dependency to" %} {{ object.interface }}{% endblock %}
 {% block content %}
     <h2>{% trans "Dependency" %}{% include 'object-controls.html' %}</h2>
     <div id="dependency-target">
         <h3>{% trans "Target Interface" %}</h3>
-        <p><a href="{% url interface_detail object.interface.pk %}">{{ object.interface }}</a></p>
+        <p><a href="{% url web:interface_detail object.interface.pk %}">{{ object.interface }}</a></p>
     </div>
     <div id="dependency-direction">
         <h3>{% trans "Direction" %}</h3>

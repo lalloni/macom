@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'macom.api',
     'macom.app',
     'south',
+    'taggit',
 )
 
 DIAGRAM_SERVICE_URL = 'http://10.20.109.140:8080/plantuml/proxy'
