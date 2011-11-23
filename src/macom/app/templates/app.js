@@ -1,197 +1,12 @@
-// Fields Predefinidos
-
-var fieldFullName = {
-  name : "full_name",
-  title : "Nombre"
-};
-
-var fieldDescription = {
-  name : "description",
-  title : "Descripci&oacute;n"
-};
-
-var fieldGoal = {
-  name : "goal",
-  title : "Objetivo"
-};
-
-var fieldReferents = {
-  name : "referents",
-  title : "Referentes"
-};
-
-var fieldDocumentation = {
-  name : "documentation",
-  title : "Documentaci&oacute;n"
-};
-
-var fieldTechnology = {
-  name : "technology",
-  title : "Tecnolog&iacute;a",
-  width : "100"
-};
-
-var fieldDirection = {
-  name : "direction",
-  title : " ",
-  width : "20",
-  type : "image",
-  imageURLPrefix : "/media/img/icon",
-  imageURLSuffix : ".png"
-};
-
-var fieldExternal = {
-  name : "external",
-  title : " ",
-  width : "20",
-  type : "image",
-  imageURLPrefix : "/media/img/external",
-  imageURLSuffix : "-icon.gif"
-};
-
-isc.Window.create({
-  ID : "modalWindow",
-  autoSize : true,
-  autoCenter : true,
-  width : "95%",
-  height : "95%",
-  isModal : true,
-  showModalMask : true,
-  autoDraw : false,
-  showMinimizeButton : false,
-  items : isc.HTMLPane.create({
-    ID : "modalWindowPane",
-    width : "100%",
-    height : "100%",
-    contentsType : "page"
-  })
-});
-
-isc.DetailViewer.addProperties({
-  autoFetchData : true
-})
-
 // Objetos predefinidos
 
-isc.defineClass("DetailGrid", "ListGrid").addProperties({
-  recordDoubleClick : openTab,
-  alternateRecordStyles : true,
-  autoFetchData : true,
-  showFilterEditor : true,
-  filterOnKeypress : true
-});
-
-isc.defineClass("DetailGridInterface", "DetailGrid").addProperties({
-  fields : [ fieldDirection, fieldFullName, fieldTechnology, fieldGoal ]
-});
-
-isc.defineClass("DetailGridDependency", "DetailGrid").addProperties({
-  fields : [ fieldDirection, fieldFullName, fieldTechnology, fieldGoal ]
-});
-
-isc.defineClass("JsonDataSource", "DataSource").addProperties({
-  dataFormat : "json",
-  dataProtocol : "getParams"
-});
-
-function getIcon( iconSrc ){
-    return isc.Canvas.imgHTML( iconSrc, 16, 16 );
+function getIcon(iconSrc) {
+  return isc.Canvas.imgHTML(iconSrc, 16, 16);
 }
 
 function getIconByKind(node) {
   return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
 }
-
-// Custom controls
-
-isc.defineClass("Diagram", "VLayout").addProperties({
-  height : "*",
-  diagramRenderServiceURL : "{{diagram_service_url}}/",
-  initWidget : function() {
-    this.diagramSourceURL = window.location.protocol + "//" + window.location.host + this.src;
-    this.diagramImageURL = this.diagramRenderServiceURL + this.diagramSourceURL;
-    this.diagramImage = isc.Img.create({
-        imageType : "normal",
-        autoDraw: false
-    });
-    this.diagramSourceButton = isc.IButton.create({
-      title : "View source",
-      diagramSourceURL : this.diagramSourceURL,
-      click : function() {
-        modalWindow.setTitle("Diagram Source");
-        modalWindow.show();
-        modalWindowPane.setContentsURL(this.diagramSourceURL);
-      }
-    });
-    // Espera que este las dimenciones de la imagen y la impacta en el control de diagrama
-    this.checkImgSize = function() {
-        var diagram = this;
-        var image = new Image();
-        image.onload  = function () {
-            diagram.diagramImage.setWidth( this.width );
-            diagram.diagramImage.setHeight( this.height );
-            diagram.diagramImage.setSrc( this.src );
-            diagram.diagramImage.draw();
-        }
-        image.src = this.diagramImageURL;
-    }
-    this.addMembers([ this.diagramImage, this.diagramSourceButton ]);
-    this.checkImgSize();
-    return this.Super("initWidget", arguments);
-  }
-});
-
-isc.defineClass ( "ItemViewer", "VLayout").addProperties({
-    title: false,
-    data: false,  // Datos a mostrar del item
-    fields: false, // Definicion de los fields de la informacion del item
-    additionalInfo: false,
-
-    height : "*",
-    initWidget : function() {
-        // Detalles del Item
-        var infoFields = new Array();
-        // titulo
-        infoFields.push ({ 
-            value : ( this.title ? this.title + " ": "")
-                    + this.data.full_name
-                    + ( this.data.external ? " " + getIcon("/media/img/external-icon.gif") : "")
-                    + ( this.data.direction ? " " + getIcon("/media/img/icon" + this.data.direction + ".png") + " " : ""),
-            type : "header"
-        });
-        if ( this.fields ) infoFields = infoFields.concat( this.fields );         // Definicion de datos
-        
-        this.detail = isc.DetailViewer.create({
-            fields : infoFields,
-            data : this.data
-        });
-        
-        // Spacer
-        this.spacer = isc.LayoutSpacer.create({ height : "10" });
-
-        // Tabs de informacion
-        var tabsInfo = new Array();
-
-        if ( this.data.diagram_uri ){
-            tabsInfo.push ( {
-                title : "Diagrama",
-                pane : isc.Diagram.create({
-                    ID : this.data.full_name + "_" + this.ID,
-                    src : this.data.diagram_uri
-                })
-            });
-        }
-        if ( this.additionalInfo ) tabsInfo = tabsInfo.concat ( this.additionalInfo );
-        
-        this.tabs = isc.TabSet.create({
-            tabs : tabsInfo
-        });
-        
-        this.addMembers ( [ this.detail, this.spacer, this.tabs ] );
-        
-        return this.Super("initWidget", arguments);
-    }
-});
 
 // APPLICATION
 
@@ -219,7 +34,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) { 
 
       default: // Si es system, module, dependency o interface
         // DATASOURCE
-        isc.JsonDataSource.create({
+        isc.JSONDataSource.create({
           ID : record.resource_uri,
           dataURL : record.resource_uri
         });
@@ -234,6 +49,10 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) { 
   }
   ContentTabSet.selectTab(tab);
 }
+
+isc.DetailGrid.addProperties({
+  recordDoubleClick : openTab
+});
 
 function showViewRoot(tab, record) {
   var tabset = new Array();
@@ -269,71 +88,71 @@ function showViewSystem(data, id) {
   ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "Sistema",
     data : system,
-    fields : [ fieldDescription, fieldReferents, fieldDocumentation ],
-    additionalInfo: [{
-        title : "M&oacute;dulos (" + modules.length + ")",
-        pane : isc.DetailGrid.create({
-          ID : "systemModules" + system.full_name,
-          data : modules,
-          fields : [ fieldExternal, fieldFullName, fieldGoal ]
-        })
+    fields : [ mcm.fields.Description, mcm.fields.Referents, mcm.fields.Documentation ],
+    additionalInfo : [ {
+      title : "M&oacute;dulos (" + modules.length + ")",
+      pane : isc.DetailGrid.create({
+        ID : "systemModules" + system.full_name,
+        data : modules,
+        fields : [ mcm.fields.External, mcm.fields.FullName, mcm.fields.Goal ],
+      })
     }, {
-        title : "Interfaces (" + module_interfaces.length + ")",
-        pane : isc.DetailGridInterface.create({
-          ID : "systemInterfaces" + system.full_name,
-          data : module_interfaces
-        })
+      title : "Interfaces (" + module_interfaces.length + ")",
+      pane : isc.DetailGridInterface.create({
+        ID : "systemInterfaces" + system.full_name,
+        data : module_interfaces
+      })
     }, {
-        title : "Dependencias (" + system.dependencies.length + ")",
-        pane : isc.DetailGridDependency.create({
-          ID : "systemDependencies" + system.full_name,
-          data : system.dependencies
-        })
+      title : "Dependencias (" + system.dependencies.length + ")",
+      pane : isc.DetailGridDependency.create({
+        ID : "systemDependencies" + system.full_name,
+        data : system.dependencies
+      })
     }, {
-        title : "Dependencias desde otros sistemas (" + system.dependents.length + ")",
-        pane : isc.DetailGridDependency.create({
-          ID : "systemDependents" + system.full_name,
-          data : system.dependents
-        })
-    }]
+      title : "Dependencias desde otros sistemas (" + system.dependents.length + ")",
+      pane : isc.DetailGridDependency.create({
+        ID : "systemDependents" + system.full_name,
+        data : system.dependents
+      })
+    } ]
   }));
 }
 
 function showViewModule(data, id) {
   var module = data[0];
-  ContentTabSet.getTab(id).setPane( isc.ItemViewer.create({
+  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "M&oacute;dulo",
     data : module,
-    fields : [ fieldGoal, fieldReferents, fieldDocumentation ],
-    additionalInfo: [{
-        title : "Interfaces (" + module.interfaces.length + ")",
-        pane : isc.DetailGridInterface.create({
-          ID : "moduleInterfaces" + module.full_name,
-          data : module.interfaces
-        })
-    }] 
+    fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation ],
+    additionalInfo : [ {
+      title : "Interfaces (" + module.interfaces.length + ")",
+      pane : isc.DetailGridInterface.create({
+        ID : "moduleInterfaces" + module.full_name,
+        data : module.interfaces
+      })
+    } ]
   }));
 }
 
 function showViewInterface(data, id) {
-  ContentTabSet.getTab(id).setPane( isc.ItemViewer.create({
+  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "Interface",
     data : data[0],
-    fields : [ fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ]
+    fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation, mcm.fields.Technology ]
   }));
 }
 
 function showViewDependency(data, id) {
-  ContentTabSet.getTab(id).setPane( isc.ItemViewer.create({
+  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "Dependencia",
     data : data[0],
-    fields : [ fieldGoal, fieldReferents, fieldDocumentation, fieldTechnology ],
-    additionalInfo: [{
-        title : "Interfaz utilizada",
-        pane : isc.DetailGridInterface.create({
-          data : new Array(data[0].interface)
-        })
-    }] 
+    fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation, mcm.fields.Technology ],
+    additionalInfo : [ {
+      title : "Interfaz utilizada",
+      pane : isc.DetailGridInterface.create({
+        data : new Array(data[0].interface)
+      })
+    } ]
   }));
 }
 
@@ -362,12 +181,12 @@ isc.VLayout.create({
     members : [ isc.TreeGrid.create({
       ID : "NavigationTree",
       width : 300,
-      dataSource : isc.JsonDataSource.create({
+      dataSource : isc.JSONDataSource.create({
         dataURL : "{% url api_model %}",
         fields : [ {
           name : "name",
           title : "Sistemas"
-        }, ]
+        } ]
       }),
       autoFetchData : true,
       dataProperties : {
@@ -380,7 +199,7 @@ isc.VLayout.create({
       getIcon : function(node) {
         return getIconByKind(node);
       },
-      dataSource : isc.JsonDataSource.create({
+      dataSource : isc.JSONDataSource.create({
         dataURL : "{% url api_model %}",
         fields : [ {
           name : "name"
