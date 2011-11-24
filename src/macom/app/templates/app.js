@@ -98,19 +98,19 @@ function showViewSystem(data, id) {
       })
     }, {
       title : "Interfaces (" + module_interfaces.length + ")",
-      pane : isc.DetailGridInterface.create({
+      pane : isc.InterfaceDetailGrid.create({
         ID : "systemInterfaces" + system.full_name,
         data : module_interfaces
       })
     }, {
       title : "Dependencias (" + system.dependencies.length + ")",
-      pane : isc.DetailGridDependency.create({
+      pane : isc.DependencyDetailGrid.create({
         ID : "systemDependencies" + system.full_name,
         data : system.dependencies
       })
     }, {
       title : "Dependencias desde otros sistemas (" + system.dependents.length + ")",
-      pane : isc.DetailGridDependency.create({
+      pane : isc.DependencyDetailGrid.create({
         ID : "systemDependents" + system.full_name,
         data : system.dependents
       })
@@ -126,7 +126,7 @@ function showViewModule(data, id) {
     fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation ],
     additionalInfo : [ {
       title : "Interfaces (" + module.interfaces.length + ")",
-      pane : isc.DetailGridInterface.create({
+      pane : isc.InterfaceDetailGrid.create({
         ID : "moduleInterfaces" + module.full_name,
         data : module.interfaces
       })
@@ -149,7 +149,7 @@ function showViewDependency(data, id) {
     fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation, mcm.fields.Technology ],
     additionalInfo : [ {
       title : "Interfaz utilizada",
-      pane : isc.DetailGridInterface.create({
+      pane : isc.InterfaceDetailGrid.create({
         data : new Array(data[0].interface)
       })
     } ]
