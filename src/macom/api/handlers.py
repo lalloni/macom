@@ -26,7 +26,7 @@ class Defaults(BaseHandler):
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'name', 'full_name', 'external', 'description', 'referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'external', 'description', 'functional_referents', 'implementation_referents', 'documentation', ('modules', ()), 'dependents', 'dependencies', 'diagram_uri')
     @classmethod
     def dependents(cls, system):
         return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
@@ -36,14 +36,14 @@ class SystemHandler(Defaults):
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = ('kind', 'name', 'full_name', 'external', 'goal', 'referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'external', 'goal', 'functional_referents', 'implementation_referents', 'documentation', ('interfaces', ()), 'dependencies', 'diagram_uri')
     @classmethod
     def dependencies(cls, module):
         return module.dependency_objects()
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = ('kind', 'name', 'full_name', 'goal', 'published', 'technology', 'direction', 'referents', 'documentation', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'goal', 'published', 'technology', 'direction', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri')
     @classmethod
     def read(cls, req, interface=None, system=None, module=None):
         if interface:
@@ -57,7 +57,7 @@ class InterfaceHandler(Defaults):
 
 class DependencyHandler(Defaults):
     model = Dependency
-    fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
+    fields = ('kind', 'name', 'full_name', 'goal', 'functional_referents', 'implementation_referents', 'documentation', 'technology', 'direction', 'loadestimate', 'interface')
     @classmethod
     def read(cls, req, dependency=None, system=None, module=None, interface=None):
         if dependency:
