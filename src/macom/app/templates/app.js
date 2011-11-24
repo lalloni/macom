@@ -85,7 +85,7 @@ function showViewSystem(data, id) {
   ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "Sistema",
     data : system,
-    fields : [ mcm.fields.Description, mcm.fields.Referents, mcm.fields.Documentation ],
+    fields : [ mcm.fields.Description, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation ],
     additionalInfo : [ {
       title : "M&oacute;dulos (" + modules.length + ")",
       pane : isc.DetailGrid.create({
@@ -123,7 +123,7 @@ function showViewModule(data, id) {
   ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "M&oacute;dulo",
     data : module,
-    fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation ],
+    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation ],
     additionalInfo : [ {
       title : "Interfaces (" + module.interfaces.length + ")",
       pane : isc.DetailGrid.create({
@@ -139,7 +139,7 @@ function showViewInterface(data, id) {
   ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "Interface",
     data : data[0],
-    fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation, mcm.fields.Technology ]
+    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology ]
   }));
 }
 
@@ -147,7 +147,7 @@ function showViewDependency(data, id) {
   ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
     title : "Dependencia",
     data : data[0],
-    fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation, mcm.fields.Technology ],
+    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology ],
     additionalInfo : [ {
       title : "Interfaz utilizada",
       pane : isc.DetailGrid.create({

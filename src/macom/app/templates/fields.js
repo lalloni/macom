@@ -18,11 +18,16 @@ mcm.fields = {
     title : "Objetivo"
   },
 
-  Referents : {
-    name : "referents",
-    title : "Referentes"
+  FunctionalReferents : {
+    name : "functional_referents",
+    title : "Referentes funcionales"
   },
-
+  
+  ImplementationReferents : {
+    name : "implementation_referents",
+    title : "Referentes de implementaci&oacute;n"
+  },
+  
   Documentation : {
     name : "documentation",
     title : "Documentaci&oacute;n"
