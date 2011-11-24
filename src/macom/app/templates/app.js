@@ -37,10 +37,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) { 
         isc.JSONDataSource.create({
           ID : record.resource_uri,
           dataURL : record.resource_uri
-        });
-
-        // VIEW
-        isc.DataSource.get(record.resource_uri).fetchData(
+        }).fetchData(
             null,
             "showView" + record.kind.charAt(0).toUpperCase() + record.kind.slice(1).toLowerCase() + "(data, \""
                 + record.resource_uri + "\")" // Callback
@@ -98,20 +95,23 @@ function showViewSystem(data, id) {
       })
     }, {
       title : "Interfaces (" + module_interfaces.length + ")",
-      pane : isc.InterfaceDetailGrid.create({
+      pane : isc.DetailGrid.create({
         ID : "systemInterfaces" + system.full_name,
+        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
         data : module_interfaces
       })
     }, {
       title : "Dependencias (" + system.dependencies.length + ")",
-      pane : isc.DependencyDetailGrid.create({
+      pane : isc.DetailGrid.create({
         ID : "systemDependencies" + system.full_name,
+        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
         data : system.dependencies
       })
     }, {
       title : "Dependencias desde otros sistemas (" + system.dependents.length + ")",
-      pane : isc.DependencyDetailGrid.create({
+      pane : isc.DetailGrid.create({
         ID : "systemDependents" + system.full_name,
+        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
         data : system.dependents
       })
     } ]
@@ -126,8 +126,9 @@ function showViewModule(data, id) {
     fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation ],
     additionalInfo : [ {
       title : "Interfaces (" + module.interfaces.length + ")",
-      pane : isc.InterfaceDetailGrid.create({
+      pane : isc.DetailGrid.create({
         ID : "moduleInterfaces" + module.full_name,
+        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
         data : module.interfaces
       })
     } ]
@@ -149,7 +150,8 @@ function showViewDependency(data, id) {
     fields : [ mcm.fields.Goal, mcm.fields.Referents, mcm.fields.Documentation, mcm.fields.Technology ],
     additionalInfo : [ {
       title : "Interfaz utilizada",
-      pane : isc.InterfaceDetailGrid.create({
+      pane : isc.DetailGrid.create({
+        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
         data : new Array(data[0].interface)
       })
     } ]
@@ -181,21 +183,16 @@ isc.VLayout.create({
     members : [ isc.TreeGrid.create({
       ID : "NavigationTree",
       width : 300,
-      dataSource : isc.JSONDataSource.create({
-        dataURL : "{% url api_model %}",
-        fields : [ {
-          name : "name",
-          title : "Sistemas"
-        } ]
-      }),
       autoFetchData : true,
-      dataProperties : {
-        openProperty : "isOpen"
-      },
       loadDataOnDemand : false,
       defaultIsFolder : false,
       showResizeBar : true,
       generateClickOnEnter : true,
+      showHeader: false,
+        
+      dataProperties : {
+        openProperty : "isOpen"
+      },
       getIcon : function(node) {
         return getIconByKind(node);
       },

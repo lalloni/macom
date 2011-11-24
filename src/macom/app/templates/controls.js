@@ -5,14 +5,6 @@ isc.defineClass("DetailGrid", "ListGrid").addProperties({
   filterOnKeypress : true
 });
 
-isc.defineClass("InterfaceDetailGrid", "DetailGrid").addProperties({
-  fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
-});
-
-isc.defineClass("DependencyDetailGrid", "DetailGrid").addProperties({
-  fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
-});
-
 isc.defineClass("JSONDataSource", "DataSource").addProperties({
   dataFormat : "json",
   dataProtocol : "getParams"
@@ -50,12 +42,12 @@ isc.defineClass("Diagram", "VLayout").addProperties({
 });
 
 isc.defineClass("ItemViewer", "VLayout").addProperties({
-      title : false,
-      data : false, // Datos a mostrar del item
-      fields : false, // Definicion de los fields de la informacion del item
-      additionalInfo : false,
-      height : "*",
-      initWidget : function() {
+    title : false,
+    data : false, // Datos a mostrar del item
+    fields : false, // Definicion de los fields de la informacion del item
+    additionalInfo : false,
+    height : "*",
+    initWidget : function() {
         // Detalles del Item
         var infoFields = new Array();
         // titulo
