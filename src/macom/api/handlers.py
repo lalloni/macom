@@ -43,7 +43,7 @@ class ModuleHandler(Defaults):
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = ('kind', 'name', 'full_name', 'goal', 'referents', 'documentation', 'technology', 'direction', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'goal', 'published', 'technology', 'direction', 'referents', 'documentation', 'diagram_uri')
     @classmethod
     def read(cls, req, interface=None, system=None, module=None):
         if interface:
