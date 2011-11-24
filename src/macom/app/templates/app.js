@@ -108,7 +108,7 @@ function showViewSystem(data, id) {
         data : system.dependencies
       })
     }, {
-      title : "Dependencias desde otros sistemas (" + system.dependents.length + ")",
+      title : "Dependencias inversas (" + system.dependents.length + ")",
       pane : isc.DetailGrid.create({
         ID : "systemDependents" + system.full_name,
         fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
