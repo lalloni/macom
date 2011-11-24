@@ -96,14 +96,11 @@ class ModelHandler(BaseHandler):
                     intes.append(inte)
                 modu['children'] = intes
             syst['children'] = modus
-        return {'kind': 'root',
-                        'name' : 'Sistemas',
-                        'full_name':'Sistemas',
-                        'resource_uri': 'root',
-                        'isOpen': 'true',
-                        'diagrams' : ({ 'name': 'Sistemas con dependencias',
-                                                  'diagram_uri': reverse('web:systems_dependencies_diagram') },
-                                               { 'name': 'Sistemas sin dependencias externas',
-                                                  'diagram_uri': reverse('web:systems_no_thirdparty_dependencies_diagram') }
-                                             ),
-                        'children' : res }
+        return dict(kind='root',
+                    name='Sistemas',
+                    full_name='Sistemas',
+                    resource_uri='root',
+                    isOpen='true',
+                    diagrams=[dict(name='Dependencias entre sistemas', diagram_uri=reverse('web:systems_dependencies_diagram')),
+                              dict(name='Dependencias entre sistemas (excluyendo externos)', diagram_uri=reverse('web:systems_no_thirdparty_dependencies_diagram'))],
+                    children=res)
