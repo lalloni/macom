@@ -65,7 +65,9 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
               + (this.data.direction ? " " + getIcon("/media/img/icon" + this.data.direction + ".png") + " " : ""),
           type : "header"
         });
-        if (this.fields) infoFields = infoFields.concat(this.fields); // Definicion de datos
+        if (this.fields) {
+            infoFields = infoFields.concat(this.fields); // Definicion de datos
+        }
         this.detail = isc.DetailViewer.create({
           autoFetchData : true,
           fields : infoFields,
@@ -86,14 +88,17 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
             })
           });
         }
-        if (this.additionalInfo) tabsInfo = tabsInfo.concat(this.additionalInfo);
+        if (this.additionalInfo) {
+            tabsInfo = tabsInfo.concat(this.additionalInfo);
+        }
         this.tabs = isc.TabSet.create({
           tabs : tabsInfo
         });
         this.addMembers([ this.detail, this.spacer, this.tabs ]);
+        
         return this.Super("initWidget", arguments);
-      }
-    });
+    }
+});
 
 isc.defineClass("SourceViewer", "Window").addProperties({
   autoCenter : true,
