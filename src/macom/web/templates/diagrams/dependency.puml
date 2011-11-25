@@ -1,0 +1,23 @@
+@startuml
+
+{% load diagrams %}
+{% include 'diagrams/skinparam.puml' %}
+
+package "{{ dependency.module.system }}" #AliceBlue {
+[{{ dependency.module }}] as {{ dependency.module|as_id }}
+{% if dependency.interface.module.system == dependency.module.system %}
+() "{{ dependency.interface }}" as {{ dependency.interface|as_id }}
+{{ dependency.interface|as_id }} -- [{{ dependency.interface.module }}] : {{ dependency.interface|direction|default:"expose" }}
+{% endif %} 
+}
+
+{% if dependency.interface.module.system != dependency.module.system %}
+package "{{ dependency.interface.module.system }}" #AliceBlue {
+() "{{ dependency.interface }}" as {{ dependency.interface|as_id }}
+{{ dependency.interface|as_id }} -- [{{ dependency.interface.module }}] : {{ dependency.interface|direction|default:"expose" }}
+}
+{% endif %}
+
+{{ dependency.module|as_id }} ..> {{ dependency.interface|as_id }} : {{ dependency|direction|default:"use" }}{% if dependency.goal %}:\n{{ dependency.goal|wordwrap:15|single }}{% endif %}
+ 
+@enduml

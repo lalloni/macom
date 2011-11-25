@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from django.conf.urls.defaults import patterns, url 
+from django.conf.urls.defaults import patterns, url
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.shortcuts import redirect
@@ -8,8 +8,8 @@ from django.shortcuts import redirect
 from macom.diagrama.models import System, Module, Interface, Dependency
 from macom.web.views import SystemDetailView, ModuleDetailView, \
     InterfaceDetailView, system_diagram, module_diagram, interface_diagram, systems_dependencies_diagram, \
-    systems_no_thirdparty_dependencies_diagram
-    
+    systems_no_thirdparty_dependencies_diagram, dependency_diagram
+
 urlpatterns = patterns('',
      url(r'^$', lambda x: redirect('web:system_list')),
      url(r'^system/(?P<pk>\d+)/diagram', system_diagram, name='system_diagram'),
@@ -23,6 +23,7 @@ urlpatterns = patterns('',
      url(r'^interface/(?P<pk>\d+)/diagram', interface_diagram, name='interface_diagram'),
      url(r'^interface/(?P<pk>\d+)', InterfaceDetailView.as_view(), name='interface_detail'),
      url(r'^interface[s/]?$', ListView.as_view(model=Interface), name='interface_list'),
+     url(r'^dependency/(?P<pk>\d+)/diagram', dependency_diagram, name='dependency_diagram'),
      url(r'^dependency/(?P<pk>\d+)', DetailView.as_view(model=Dependency), name='dependency_detail'),
      url(r'^dependency[s/]?$' , ListView.as_view(model=Dependency), name='dependency_list'),
 )

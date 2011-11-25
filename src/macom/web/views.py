@@ -37,7 +37,7 @@ def system_diagram(request, pk):
     return render_to_response('diagrams/system.puml', context, mimetype="text/plain;charset=utf-8")
 
 def module_diagram(request, pk):
-    module = Module.objects.get(id=pk)    
+    module = Module.objects.get(id=pk)
     dependencies = Dependency.objects.filter(module=pk).all()
     context = dict(
                    module=module,
@@ -56,11 +56,16 @@ def interface_diagram(request, pk):
                   )
     return render_to_response('diagrams/interface.puml', context, mimetype="text/plain;charset=utf-8")
 
+def dependency_diagram(request, pk):
+    dependency = Dependency.objects.get(id=pk)
+    context = dict(dependency=dependency)
+    return render_to_response('diagrams/dependency.puml', context, mimetype="text/plain;charset=utf-8")
+
 def unique_systems_dependencies(exclude_external=False):
     dependencies = []
     systems = System.objects.all()
     if exclude_external:
-        systems = systems.filter(external=False) 
+        systems = systems.filter(external=False)
     for system in systems:
         for module in system.modules.all():
             for dependency in module.dependencies.all():
