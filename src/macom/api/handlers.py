@@ -2,6 +2,28 @@
 from piston.handler import BaseHandler
 from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
+import sys
+
+def callee_name():
+    return sys._getframe(1).f_code.co_name
+
+def flatten(seq):
+    res = []
+    for item in seq:
+        if (isinstance(item, (tuple, list))):
+            res.extend(flatten(item))
+        else:
+            res.append(item)
+    return res
+
+def model_field(name, *args):
+    return (name, ('kind', 'name') + args)
+
+def collection_fields(name):
+    return (name + '_uri', model_field(name))
+
+def query_fields(name):
+    return (name, name + '_uri')
 
 class Defaults(BaseHandler):
     allowed_methods = ('GET',) # sólo lectura
@@ -32,27 +54,49 @@ class Defaults(BaseHandler):
     @classmethod
     def short_of(cls, m):
         return dict(kind=cls.kind_of(m), name=cls.full_name(m), resource_uri=cls.resource_uri_of(m))
+    @classmethod
+    def collection_uri(cls, m, name):
+        return cls.resource_uri_of(m) + '/' + name[:-4]
+    @classmethod
+    def modules_uri(cls, m):
+        return cls.collection_uri(m, callee_name())
+    @classmethod
+    def interfaces_uri(cls, m):
+        return cls.collection_uri(m, callee_name())
+    @classmethod
+    def dependencies_uri(cls, m):
+        return cls.collection_uri(m, callee_name())
+    @classmethod
+    def reverse_dependencies_uri(cls, m):
+        return cls.collection_uri(m, callee_name())
+
+generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri') + query_fields('dependencies') + query_fields('reverse_dependencies')
+
+interface_fields = ('published', 'technology', 'direction', 'loadestimate')
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'name', 'full_name', 'external', 'description', 'functional_referents', 'implementation_referents', 'documentation', ('modules', ('kind', 'name')), 'dependencies', 'reverse_dependencies', 'diagram_uri')
+    fields = generic_fields + collection_fields('modules')
+    @classmethod
+    def dependencies(cls, system):
+        return map(cls.short_of, Dependency.objects.filter(module__system=system).exclude(interface__module__system=system))
     @classmethod
     def reverse_dependencies(cls, system):
         return map(cls.short_of, Dependency.objects.filter(interface__module__system=system).exclude(module__system=system))
-    @classmethod
-    def dependencies(cls, system):
-        return cls.resource_uri_of(system) + '/dependencies'
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = ('kind', 'name', 'full_name', 'external', 'goal', ('system', ('kind', 'name')), 'functional_referents', 'implementation_referents', 'documentation', ('interfaces', ('kind', 'name')), 'dependencies', 'reverse_dependencies', 'diagram_uri')
+    fields = generic_fields + (model_field('system', 'full_name'),) + collection_fields('interfaces')
     @classmethod
     def dependencies(cls, module):
         return map(cls.short_of, module.dependency_objects())
+    @classmethod
+    def reverse_dependencies(cls, module):
+        return map(cls.short_of, Dependency.objects.filter(interface__module=module).exclude(module=module))
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = ('kind', 'name', 'full_name', 'goal', ('module', ('kind', 'name', ('system', ('kind', 'name')))), 'published', 'technology', 'direction', 'functional_referents', 'implementation_referents', 'documentation', 'reverse_dependencies', 'diagram_uri')
+    fields = generic_fields + interface_fields + (model_field('module', model_field('system')),) + collection_fields('reverse_dependencies')
     @classmethod
     def read(cls, req, interface=None, system=None, module=None):
         if interface:
@@ -63,10 +107,13 @@ class InterfaceHandler(Defaults):
             return Interface.objects.filter(module__system=system, published=True)
         else:
             return Interface.objects.all()
+    @classmethod
+    def reverse_dependencies(cls, interface):
+        return map(cls.short_of, Dependency.objects.filter(interface=interface))
 
 class DependencyHandler(Defaults):
     model = Dependency
-    fields = ('kind', 'name', 'full_name', 'goal', ('module', ('kind', 'name', ('system', ('kind', 'name')))), 'functional_referents', 'implementation_referents', 'documentation', 'technology', 'direction', 'loadestimate', ('interface', ('kind', 'name', ('module', ('kind', 'name', ('system', ('kind', 'name')))))))
+    fields = generic_fields + interface_fields + (model_field('module', model_field('system')), model_field('interface', model_field('module', model_field('system'))))
     @classmethod
     def read(cls, req, dependency=None, system=None, module=None, interface=None):
         if dependency:

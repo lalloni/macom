@@ -89,7 +89,6 @@ systems = patterns('',
     url(r'^system/(?P<system>\d+)/', include(reverse_dependencies)),
 )
 
-
 urlpatterns = patterns('',
 
     ('', include(systems)),
