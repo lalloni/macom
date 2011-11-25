@@ -69,17 +69,6 @@ function showViewRoot(tab, record) {
 }
 
 function showViewSystem(data, id) {
-  // Variables de datos
-  var modules = data[0].modules;
-  var module_interfaces = new Array();
-  for ( var i = 0; i < modules.length; i++) {
-    if (modules[i].interfaces != null) {
-      for ( var j = 0; j < modules[i].interfaces.length; j++) {
-        module_interfaces.push(modules[i].interfaces[j]);
-      }
-    }
-  }
-
   // Representacion
   var system = data[0];
   ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
@@ -87,32 +76,44 @@ function showViewSystem(data, id) {
     data : system,
     fields : [ mcm.fields.Description, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation ],
     additionalInfo : [ {
-      title : "M&oacute;dulos (" + modules.length + ")",
+      title : "M&oacute;dulos ",
       pane : isc.DetailGrid.create({
         ID : "systemModules" + system.full_name,
-        data : modules,
-        fields : [ mcm.fields.External, mcm.fields.FullName, mcm.fields.Goal ],
+        dataSource : isc.JSONDataSource.create({
+          dataURL : system.modules_uri,
+          autoFetchData : true,
+          fields : [ mcm.fields.External, mcm.fields.FullName, mcm.fields.Goal ]
+        }),
       })
     }, {
-      title : "Interfaces (" + module_interfaces.length + ")",
+      title : "Interfaces publicadas",
       pane : isc.DetailGrid.create({
         ID : "systemInterfaces" + system.full_name,
-        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
-        data : module_interfaces
+        dataSource : isc.JSONDataSource.create({
+          dataURL : system.interfaces_uri,
+          autoFetchData : true,
+            fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+        })
       })
     }, {
-      title : "Dependencias (" + system.dependencies.length + ")",
+      title : "Dependencias",
       pane : isc.DetailGrid.create({
         ID : "systemDependencies" + system.full_name,
-        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
-        data : system.dependencies
+        dataSource : isc.JSONDataSource.create({
+          dataURL : system.dependencies_uri,
+          autoFetchData : true,
+          fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+        })
       })
     }, {
-      title : "Dependencias inversas (" + system.dependents.length + ")",
+      title : "Dependencias inversas",
       pane : isc.DetailGrid.create({
         ID : "systemDependents" + system.full_name,
-        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
-        data : system.dependents
+        dataSource : isc.JSONDataSource.create({
+          dataURL : system.reverse_dependencies_uri,
+          autoFetchData : true,
+            fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+        })
       })
     } ]
   }));
@@ -125,11 +126,14 @@ function showViewModule(data, id) {
     data : module,
     fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation ],
     additionalInfo : [ {
-      title : "Interfaces (" + module.interfaces.length + ")",
+      title : "Interfaces",
       pane : isc.DetailGrid.create({
         ID : "moduleInterfaces" + module.full_name,
-        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
-        data : module.interfaces
+        dataSource : isc.JSONDataSource.create({
+          dataURL : module.interfaces_uri,
+          autoFetchData : true,
+            fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+        })
       })
     } ]
   }));
@@ -151,8 +155,11 @@ function showViewDependency(data, id) {
     additionalInfo : [ {
       title : "Interfaz utilizada",
       pane : isc.DetailGrid.create({
-        fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
-        data : new Array(data[0].interface)
+          dataSource : isc.JSONDataSource.create({
+              dataURL : data[0].interface.resource_uri,
+              autoFetchData : true,
+                fields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+            })
       })
     } ]
   }));

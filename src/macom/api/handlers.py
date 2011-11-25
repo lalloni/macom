@@ -76,7 +76,7 @@ interface_fields = ('published', 'technology', 'direction', 'loadestimate')
 
 class SystemHandler(Defaults):
     model = System
-    fields = generic_fields + collection_fields('modules')
+    fields = generic_fields + collection_fields('modules') + collection_fields('interfaces')
     @classmethod
     def dependencies(cls, system):
         return map(cls.short_of, Dependency.objects.filter(module__system=system).exclude(interface__module__system=system))
