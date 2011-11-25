@@ -35,9 +35,9 @@ class Defaults(BaseHandler):
 
 class SystemHandler(Defaults):
     model = System
-    fields = ('kind', 'name', 'full_name', 'external', 'description', 'functional_referents', 'implementation_referents', 'documentation', ('modules', ('kind', 'name',)), 'dependents', 'dependencies', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'external', 'description', 'functional_referents', 'implementation_referents', 'documentation', ('modules', ('kind', 'name')), 'dependencies', 'reverse_dependencies', 'diagram_uri')
     @classmethod
-    def dependents(cls, system):
+    def reverse_dependencies(cls, system):
         return map(cls.short_of, Dependency.objects.filter(interface__module__system=system).exclude(module__system=system))
     @classmethod
     def dependencies(cls, system):
@@ -45,14 +45,14 @@ class SystemHandler(Defaults):
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = ('kind', 'name', 'full_name', 'external', 'goal', 'functional_referents', 'implementation_referents', 'documentation', ('interfaces', ('kind', 'name',)), 'dependencies', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'external', 'goal', ('system', ('kind', 'name')), 'functional_referents', 'implementation_referents', 'documentation', ('interfaces', ('kind', 'name')), 'dependencies', 'reverse_dependencies', 'diagram_uri')
     @classmethod
     def dependencies(cls, module):
         return map(cls.short_of, module.dependency_objects())
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = ('kind', 'name', 'full_name', 'goal', 'published', 'technology', 'direction', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri')
+    fields = ('kind', 'name', 'full_name', 'goal', ('module', ('kind', 'name', ('system', ('kind', 'name')))), 'published', 'technology', 'direction', 'functional_referents', 'implementation_referents', 'documentation', 'reverse_dependencies', 'diagram_uri')
     @classmethod
     def read(cls, req, interface=None, system=None, module=None):
         if interface:
@@ -66,7 +66,7 @@ class InterfaceHandler(Defaults):
 
 class DependencyHandler(Defaults):
     model = Dependency
-    fields = ('kind', 'name', 'full_name', 'goal', 'functional_referents', 'implementation_referents', 'documentation', 'technology', 'direction', 'loadestimate', ('interface', ('kind', 'name',)))
+    fields = ('kind', 'name', 'full_name', 'goal', ('module', ('kind', 'name', ('system', ('kind', 'name')))), 'functional_referents', 'implementation_referents', 'documentation', 'technology', 'direction', 'loadestimate', ('interface', ('kind', 'name', ('module', ('kind', 'name', ('system', ('kind', 'name')))))))
     @classmethod
     def read(cls, req, dependency=None, system=None, module=None, interface=None):
         if dependency:
