@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 from piston.resource import Resource
 from django.conf.urls.defaults import patterns, url, include
-from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler
+from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler, \
+    ReverseDependencyHandler
 from piston.emitters import Emitter
 from cStringIO import StringIO
 import codecs
@@ -54,6 +55,11 @@ system_resource = Resource(SystemHandler)
 module_resource = Resource(ModuleHandler)
 interface_resource = Resource(InterfaceHandler)
 dependency_resource = Resource(DependencyHandler)
+reverse_dependency_resource = Resource(ReverseDependencyHandler)
+
+reverse_dependencies = patterns('',
+    url(r'reverse_dependenc(?:y|ies)/?$', reverse_dependency_resource)
+)
 
 dependencies = patterns('',
     url(r'^dependenc(?:y|ies)/?$', dependency_resource, name='api_dependency_list'),
@@ -63,7 +69,7 @@ dependencies = patterns('',
 interfaces = patterns('',
     url(r'^interfaces?/?$', interface_resource, name='api_interface_list'),
     url(r'^interface/(?P<interface>\d+)/?$', interface_resource, name='api_interface'),
-    url(r'^interface/(?P<interface>\d+)/', include(dependencies)),
+    url(r'^interface/(?P<interface>\d+)/', include(reverse_dependencies)),
 )
 
 modules = patterns('',
@@ -71,6 +77,7 @@ modules = patterns('',
     url(r'^module/(?P<id>\d+)/?$', module_resource, name='api_module'),
     url(r'^module/(?P<module>\d+)/', include(interfaces)),
     url(r'^module/(?P<module>\d+)/', include(dependencies)),
+    url(r'^module/(?P<module>\d+)/', include(reverse_dependencies)),
 )
 
 systems = patterns('',
@@ -79,6 +86,7 @@ systems = patterns('',
     url(r'^system/(?P<system>\d+)/', include(modules)),
     url(r'^system/(?P<system>\d+)/', include(interfaces)),
     url(r'^system/(?P<system>\d+)/', include(dependencies)),
+    url(r'^system/(?P<system>\d+)/', include(reverse_dependencies)),
 )
 
 

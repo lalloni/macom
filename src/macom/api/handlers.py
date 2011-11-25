@@ -69,6 +69,17 @@ class DependencyHandler(Defaults):
         if system:
             return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
 
+class ReverseDependencyHandler(DependencyHandler):
+    @classmethod
+    def read(cls, req, system=None, module=None, interface=None):
+        if interface:
+            return Dependency.objects.filter(interface=interface)
+        if module:
+            return Dependency.objects.filter(interface__module=module).exclude(module=module)
+        if system:
+            return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
+
+
 class ModelHandler(BaseHandler):
     def read(self, request):
         res = []
