@@ -111,6 +111,17 @@ app.views = {
 	    title : "Interface",
 	    data : interface,
 	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology ],
+	    additionalInfo : [ {
+	        title : "Dependencias inversas",
+	        pane : isc.DetailGrid.create({
+	          ID : "interfaceReverseDependency" + interface.full_name,
+	          dataSource : isc.JSONDataSource.create({
+	            dataURL : interface.reverse_dependencies_uri,
+	            autoFetchData : true,
+	            fields : app.fields.DependencyGridFields
+	          })
+	        })
+	      } ]
 	  }));
 	},
 	
