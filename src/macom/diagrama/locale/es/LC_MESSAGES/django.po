@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-11 15:44-0300\n"
+"POT-Creation-Date: 2011-11-29 15:59-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr "Tipo"
 msgid "Types"
 msgstr "Tipos"
 
-#: admin.py:68 models.py:111
+#: admin.py:68 models.py:153
 msgid "Architectural Pattern"
 msgstr "Patrón Arquitectonico"
 
@@ -42,214 +42,230 @@ msgstr "Patrón Arquitectonico"
 msgid "Architectural Patterns"
 msgstr "Patrónes Arquitectonicos"
 
-#: models.py:16
+#: models.py:36
 msgid "annotation"
 msgstr "Notas"
 
-#: models.py:21 models.py:40 models.py:58 models.py:90 models.py:100
+#: models.py:41 models.py:62 models.py:95 models.py:131 models.py:142
 msgid "name"
 msgstr "Nombre"
 
-#: models.py:21
+#: models.py:41
 msgid "system-name-help"
 msgstr "Nombre del sistema"
 
-#: models.py:22 models.py:91 models.py:101
+#: models.py:42 models.py:132 models.py:143
 msgid "description"
 msgstr "Descripción"
 
-#: models.py:22
+#: models.py:42
 msgid "description-help"
 msgstr "La descripción de la entidad"
 
-#: models.py:23 models.py:43 models.py:61 models.py:78
-msgid "referents"
-msgstr "Referentes"
+#: models.py:43 models.py:65 models.py:98 models.py:118
+msgid "functional_referents"
+msgstr "Referentes funcionales"
 
-#: models.py:23 models.py:43 models.py:61 models.py:78
-msgid "referents-help"
-msgstr "Lista de referentes y sus mails"
+#: models.py:43 models.py:65 models.py:98 models.py:118
+msgid "functional_referents-help"
+msgstr "Lista de referentes funcionales con datos de contacto"
 
-#: models.py:24 models.py:44 models.py:62 models.py:79
+#: models.py:44 models.py:66 models.py:99 models.py:119
+msgid "implementation_referents"
+msgstr "Referentes de implementación"
+
+#: models.py:44 models.py:66 models.py:99 models.py:119
+msgid "implementation_referents-help"
+msgstr "Lista de referentes de implementación con datos de contacto"
+
+#: models.py:45 models.py:67 models.py:100 models.py:120
 msgid "documentation"
 msgstr "Documentación"
 
-#: models.py:24 models.py:44 models.py:62 models.py:79
+#: models.py:45 models.py:67 models.py:100 models.py:120
 msgid "documentation-help"
 msgstr "Links y documentación"
 
-#: models.py:25 models.py:42
+#: models.py:46 models.py:64
 msgid "external"
 msgstr "Externo"
 
-#: models.py:25 models.py:42
+#: models.py:46 models.py:64
 msgid "external-help"
 msgstr "El módulo no pertenece al ámbito de la DIT"
 
-#: models.py:27 models.py:39
+#: models.py:49 models.py:61
 msgid "system"
 msgstr "Sistema"
 
-#: models.py:28
+#: models.py:50
 msgid "systems"
 msgstr "Sistemas"
 
-#: models.py:35
+#: models.py:57
 msgid "high"
 msgstr "Alta"
 
-#: models.py:36
+#: models.py:58
 msgid "medium"
 msgstr "Media"
 
-#: models.py:37
+#: models.py:59
 msgid "low"
 msgstr "Baja"
 
-#: models.py:40
+#: models.py:62
 msgid "module-name-help"
 msgstr "Nombre del módulo"
 
-#: models.py:41 models.py:59 models.py:75
+#: models.py:63 models.py:96 models.py:115
 msgid "goal"
 msgstr "Objetivo"
 
-#: models.py:41
+#: models.py:63
 msgid "module-goal-help"
 msgstr "¿Con qué fin se creó el módulo? ¿Cuáles son los roles que tiene?"
 
-#: models.py:45
+#: models.py:68
 msgid "criticity"
 msgstr "Criticidad"
 
-#: models.py:45
+#: models.py:68
 msgid "criticity-help"
 msgstr "La criticidad del módulo"
 
-#: models.py:50 models.py:57 models.py:73
+#: models.py:74 models.py:94 models.py:113
 msgid "module"
 msgstr "Módulo"
 
-#: models.py:51
+#: models.py:75
 msgid "modules"
 msgstr "Módulos"
 
-#: models.py:58
+#: models.py:95
 msgid "interface-name-help"
 msgstr "Nombre de la interface"
 
-#: models.py:59
+#: models.py:96
 msgid "interface-goal-help"
 msgstr "¿Con qué fin se creó la interface? ¿Cuáles son los roles que tiene?"
 
-#: models.py:60 models.py:80
+#: models.py:97 models.py:121
 msgid "technology"
 msgstr "Tecnología"
 
-#: models.py:60 models.py:80
+#: models.py:97 models.py:121
 msgid "technology-help"
 msgstr "La tecnología utilizada por la interfaz"
 
-#: models.py:63 models.py:76
+#: models.py:101 models.py:116
 msgid "Inbound"
 msgstr "Entrada"
 
-#: models.py:63
+#: models.py:101
 msgid "interface-inbound-help"
 msgstr "El objetivo de la interfaz es el ingreso de datos"
 
-#: models.py:64 models.py:77
+#: models.py:102 models.py:117
 msgid "Outbound"
 msgstr "Salida"
 
-#: models.py:64
+#: models.py:102
 msgid "interface-outbound-help"
 msgstr "El objetivo de la interfaz es la extracción de datos"
 
-#: models.py:66 models.py:74
+#: models.py:103
+msgid "Published"
+msgstr ""
+
+#: models.py:103
+msgid "Published for use outside the system"
+msgstr ""
+
+#: models.py:106 models.py:114
 msgid "interface"
 msgstr "Interfaz"
 
-#: models.py:67
+#: models.py:107
 msgid "interfaces"
 msgstr "Interfaces"
 
-#: models.py:75
+#: models.py:115
 msgid "dependency-goal-help"
 msgstr "¿Con qué fin se creó la dependencia? ¿Cuáles son los roles que tiene?"
 
-#: models.py:76
+#: models.py:116
 msgid "dependency-inbound-help"
 msgstr "Se utiliza la interfaz para obtener datos"
 
-#: models.py:77
+#: models.py:117
 msgid "dependency-outbound-help"
 msgstr "Se utiliza la interfaz para enviar datos"
 
-#: models.py:81
+#: models.py:122
 msgid "loadestimate"
 msgstr "Nivel de carga"
 
-#: models.py:81
+#: models.py:122
 msgid "loadestimate-help"
 msgstr "Nivel de carga estimada"
 
-#: models.py:83
+#: models.py:124
 msgid "dependency"
 msgstr "Dependencia"
 
-#: models.py:84
+#: models.py:125
 msgid "dependencies"
 msgstr "Dependencias"
 
-#: models.py:90
+#: models.py:131
 msgid "architecturalpattern-name-help"
 msgstr "Nombre del Patrón Arquitectonico"
 
-#: models.py:91
+#: models.py:132
 msgid "architecturalpattern-description-help"
 msgstr "Descripcion del Patrón Arquitectonico"
 
-#: models.py:93
+#: models.py:135
 msgid "architectural pattern"
 msgstr "Patrón Arquitectonico"
 
-#: models.py:94
+#: models.py:136
 msgid "architectural patterns"
 msgstr "Patrónes Arquitectonicos"
 
-#: models.py:100
+#: models.py:142
 msgid "moduletype-name-help"
 msgstr "Nombre del Tipo de Módulo"
 
-#: models.py:101
+#: models.py:143
 msgid "moduletype-description-help"
 msgstr "Descripción del Tipo de Módulo"
 
-#: models.py:103
+#: models.py:145
 msgid "module type"
 msgstr "Tipo de Módulo"
 
-#: models.py:104
+#: models.py:146
 msgid "module types"
 msgstr "Tipos de Módulo"
 
-#: models.py:113
+#: models.py:155
 msgid "architectural pattern case"
 msgstr "Caso de Patrón Arquitectónico"
 
-#: models.py:114
+#: models.py:156
 msgid "architectural pattern cases"
 msgstr "Casos de Patrones Arquitectónicos"
 
-#: models.py:121
+#: models.py:163
 msgid "Module Type"
 msgstr "Tipo de Módulo"
 
-#: models.py:123
+#: models.py:165
 msgid "module type case"
 msgstr "Caso de Tipos de Módulo"
 
-#: models.py:124
+#: models.py:166
 msgid "module type cases"
 msgstr "Casos de Tipos de Módulos"

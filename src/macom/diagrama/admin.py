@@ -132,7 +132,7 @@ class DependencyAdmin(admin.ModelAdmin):
     list_display = ['module', 'interface', 'goal', 'functional_referents', 'implementation_referents', 'documentation']
     list_display_links = ['module']
     ordering = ['module__system__name']
-    search_fields = ['module__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation', 'interface__referents','functional_referents','implementation_referents', 'documentation']
+    search_fields = ['module__name', 'interface__name', 'interface__goal', 'technology', 'interface__documentation','functional_referents','implementation_referents', 'documentation']
 
 class ModuleTypeAdmin(admin.ModelAdmin):
     fieldsets = (
