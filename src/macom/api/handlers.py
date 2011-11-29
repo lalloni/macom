@@ -68,6 +68,8 @@ class DependencyHandler(Defaults):
             return Dependency.objects.filter(module=module)
         if system:
             return Dependency.objects.filter(module__system=system).exclude(interface__module__system=system)
+        else:
+            return Dependency.objects.all()
 
 class ReverseDependencyHandler(DependencyHandler):
     @classmethod
