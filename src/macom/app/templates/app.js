@@ -101,6 +101,26 @@ app.views = {
 	          fields : app.fields.InterfaceGridFields
 	        })
 	      })
+	    }, {
+	      title : "Dependencias",
+	      pane : isc.DetailGrid.create({
+	        ID : "moduleDependencies" + module.full_name,
+	        dataSource : isc.JSONDataSource.create({
+	          dataURL : module.dependencies_uri,
+	          autoFetchData : true,
+	          fields : app.fields.DependencyGridFields
+	        })
+	      })
+	    }, {
+	      title : "Dependencias inversas",
+	      pane : isc.DetailGrid.create({
+	        ID : "moduleDependents" + module.full_name,
+	        dataSource : isc.JSONDataSource.create({
+	          dataURL : module.reverse_dependencies_uri,
+	          autoFetchData : true,
+	          fields : app.fields.DependencyGridFields
+	        })
+	      })
 	    } ]
 	  }));
 	},
