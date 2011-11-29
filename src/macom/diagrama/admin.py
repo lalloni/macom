@@ -84,7 +84,7 @@ class ModuleAdmin(admin.ModelAdmin):
     list_display = ['system', 'name', 'goal', 'external']
     list_display_links = ['name']
     
-    search_fields = ['system__name','name', 'goal','functional_referents','implementation_referents', 'documentation', 'tags']
+    search_fields = ['system__name','name', 'goal','functional_referents','implementation_referents', 'documentation']
     inlines = [InlineInterface, InlineDependency, InlineModuleTypeCase, InlineArchitecturalPatternCase]
 
 class SystemAdmin(admin.ModelAdmin):
@@ -94,7 +94,7 @@ class SystemAdmin(admin.ModelAdmin):
         }),
     )
     list_display = ['name', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'external']
-    search_fields = ['name', 'description','functional_referents','implementation_referents', 'documentation', 'tags']
+    search_fields = ['name', 'description','functional_referents','implementation_referents', 'documentation']
     
 class InterfaceAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -113,7 +113,7 @@ class InterfaceAdmin(admin.ModelAdmin):
     list_display = ['module', 'name', 'goal', 'functional_referents', 'implementation_referents', 'documentation']
     list_display_links = ['name']
     ordering = ['module__system__name']
-    search_fields = ['module__name', 'name','functional_referents','implementation_referents', 'documentation', 'tags']
+    search_fields = ['module__name', 'name','functional_referents','implementation_referents', 'documentation']
 
 class DependencyAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -154,7 +154,7 @@ class ArchitecturalPatternAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
     list_display_links = ['name']
     ordering = ['name']
-    search_fields = ['name', 'description', 'tags']
+    search_fields = ['name', 'description']
 
 class ModuleTypeCaseAdmin(admin.ModelAdmin):
     fieldsets = (
