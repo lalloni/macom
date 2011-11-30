@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-29 15:59-0300\n"
+"POT-Creation-Date: 2011-11-30 14:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,11 +176,11 @@ msgstr "El objetivo de la interfaz es la extracción de datos"
 
 #: models.py:103
 msgid "Published"
-msgstr ""
+msgstr "Publicado"
 
 #: models.py:103
 msgid "Published for use outside the system"
-msgstr ""
+msgstr "Publicado para ser usado fuera del sistema"
 
 #: models.py:106 models.py:114
 msgid "interface"

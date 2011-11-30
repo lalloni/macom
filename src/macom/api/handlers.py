@@ -70,7 +70,7 @@ class Defaults(BaseHandler):
     def reverse_dependencies_uri(cls, m):
         return cls.collection_uri(m, callee_name())
 
-generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri') + query_fields('dependencies') + query_fields('reverse_dependencies')
+generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri', 'published') + query_fields('dependencies') + query_fields('reverse_dependencies')
 
 interface_fields = ('published', 'technology', 'direction', 'loadestimate')
 
@@ -104,7 +104,7 @@ class InterfaceHandler(Defaults):
         if module:
             return Interface.objects.filter(module=module)
         if system:
-            return Interface.objects.filter(module__system=system, published=True)
+            return Interface.objects.filter(module__system=system)
         else:
             return Interface.objects.all()
     @classmethod

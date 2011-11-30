@@ -12,7 +12,7 @@ function getIconByKind(node) {
 
 // Fields Defaults de aplicacion
 app.fields = {
-	InterfaceGridFields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ],
+	InterfaceGridFields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal, mcm.fields.Published ],
 	DependencyGridFields: [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
 }
 
@@ -44,7 +44,6 @@ app.views = {
 	    additionalInfo : [ {
 	      title : "M&oacute;dulos ",
 	      pane : isc.DetailGrid.create({
-	        ID : "systemModules" + system.full_name,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : system.modules_uri,
 	          autoFetchData : true,
@@ -52,19 +51,19 @@ app.views = {
 	        }),
 	      })
 	    }, {
-	      title : "Interfaces publicadas",
+	      title : "Interfaces",
 	      pane : isc.DetailGrid.create({
-	        ID : "systemInterfaces" + system.full_name,
-	        dataSource : isc.JSONDataSource.create({
+	    	initialCriteria: { published: true },  	
+	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.interfaces_uri,
 	          autoFetchData : true,
+	          cacheAllData: true, // Se utiliza para que initialCriteria actue al inicio
 	          fields : app.fields.InterfaceGridFields
 	        })
 	      })
 	    }, {
 	      title : "Dependencias",
 	      pane : isc.DetailGrid.create({
-	        ID : "systemDependencies" + system.full_name,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : system.dependencies_uri,
 	          autoFetchData : true,
@@ -74,7 +73,6 @@ app.views = {
 	    }, {
 	      title : "Dependencias inversas",
 	      pane : isc.DetailGrid.create({
-	        ID : "systemDependents" + system.full_name,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : system.reverse_dependencies_uri,
 	          autoFetchData : true,
@@ -94,7 +92,6 @@ app.views = {
 	    additionalInfo : [ {
 	      title : "Interfaces",
 	      pane : isc.DetailGrid.create({
-	        ID : "moduleInterfaces" + module.full_name,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : module.interfaces_uri,
 	          autoFetchData : true,
@@ -104,7 +101,6 @@ app.views = {
 	    }, {
 	      title : "Dependencias",
 	      pane : isc.DetailGrid.create({
-	        ID : "moduleDependencies" + module.full_name,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : module.dependencies_uri,
 	          autoFetchData : true,
@@ -114,7 +110,6 @@ app.views = {
 	    }, {
 	      title : "Dependencias inversas",
 	      pane : isc.DetailGrid.create({
-	        ID : "moduleDependents" + module.full_name,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : module.reverse_dependencies_uri,
 	          autoFetchData : true,
@@ -130,11 +125,10 @@ app.views = {
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
 	    title : "Interface",
 	    data : interface,
-	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology ],
+	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology, mcm.fields.Published ],
 	    additionalInfo : [ {
 	        title : "Dependencias inversas",
 	        pane : isc.DetailGrid.create({
-	          ID : "interfaceReverseDependency" + interface.full_name,
 	          dataSource : isc.JSONDataSource.create({
 	            dataURL : interface.reverse_dependencies_uri,
 	            autoFetchData : true,

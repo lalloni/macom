@@ -48,6 +48,13 @@ mcm.fields = {
     imageURLSuffix : ".png"
   },
 
+  Published : {
+	name : "published",
+	title : "Publicada",
+	width : "60",
+	valueMap: { true: "Si", false: "No" }
+  },
+  
   External : {
     name : "external",
     title : " ",

@@ -107,10 +107,10 @@ class InterfaceAdmin(admin.ModelAdmin):
         }),
         ('Detail', {
             'classes': ('collapse',),
-            'fields': ('goal','technology','functional_referents','implementation_referents', 'documentation', 'tags'),
+            'fields': ('goal','published','technology','functional_referents','implementation_referents', 'documentation', 'tags'),
         }),
     )
-    list_display = ['module', 'name', 'goal', 'functional_referents', 'implementation_referents', 'documentation']
+    list_display = ['module', 'name', 'goal', 'published', 'functional_referents', 'implementation_referents', 'documentation']
     list_display_links = ['name']
     ordering = ['module__system__name']
     search_fields = ['module__name', 'name','functional_referents','implementation_referents', 'documentation']
