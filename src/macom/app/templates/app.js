@@ -140,17 +140,18 @@ app.views = {
 	},
 	
 	showDependency:	function (data, id) {
+	  var dependency = data[0];
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
 	    title : "Dependencia",
-	    data : data[0],
+	    data : dependency,
 	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology ],
 	    additionalInfo : [ {
 	      title : "Interfaz utilizada",
 	      pane : isc.DetailGrid.create({
 	          dataSource : isc.JSONDataSource.create({
-	              dataURL : data[0].interface.resource_uri,
-	              autoFetchData : true,
-	              fields : app.fields.InterfaceGridFields
+	            dataURL : dependency.interface.resource_uri,
+	            autoFetchData : true,
+	            fields : app.fields.InterfaceGridFields
 	          })
 	      })
 	    } ]
