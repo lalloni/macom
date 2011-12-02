@@ -1,19 +1,9 @@
 var app = {};
 
-// Objetos predefinidos
-
-function getIcon(iconSrc) {
-  return isc.Canvas.imgHTML(iconSrc, 16, 16);
-}
-
-function getIconByKind(node) {
-  return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
-}
-
 // Fields Defaults de aplicacion
 app.fields = {
-	InterfaceGridFields : [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal, mcm.fields.Published ],
-	DependencyGridFields: [ mcm.fields.Direction, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+	InterfaceGridFields : [ mcm.fields.FormatedDirection, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal, mcm.fields.Published ],
+	DependencyGridFields: [ mcm.fields.FormatedDirection, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
 }
 
 app.views = {
@@ -47,36 +37,37 @@ app.views = {
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : system.modules_uri,
 	          autoFetchData : true,
-	          fields : [ mcm.fields.External, mcm.fields.FullName, mcm.fields.Goal ]
+	          fields : [ mcm.fields.FormatedExternal, mcm.fields.FullName, mcm.fields.Goal ]
 	        }),
 	      })
 	    }, {
 	      title : "Interfaces",
 	      pane : isc.DetailGrid.create({
-	    	initialCriteria: { published: true },  	
+	    	initialCriteria: { published: true },
+	    	fields: app.fields.InterfaceGridFields,
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.interfaces_uri,
 	          autoFetchData : true,
-	          cacheAllData: true, // Se utiliza para que initialCriteria actue al inicio
-	          fields : app.fields.InterfaceGridFields
+	          cacheAllData: true // Se utiliza para que initialCriteria actue al inicio
 	        })
 	      })
 	    }, {
 	      title : "Dependencias",
 	      pane : isc.DetailGrid.create({
-	        dataSource : isc.JSONDataSource.create({
+	    	fields : app.fields.DependencyGridFields,
+	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.dependencies_uri,
 	          autoFetchData : true,
-	          fields : app.fields.DependencyGridFields
+	          cacheAllData: true
 	        })
 	      })
 	    }, {
 	      title : "Dependencias inversas",
 	      pane : isc.DetailGrid.create({
-	        dataSource : isc.JSONDataSource.create({
+	    	fields : app.fields.DependencyGridFields,
+	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.reverse_dependencies_uri,
-	          autoFetchData : true,
-	          fields : app.fields.DependencyGridFields
+	          autoFetchData : true
 	        })
 	      })
 	    } ]
@@ -92,28 +83,28 @@ app.views = {
 	    additionalInfo : [ {
 	      title : "Interfaces",
 	      pane : isc.DetailGrid.create({
+	    	fields : app.fields.InterfaceGridFields,
 	        dataSource : isc.JSONDataSource.create({
 	          dataURL : module.interfaces_uri,
-	          autoFetchData : true,
-	          fields : app.fields.InterfaceGridFields
+	          autoFetchData : true
 	        })
 	      })
 	    }, {
 	      title : "Dependencias",
 	      pane : isc.DetailGrid.create({
-	        dataSource : isc.JSONDataSource.create({
+	    	fields : app.fields.DependencyGridFields,
+	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : module.dependencies_uri,
-	          autoFetchData : true,
-	          fields : app.fields.DependencyGridFields
+	          autoFetchData : true
 	        })
 	      })
 	    }, {
 	      title : "Dependencias inversas",
 	      pane : isc.DetailGrid.create({
-	        dataSource : isc.JSONDataSource.create({
+	    	fields : app.fields.DependencyGridFields,
+	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : module.reverse_dependencies_uri,
-	          autoFetchData : true,
-	          fields : app.fields.DependencyGridFields
+	          autoFetchData : true
 	        })
 	      })
 	    } ]
@@ -129,10 +120,10 @@ app.views = {
 	    additionalInfo : [ {
 	        title : "Dependencias inversas",
 	        pane : isc.DetailGrid.create({
+	          fields : app.fields.DependencyGridFields,
 	          dataSource : isc.JSONDataSource.create({
 	            dataURL : interface.reverse_dependencies_uri,
-	            autoFetchData : true,
-	            fields : app.fields.DependencyGridFields
+	            autoFetchData : true
 	          })
 	        })
 	      } ]
@@ -148,10 +139,10 @@ app.views = {
 	    additionalInfo : [ {
 	      title : "Interfaz utilizada",
 	      pane : isc.DetailGrid.create({
+	    	  fields : app.fields.InterfaceGridFields,
 	          dataSource : isc.JSONDataSource.create({
 	            dataURL : dependency.interface.resource_uri,
-	            autoFetchData : true,
-	            fields : app.fields.InterfaceGridFields
+	            autoFetchData : true
 	          })
 	      })
 	    } ]
@@ -167,7 +158,7 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
   if (tab == null || typeof (tab) == 'undefined') {
     ContentTabSet.addTab({
       ID : record.resource_uri,
-      title : getIcon(getIconByKind(record)) + "  "
+      title : new mcm.IconsFactory(record).getNodeIcon() + " "
           + (record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name),
       record : record
     });
@@ -239,7 +230,8 @@ isc.VLayout.create({
         openProperty : "isOpen"
       },
       getIcon : function(node) {
-        return getIconByKind(node);
+    	  // todo: implementar IconsFactory
+    	  return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
       },
       dataSource : isc.JSONDataSource.create({
         dataURL : "{% url api_model %}",
