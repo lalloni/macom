@@ -7,7 +7,7 @@ app.fields = {
 }
 
 app.views = {
-	showRoot: function (tab, record) {
+	showRoot: function (record) {
 	  var tabset = new Array();
 
 	  for ( var i = 0; i < record.diagrams.length; i++) {
@@ -19,13 +19,12 @@ app.views = {
 	    })
 	  }
 
-	  tab.setPane(isc.TabSet.create({
+	  return isc.TabSet.create({
 	    tabs : tabset
-	  }));
+	  });
 	},
 	
 	showSystem: function (data, id) {
-	  // Representacion
 	  var system = data[0];
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
 	    title : "Sistema",
@@ -151,15 +150,19 @@ app.views = {
 }
 
 // APPLICATION
-function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
+function showDataTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
   var tab = ContentTabSet.getTab(record.resource_uri);
 
   // si no se encuentra generar uno nuevo con titulo = record.name
   if (tab == null || typeof (tab) == 'undefined') {
-    ContentTabSet.addTab({
+    
+	var name = record.name;
+	if ( record.full_name ) name = record.full_name;
+	  
+	ContentTabSet.addTab({
       ID : record.resource_uri,
       title : new mcm.IconsFactory(record).getNodeIcon() + " "
-          + (record.full_name.length > 40 ? "... " + record.full_name.substring(record.full_name.length - 40) : record.full_name),
+          + (name.length > 40 ? "... " + name.substring(name.length - 40) : name),
       record : record
     });
 
@@ -167,13 +170,9 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
     tab = ContentTabSet.getTab(record.resource_uri);
 
     // Se fija el record.kind
-    switch (record.kind) {
-      case 'root': // Si es root:
-        // muetra items del root
-        app.views.showRoot(tab, record);
-        break;
-
-      default: // Si es system, module, dependency o interface
+    if (record.kind == 'root') {
+        tab.setPane(app.views.showRoot(record));
+    } else {
         // DATASOURCE
         isc.JSONDataSource.create({
           ID : record.resource_uri,
@@ -189,9 +188,12 @@ function openTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
 }
 
 isc.DetailGrid.addProperties({
-  recordDoubleClick : openTab
+  recordDoubleClick : showDataTab
 });
 
+isc.ItemViewer.addProperties({
+  opener: "showDataTab"	
+})
 
 
 // Layout principal
@@ -240,11 +242,11 @@ isc.VLayout.create({
         } ]
       }),
       dataArrived : function(p) {
-        openTab(null, p.children[0]);
+        showDataTab(null, p.children[0]);
       },
       fields : [ {
         name : "name",
-        recordDoubleClick : openTab
+        recordDoubleClick : showDataTab
       } ],
       recordDoubleClick : function() {
         // Elimina el evento de dobleClick por default

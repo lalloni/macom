@@ -41,21 +41,67 @@ isc.defineClass("Diagram", "VLayout").addProperties({
   }
 });
 
+
 isc.defineClass("ItemViewer", "VLayout").addProperties({
     title : false,
     data : false, // Datos a mostrar del item
     fields : false, // Definicion de los fields de la informacion del item
+    opener: null,
     additionalInfo : false,
     height : "*",
+    
+    getOpenerLink : function (title, obj){
+    	return isc.Canvas.linkHTML("javascript:" + this.opener + "(null," + 
+    			"{" +
+    				"kind:\"" + obj.kind + "\"," +
+    				"name:\"" + obj.name + "\"," +
+    				"resource_uri:\"" + obj.resource_uri + "\""+
+    			"}" +
+    	")", title + " " + obj.name );
+    },
     initWidget : function() {
-        // Detalles del Item
+    	
+    	// Breadcrumb
+    	if (this.data.kind != null || typeof (this.data.kind) != 'undefined') {
+    		var bcHTML = "";
+    		switch (this.data.kind){
+	    	case "system":
+	    		// bcHTML = "" // NADA
+	    		break;
+			case "module":
+				bcHTML = this.getOpenerLink( "Sistema", this.data.system );
+				break;
+			case "interface":
+				bcHTML = this.getOpenerLink( "Sistema", this.data.module.system ) + "&nbsp;:&nbsp;" +
+						 this.getOpenerLink( "Módulo", this.data.module );
+				break;
+			case "dependency":
+				bcHTML = this.getOpenerLink( "Sistema", this.data.interface.module.system ) + "&nbsp;:&nbsp;" +
+						 this.getOpenerLink( "Módulo", this.data.interface.module ) + "&nbsp;:&nbsp;" +
+						 this.getOpenerLink( "Interface", this.data.interface );
+				break;
+	    	}
+
+    		if ( bcHTML.length > 0 ) {
+	        	this.breadcrumb = isc.HTMLFlow.create({
+	        	    width:"100%",
+	        	    height: "10px",
+	        	    className: "breadcrumb",
+	        	    contents: bcHTML
+	        	});
+    		}
+    	}
+
+    	
+    	// Detalles del Item
         var infoFields = new Array();
+
         // titulo
-        
         infoFields.push({
           value : (this.title ? this.title + " " : "") + this.data.full_name + new mcm.IconsFactory(this.data).getAllIcons(),
           type : "header"
         });
+
         if (this.fields) {
             infoFields = infoFields.concat(this.fields); // Definicion de datos
         }
@@ -64,10 +110,7 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
           fields : infoFields,
           data : this.data
         });
-        // Spacer
-        this.spacer = isc.LayoutSpacer.create({
-          height : "10"
-        });
+
         // Tabs de informacion
         var tabsInfo = new Array();
         if (this.data.diagram_uri) {
@@ -85,7 +128,12 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
         this.tabs = isc.TabSet.create({
           tabs : tabsInfo
         });
-        this.addMembers([ this.detail, this.spacer, this.tabs ]);
+        
+        this.addMembers([ this.breadcrumb,
+                          isc.LayoutSpacer.create({ height : "5" }),
+                          this.detail,
+                          isc.LayoutSpacer.create({ height : "10" }),
+                          this.tabs ]); 
         
         return this.Super("initWidget", arguments);
     }
