@@ -69,8 +69,14 @@ class Defaults(BaseHandler):
     @classmethod
     def reverse_dependencies_uri(cls, m):
         return cls.collection_uri(m, callee_name())
+    @classmethod
+    def edit_url(cls, m):
+        return reverse('admin:%s_%s_change' % (m._meta.app_label, m._meta.module_name), args=[m.pk])
+    @classmethod
+    def history_url(cls, m):
+        return reverse('admin:%s_%s_history' % (m._meta.app_label, m._meta.module_name), args=[m.pk])
 
-generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri', 'published') + query_fields('dependencies') + query_fields('reverse_dependencies')
+generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri', 'published', 'edit_url', 'history_url') + query_fields('dependencies') + query_fields('reverse_dependencies')
 
 interface_fields = ('published', 'technology', 'direction', 'loadestimate')
 

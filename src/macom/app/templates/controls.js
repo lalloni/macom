@@ -184,7 +184,7 @@ mcm.IconsFactory = function (node){
 
 	this.toHTMLLabel = function( label ) {
 		if ( this.showLabels && label ){
-			return this.spacer + "<span style='font-size: 10px !important'>" + label + "</span>"; 
+			return this.spacer + "<span class='iconlabel'>" + label + "</span>"; 
 		} else return "";
 	}
 	
@@ -201,6 +201,12 @@ mcm.IconsFactory = function (node){
 		if (!container) container = this.icons;
 
 		container[id] = this.toHTMLIcon( icon, label, tooltip, w, h);
+	}
+
+	this.addActionIcon = function ( id, icon, src, tooltip, label, container, w, h){
+		if (!container) container = this.icons;
+
+		container[id] = isc.Canvas.linkHTML(src, this.toHTMLIcon( icon, label, tooltip, w, h) );
 	}
 	
 	var title = "";
@@ -235,6 +241,14 @@ mcm.IconsFactory = function (node){
 			this.addIcon( "direction-out", "iconout.png", "Flujo de información saliente", "salida" );
 		}
 	};
+	
+	if ( this.node.edit_url ){
+		this.addActionIcon( "edit_url", "edit.png", this.node.edit_url, "Editar", "editar")
+	}
+
+	if ( this.node.history_url ){
+		this.addActionIcon( "history_url", "history.png", this.node.history_url, "Historial", "historial")
+	}
 	
 	this.getNodeIcon = function (){
 		// todo: definir icono de kind detault
