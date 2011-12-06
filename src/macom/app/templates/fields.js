@@ -1,3 +1,13 @@
+// Formateadores de fields
+mcm.format = {
+	InterfaceFullName : function ( value ){
+		return value.module.system.name + ":" + value.module.name + ":" + value.name;
+	},
+
+	DependencyFullName : function ( value ){
+		return mcm.format.InterfaceFullName( value.interface );
+	}
+}
 
 // Fields Predefinidos
 
@@ -60,7 +70,7 @@ mcm.fields = {
   Published : {
 	name : "published",
 	title : "Publicada",
-	autoFitWidth: true,
+	width: "90px",
 	valueMap: { true: "Si", false: "No" }
   },
   
@@ -78,5 +88,15 @@ mcm.fields = {
 		var icons = new mcm.IconsFactory(record);
 		return icons.getIcon("external"); 
 	}
+  },
+
+  Interface : {
+	name : "interface",
+	title : "Interface"
+  },
+  
+  InterfaceFullName: {
+	name: "interface",
+	formatCellValue: mcm.format.InterfaceFullName
   }
 }

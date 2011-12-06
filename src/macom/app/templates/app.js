@@ -3,7 +3,8 @@ var app = {};
 // Fields Defaults de aplicacion
 app.fields = {
 	InterfaceGridFields : [ mcm.fields.FormatedDirection, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal, mcm.fields.Published ],
-	DependencyGridFields: [ mcm.fields.FormatedDirection, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal ]
+	DependencyGridFields: [ mcm.fields.FormatedDirection, mcm.fields.Interface, mcm.fields.Technology, mcm.fields.Goal ],
+	DependencyDatasourceFields: [ mcm.fields.InterfaceFullName ]
 }
 
 app.views = {
@@ -57,7 +58,8 @@ app.views = {
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.dependencies_uri,
 	          autoFetchData : true,
-	          cacheAllData: true
+	          cacheAllData: true,
+	          fields: app.fields.DependencyDatasourceFields
 	        })
 	      })
 	    }, {
@@ -66,7 +68,8 @@ app.views = {
 	    	fields : app.fields.DependencyGridFields,
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.reverse_dependencies_uri,
-	          autoFetchData : true
+	          autoFetchData : true,
+	          fields: app.fields.DependencyDatasourceFields
 	        })
 	      })
 	    } ]
@@ -94,7 +97,8 @@ app.views = {
 	    	fields : app.fields.DependencyGridFields,
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : module.dependencies_uri,
-	          autoFetchData : true
+	          autoFetchData : true,
+	          fields: app.fields.DependencyDatasourceFields
 	        })
 	      })
 	    }, {
@@ -103,7 +107,8 @@ app.views = {
 	    	fields : app.fields.DependencyGridFields,
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : module.reverse_dependencies_uri,
-	          autoFetchData : true
+	          autoFetchData : true,
+	          fields: app.fields.DependencyDatasourceFields
 	        })
 	      })
 	    } ]
@@ -122,7 +127,8 @@ app.views = {
 	          fields : app.fields.DependencyGridFields,
 	          dataSource : isc.JSONDataSource.create({
 	            dataURL : interface.reverse_dependencies_uri,
-	            autoFetchData : true
+	            autoFetchData : true,
+		        fields: app.fields.DependencyDatasourceFields
 	          })
 	        })
 	      } ]
@@ -132,7 +138,8 @@ app.views = {
 	showDependency:	function (data, id) {
 	  var dependency = data[0];
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
-	    title : "Dependencia",
+	    title : "Dependencia a la interfaz",
+	    formatTitleValue: mcm.format.DependencyFullName,
 	    data : dependency,
 	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology ],
 	    additionalInfo : [ {
@@ -155,14 +162,29 @@ function showDataTab(viewer, record, recordNum, field, fieldNum, value, rawValue
 
   // si no se encuentra generar uno nuevo con titulo = record.name
   if (tab == null || typeof (tab) == 'undefined') {
-    
+
 	var name = record.name;
 	if ( record.full_name ) name = record.full_name;
 	  
+  	var functionTabCallback = "app.views.show";
+	switch ( record.kind ){
+		case "root": functionTabCallback += "Root"; break;
+		case "system": functionTabCallback += "System"; break;
+		case "module": functionTabCallback += "Module"; break;
+		case "interface": functionTabCallback += "Interface"; break;
+		case "dependency":
+			functionTabCallback += "Dependency";
+			name = mcm.format.DependencyFullName( record );
+		break;
+	}
+
+	// Recorda a 40 caracteres maximo
+	name = (name.length > 40 ? "... " + name.substring(name.length - 40) : name);
+	
+	// Agrega un nuevo tab
 	ContentTabSet.addTab({
       ID : record.resource_uri,
-      title : new mcm.IconsFactory(record).getNodeIcon() + " "
-          + (name.length > 40 ? "... " + name.substring(name.length - 40) : name),
+      title : new mcm.IconsFactory(record).getNodeIcon() + " " + name,
       record : record
     });
 
@@ -173,14 +195,12 @@ function showDataTab(viewer, record, recordNum, field, fieldNum, value, rawValue
     if (record.kind == 'root') {
         tab.setPane(app.views.showRoot(record));
     } else {
-        // DATASOURCE
+    	// DATASOURCE
         isc.JSONDataSource.create({
           ID : record.resource_uri,
           dataURL : record.resource_uri
         }).fetchData(
-            null,
-            "app.views.show" + record.kind.charAt(0).toUpperCase() + record.kind.slice(1).toLowerCase() + "(data, \""
-                + record.resource_uri + "\")" // Callback
+            null, functionTabCallback + "(data, \"" + record.resource_uri + "\")" // Callback
         );
     }
   }

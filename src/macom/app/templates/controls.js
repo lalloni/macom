@@ -49,7 +49,9 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
     opener: null,
     additionalInfo : false,
     height : "*",
-    
+    formatTitleValue: function (data) {
+    	return data.full_name; 
+    },
     getOpenerLink : function (title, obj){
     	return isc.Canvas.linkHTML("javascript:" + this.opener + "(null," + 
     			"{" +
@@ -98,7 +100,7 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
 
         // titulo
         infoFields.push({
-          value : (this.title ? this.title + " " : "") + this.data.full_name + new mcm.IconsFactory(this.data).getAllIcons(),
+          value : (this.title ? this.title + " " : "") + this.formatTitleValue(this.data) + new mcm.IconsFactory(this.data).getAllIcons(),
           type : "header"
         });
 
