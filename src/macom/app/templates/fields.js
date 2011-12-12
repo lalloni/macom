@@ -61,9 +61,9 @@ mcm.fields = {
 	type: "text",
 	formatCellValue : function  (value, record, rowNum, colNum, grid) {
 		var icons = new mcm.IconsFactory(record);
-		var iconsHTML = icons.getIcon("direction-in") + icons.getIcon("direction-out"); 
+		var iconsHTML = icons.get("direction-in") + icons.get("direction-out"); 
 		if ( iconsHTML.length > 0 ) return iconsHTML;
-		else return icons.icon.error; 
+		else return icons.standaricon.error; 
 	}
   },
   
@@ -86,7 +86,7 @@ mcm.fields = {
 	type: "text",
 	formatCellValue : function  (value, record, rowNum, colNum, grid) {
 		var icons = new mcm.IconsFactory(record);
-		return icons.getIcon("external"); 
+		return icons.get("external"); 
 	}
   },
 

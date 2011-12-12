@@ -93,16 +93,17 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
 	        	});
     		}
     	}
-
     	
     	// Detalles del Item
         var infoFields = new Array();
 
         // titulo
-        infoFields.push({
-          value : (this.title ? this.title + " " : "") + this.formatTitleValue(this.data) + new mcm.IconsFactory(this.data).getAllIcons(),
-          type : "header"
-        });
+        var headerTitle = isc.Label.create ( { 
+        	className: "detailHeader",
+        	height: "25px",
+        	contents: (this.title ? this.title + " " : "") +
+        			  this.formatTitleValue(this.data) +
+        	  		  new mcm.IconsFactory(this.data).getAll() });
 
         if (this.fields) {
             infoFields = infoFields.concat(this.fields); // Definicion de datos
@@ -132,6 +133,8 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
         });
         
         this.addMembers([ this.breadcrumb,
+                          isc.LayoutSpacer.create({ height : "5" }),
+                          headerTitle,
                           isc.LayoutSpacer.create({ height : "5" }),
                           this.detail,
                           isc.LayoutSpacer.create({ height : "10" }),
@@ -182,31 +185,36 @@ mcm.IconsFactory = function (node){
 	this.icons = {};
 	this.showLabels = true;
 
-	this.toHTMLLabel = function( label ) {
+	this._toHTMLLabel = function( label ) {
 		if ( this.showLabels && label ){
 			return this.spacer + "<span class='iconlabel'>" + label + "</span>"; 
 		} else return "";
 	}
 	
-	this.toHTMLIcon = function( src, label, tooltip, w, h){
-		if (!w) w=16; if (!h) h=16;
-		return isc.Canvas.imgHTML(this.iconPreffix + src, w, h, null, ( tooltip?"title=\"" + tooltip + "\"":"")) + this.toHTMLLabel(label);		
+	// convert icon to html
+	this._toHTML = function( icon ){
+		var html = isc.Canvas.imgHTML(this.iconPreffix + icon.src, icon.width, icon.height, null, ( icon.tooltip?"title=\"" + icon.tooltip + "\"":"")) + this._toHTMLLabel(icon.label);
+		if ( icon.href ) {
+			return isc.Canvas.linkHTML(icon.href, html );
+		} else return html;
 	};
 	
-	this.icon = {
-		error : this.toHTMLIcon("error.png", "Sin datos", "Sin datos cargados")
+	this.standaricon = {
+		error : this._toHTML({ src: "error.png", label: "Sin datos", tooltip: "Sin datos cargados"} )
 	}
 	
-	this.addIcon = function ( id, icon, tooltip, label, container, w, h){
+	this.add = function ( id, src, tooltip, label, container, w, h){
 		if (!container) container = this.icons;
+		if (!w) w=16; if (!h) h=16;
 
-		container[id] = this.toHTMLIcon( icon, label, tooltip, w, h);
+		container[id] = {src: src, label: label, tooltip: tooltip, width: w, height:h};
 	}
 
-	this.addActionIcon = function ( id, icon, src, tooltip, label, container, w, h){
+	this.addAction = function ( id, src, href, tooltip, label, container, w, h){
 		if (!container) container = this.icons;
-
-		container[id] = isc.Canvas.linkHTML(src, this.toHTMLIcon( icon, label, tooltip, w, h) );
+		if (!w) w=16; if (!h) h=16;
+		
+		container[id] = {href: href, src: src, label: label, tooltip: tooltip, width: w, height: h};
 	}
 	
 	var title = "";
@@ -225,49 +233,50 @@ mcm.IconsFactory = function (node){
 		if ( this.node.external ){
 			tooltip += " externo";
 		}
-		this.addIcon( "kind", this.node.kind + (this.node.external ? "-external" : "") + ".png", title + " " + tooltip, null );
+		this.add( "kind", this.node.kind + (this.node.external ? "-external" : "") + ".png", title + " " + tooltip, null );
 	};
 
 	if ( this.node.external ){
-		this.addIcon( "external", "external-icon.gif", title + " externo", "externo");
+		this.add( "external", "external-icon.gif", title + " externo", "externo");
 	}
 	
 	if ( this.node.direction != undefined ) {
 		if ( this.node.direction && this.node.direction == mcm.direction.IN || this.node.direction == mcm.direction.INOUT ){
-			this.addIcon( "direction-in", "iconin.png", "Flujo de información entrante", "entrada" );
+			this.add( "direction-in", "iconin.png", "Flujo de información entrante", "entrada" );
 		}
 		
 		if ( this.node.direction && this.node.direction == mcm.direction.OUT || this.node.direction == mcm.direction.INOUT ){	
-			this.addIcon( "direction-out", "iconout.png", "Flujo de información saliente", "salida" );
+			this.add( "direction-out", "iconout.png", "Flujo de información saliente", "salida" );
 		}
 	};
 	
 	if ( this.node.edit_url ){
-		this.addActionIcon( "edit_url", "edit.png", this.node.edit_url, "Editar", "editar")
+		this.addAction( "edit_url", "edit.png", this.node.edit_url, "Editar", "editar")
 	}
 
 	if ( this.node.history_url ){
-		this.addActionIcon( "history_url", "history.png", this.node.history_url, "Historial", "historial")
+		this.addAction( "history_url", "history.png", this.node.history_url, "Historial", "historial")
 	}
 	
 	this.getNodeIcon = function (){
 		// todo: definir icono de kind detault
-		return this.getIcon('kind');
+		return this.get('kind');
 	};
 
-	this.getIcon = function (id){
-		if ( id && this.icons[id]) return this.icons[id];
-		else return "";
+	this.get = function (id){
+		if ( id && this.icons[id]){
+			return this._toHTML( this.icons[id] );
+		} else return "";
 	};
 	
-	this.getAllIcons = function (){
-		var iconsHTML = "";
-		for ( i in this.icons ){
-			if ( i != "kind") { // Solo el kind es un icono especial, por eso se excluye
-				iconsHTML += this.spacer + this.icons[i];
+	this.getAll = function (){
+		var html = "";
+		for ( id in this.icons ){
+			if ( id != "kind") { // Solo el kind es un icono especial, por eso se excluye
+				html += this.spacer + this._toHTML(this.icons[id]);
 			}
 		}
 
-		return iconsHTML; 
+		return html; 
 	};
 }
