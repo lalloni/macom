@@ -75,6 +75,9 @@ class Defaults(BaseHandler):
     @classmethod
     def history_url(cls, m):
         return reverse('admin:%s_%s_history' % (m._meta.app_label, m._meta.module_name), args=[m.pk])
+    @classmethod
+    def tags(cls, m):
+        return map(lambda t: t.name, m.tags.all())
 
 generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri', 'published', 'edit_url', 'history_url') + query_fields('dependencies') + query_fields('reverse_dependencies')
 
@@ -82,7 +85,7 @@ interface_fields = ('published', 'technology', 'direction', 'loadestimate')
 
 class SystemHandler(Defaults):
     model = System
-    fields = generic_fields + collection_fields('modules') + collection_fields('interfaces')
+    fields = generic_fields + collection_fields('modules') + collection_fields('interfaces') + ('tags',)
     @classmethod
     def dependencies(cls, system):
         return map(cls.short_of, Dependency.objects.filter(module__system=system).exclude(interface__module__system=system))
@@ -92,7 +95,7 @@ class SystemHandler(Defaults):
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = generic_fields + (model_field('system', 'full_name'),) + collection_fields('interfaces')
+    fields = generic_fields + (model_field('system', 'full_name'),) + collection_fields('interfaces') + ('tags',)
     @classmethod
     def dependencies(cls, module):
         return map(cls.short_of, module.dependency_objects())
@@ -102,7 +105,7 @@ class ModuleHandler(Defaults):
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = generic_fields + interface_fields + (model_field('module', model_field('system')),) + collection_fields('reverse_dependencies')
+    fields = generic_fields + interface_fields + (model_field('module', model_field('system')),) + collection_fields('reverse_dependencies') + ('tags',)
     @classmethod
     def read(cls, req, interface=None, system=None, module=None):
         if interface:
