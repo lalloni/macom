@@ -231,6 +231,7 @@ isc.VLayout.create({
     }), isc.LayoutSpacer.create({
       width : "*"
     }), isc.Img.create({
+      doubleClick: function() { isc.showConsole(); },
       imageType : "natural",
       src : "grass.png",
     }) ]
