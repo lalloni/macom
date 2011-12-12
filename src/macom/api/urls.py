@@ -2,7 +2,7 @@
 from piston.resource import Resource
 from django.conf.urls.defaults import patterns, url, include
 from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler, \
-    ReverseDependencyHandler
+    ReverseDependencyHandler, TagHandler
 from piston.emitters import Emitter
 from cStringIO import StringIO
 import codecs
@@ -56,6 +56,7 @@ module_resource = Resource(ModuleHandler)
 interface_resource = Resource(InterfaceHandler)
 dependency_resource = Resource(DependencyHandler)
 reverse_dependency_resource = Resource(ReverseDependencyHandler)
+tag_resource = Resource(TagHandler)
 
 reverse_dependencies = patterns('',
     url(r'reverse_dependenc(?:y|ies)/?$', reverse_dependency_resource)
@@ -95,6 +96,8 @@ urlpatterns = patterns('',
     ('', include(modules)),
     ('', include(interfaces)),
     ('', include(dependencies)),
+
+    url(r'^tags$', tag_resource, name='api_tags'),
 
     url(r'^model$', Resource(ModelHandler), name='api_model'),
 

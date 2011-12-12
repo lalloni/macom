@@ -3,6 +3,8 @@ from piston.handler import BaseHandler
 from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
 import sys
+from taggit.models import Tag
+from django.db.models.aggregates import Count
 
 def callee_name():
     return sys._getframe(1).f_code.co_name
@@ -146,6 +148,11 @@ class ReverseDependencyHandler(DependencyHandler):
         if system:
             return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
 
+class TagHandler(BaseHandler):
+    model = Tag
+    @classmethod
+    def read(cls, request):
+        return Tag.objects.values('name').annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
 
 class ModelHandler(BaseHandler):
     def read(self, request):
