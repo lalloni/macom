@@ -1,53 +1,10 @@
 # -*- coding: UTF-8 -*-
-from piston.resource import Resource
 from django.conf.urls.defaults import patterns, url, include
-from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler, \
-    ReverseDependencyHandler, TagHandler
+from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, \
+    ModelHandler, DependencyHandler, ReverseDependencyHandler, TagHandler
+from macom.api.helpers import CSVEmitter
 from piston.emitters import Emitter
-from cStringIO import StringIO
-import codecs
-import csv
-
-class UnicodeWriter:
-    def __init__(self, f, dialect=csv.excel, encoding='utf-8', **kwds):
-        self.queue = StringIO()
-        self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
-        self.stream = f
-        self.encoder = codecs.getincrementalencoder(encoding)()
-    def writerow(self, row):
-        self.writer.writerow([s.encode('utf-8') for s in row])
-        data = self.queue.getvalue()
-        data = data.decode('utf-8')
-        data = self.encoder.encode(data)
-        self.stream.write(data)
-        self.queue.truncate(0)
-    def writerows(self, rows):
-        for row in rows:
-            self.writerow(row)
-
-class CSVEmitter(Emitter):
-    def render_record(self, element):
-        record = []
-        for field_name in element:
-            field_value = element[field_name]
-            if type(field_value) in [bool, int, long]:
-                field_value = unicode(field_value)
-            if 'encode' in dir(field_value):
-                record.append(field_value)
-        return record
-    def render(self, request):
-        data = self.construct()
-        f = StringIO()
-        try:
-            w = UnicodeWriter(f)
-            if type(data) in [list]:
-                for element in data:
-                    w.writerow(self.render_record(element))
-            else:
-                w.writerow(self.render_record(data))
-            return f.getvalue()
-        finally:
-            f.close()
+from piston.resource import Resource
 
 Emitter.register('csv', CSVEmitter, 'text/csv; charset=utf-8')
 
@@ -90,14 +47,18 @@ systems = patterns('',
     url(r'^system/(?P<system>\d+)/', include(reverse_dependencies)),
 )
 
+tags = patterns('',
+    url(r'^tags?/?$', tag_resource),
+    url(r'^tag/(?P<slug>\w+)$', tag_resource, name='api_tag')
+)
+
 urlpatterns = patterns('',
 
     ('', include(systems)),
     ('', include(modules)),
     ('', include(interfaces)),
     ('', include(dependencies)),
-
-    url(r'^tags$', tag_resource, name='api_tags'),
+    ('', include(tags)),
 
     url(r'^model$', Resource(ModelHandler), name='api_model'),
 

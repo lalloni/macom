@@ -1,22 +1,10 @@
 # -*- coding: UTF-8 -*-
-from piston.handler import BaseHandler
-from macom.diagrama.models import System, Module, Interface, Dependency
 from django.core.urlresolvers import reverse
-import sys
-from taggit.models import Tag
 from django.db.models.aggregates import Count
-
-def callee_name():
-    return sys._getframe(1).f_code.co_name
-
-def flatten(seq):
-    res = []
-    for item in seq:
-        if (isinstance(item, (tuple, list))):
-            res.extend(flatten(item))
-        else:
-            res.append(item)
-    return res
+from macom.api.helpers import callee_name
+from macom.diagrama.models import System, Module, Interface, Dependency
+from piston.handler import BaseHandler
+from taggit.models import Tag, TaggedItem
 
 def model_field(name, *args):
     return (name, ('kind', 'name') + args)
@@ -148,11 +136,18 @@ class ReverseDependencyHandler(DependencyHandler):
         if system:
             return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
 
-class TagHandler(BaseHandler):
+class TagHandler(Defaults):
     model = Tag
+    fields = ('name',)
     @classmethod
-    def read(cls, request):
-        return Tag.objects.values('name').annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
+    def resource_uri(cls):
+        return ('api_tag', ['slug'])
+    @classmethod
+    def read(cls, req, slug=None):
+        if slug:
+            return map(lambda i: i.content_object, TaggedItem.objects.select_related().filter(tag=Tag.objects.get(slug=slug)))
+        else:
+            return Tag.objects.annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
 
 class ModelHandler(BaseHandler):
     def read(self, request):
