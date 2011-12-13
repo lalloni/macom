@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- encoding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url, include
 from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, \
     ModelHandler, DependencyHandler, ReverseDependencyHandler, TagHandler
@@ -26,12 +26,14 @@ dependencies = patterns('',
 
 interfaces = patterns('',
     url(r'^interfaces?/?$', interface_resource, name='api_interface_list'),
+    url(r'^(?P<model>interface)s/tags?/?$', tag_resource),
     url(r'^interface/(?P<interface>\d+)/?$', interface_resource, name='api_interface'),
     url(r'^interface/(?P<interface>\d+)/', include(reverse_dependencies)),
 )
 
 modules = patterns('',
     url(r'^modules?/?$', module_resource, name='api_module_list'),
+    url(r'^(?P<model>module)s/tags?/?$', tag_resource),
     url(r'^module/(?P<id>\d+)/?$', module_resource, name='api_module'),
     url(r'^module/(?P<module>\d+)/', include(interfaces)),
     url(r'^module/(?P<module>\d+)/', include(dependencies)),
@@ -40,6 +42,7 @@ modules = patterns('',
 
 systems = patterns('',
     url(r'^systems?/?$', system_resource, name='api_system_list'),
+    url(r'^(?P<model>system)s/tags?/?$', tag_resource),
     url(r'^system/(?P<id>\d+)/?$', system_resource, name='api_system'),
     url(r'^system/(?P<system>\d+)/', include(modules)),
     url(r'^system/(?P<system>\d+)/', include(interfaces)),

@@ -2,7 +2,8 @@
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Count
 from macom.api.helpers import callee_name
-from macom.diagrama.models import System, Module, Interface, Dependency
+from macom.diagrama.models import System, Module, Interface, Dependency, \
+    ArchitecturalPattern
 from piston.handler import BaseHandler
 from taggit.models import Tag, TaggedItem
 
@@ -67,7 +68,7 @@ class Defaults(BaseHandler):
         return reverse('admin:%s_%s_history' % (m._meta.app_label, m._meta.module_name), args=[m.pk])
     @classmethod
     def tags(cls, m):
-        return map(lambda t: t.name, m.tags.all())
+        return map(lambda tag: tag.name, m.tags.all())
 
 generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri', 'published', 'edit_url', 'history_url') + query_fields('dependencies') + query_fields('reverse_dependencies')
 
@@ -143,7 +144,11 @@ class TagHandler(Defaults):
     def resource_uri(cls):
         return ('api_tag', ['slug'])
     @classmethod
-    def read(cls, req, slug=None):
+    def read(cls, req, slug=None, model=None):
+        if model:
+            models = [System, Module, Interface, ArchitecturalPattern]
+            lookup = dict(zip(map(lambda model: model._meta.object_name.lower(), models), models))
+            return TaggedItem.tags_for(lookup[model])
         if slug:
             return map(lambda i: i.content_object, TaggedItem.objects.select_related().filter(tag=Tag.objects.get(slug=slug)))
         else:
