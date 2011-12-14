@@ -63,7 +63,7 @@ architecturalpatterncases = patterns('',
 )
 
 tags = patterns('',
-    url(r'^tags?/?$', tag_resource),
+    url(r'^tags?/?$', tag_resource, name='api_tag_list'),
     url(r'^tag/(?P<slug>\w+)$', tag_resource, name='api_tag')
 )
 

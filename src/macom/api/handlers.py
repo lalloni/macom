@@ -217,6 +217,7 @@ class ModelHandler(BaseHandler):
                     full_name='Sistemas',
                     resource_uri='root',
                     isOpen='true',
+                    tagcloud_uri=reverse('api_tag_list'),
                     diagrams=[dict(name='Dependencias entre sistemas', diagram_uri=reverse('web:systems_dependencies_diagram')),
                               dict(name='Dependencias entre sistemas (excluyendo externos)', diagram_uri=reverse('web:systems_no_thirdparty_dependencies_diagram'))],
                     children=res)

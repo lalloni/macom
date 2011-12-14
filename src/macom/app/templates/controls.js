@@ -10,6 +10,85 @@ isc.defineClass("JSONDataSource", "DataSource").addProperties({
   dataProtocol : "getParams"
 });
 
+isc.defineClass("TagCloud", "HTMLFlow").addProperties({
+	height : "*",
+	resource_uri : "",
+	width : "*",
+	maxFontSizeDelta: 5,
+	styleName :"tagCloud",
+	opener: "",
+	initWidget : function() {
+		//Calcular contenidos
+		var self = this;
+	
+		isc.JSONDataSource.create({
+            dataURL : this.resource_uri
+        }).fetchData( null, function (data) {
+        	var d = data.data;
+        	if ( d && d.length > 0){
+	        	var html = "";
+	        	
+	        	counts = mcm.util.map(function(tag) { return tag.count }, d);
+	            mincount = mcm.util.min(counts);
+	            amplitude = mcm.util.max(counts) - mincount;
+	            scale = 2 * self.maxFontSizeDelta / amplitude;
+
+	        	for ( var i =0; i < d.length; i++ ){
+	        		var t = d[i];
+	        		var size = ((t.count - mincount) * scale - self.maxFontSizeDelta);
+	        		html += mcm.util.sprintf('<a href="#" onclick=\'mcm.showCloud("%s","%s","%s")\'><font size="%s">%s</font></a>', t.name, t.resource_uri, self.opener, (size>0?"+":"")+size, t.name)
+	        	}
+	        	self.contents = html;
+        	}
+        });
+		return this.Super("initWidget", arguments);
+	}
+});
+
+isc.defineClass("TagDetailViewer", "Window").addProperties({
+  autoCenter : true,
+  title: "Tag",
+  isModal : true,
+  showModalMask : true,
+  showMinimizeButton : false,
+  resource_uri : "",
+  width : "90%",
+  height : "90%",
+  items : isc.Layout.create({
+	  hPolicy : "fill",
+	  vPolicy : "fill"
+  }),
+  opener : null, // Funcion de apertura de tabs
+  initWidget : function() {
+	  var self = this;
+	  
+	  var ds = isc.JSONDataSource.create({
+		  dataURL : this.resource_uri,
+		  autoFetchData : true,
+		  fields: [ mcm.fields.Kind, mcm.fields.FullName ]
+	  });
+	  
+	  if (this.items.members && this.items.members.length > 0){
+		  this.items.removeMembers(this.items.getMembers()); 
+	  }
+	  
+	  var grid = isc.ListGrid.create({
+		  alternateRecordStyles : true,
+		  recordDoubleClick: function (viewer, record, recordNum, field, fieldNum, value, rawValue) {
+			  self.opener(viewer, record, recordNum, field, fieldNum, value, rawValue);
+			  self.closeClick();
+		  }
+	  });
+	  
+	  this.items.addMember(grid);
+	  grid.setDataSource(ds);
+	  grid.fetchData();
+
+	  return this.Super("initWidget", arguments);
+  }
+});
+
+
 isc.defineClass("Diagram", "VLayout").addProperties({
   height : "*",
   diagramRenderServiceURL : "{{diagram_service_url}}/",
@@ -169,7 +248,15 @@ mcm.showSource = function(title, sourceURL) {
     title : title,
     sourceURL : sourceURL
   })
-}
+};
+
+mcm.showCloud = function(name, resource_uri, opener) {
+	isc.TagDetailViewer.create ({
+		opener: eval(opener),
+		title: "Tag " + name, 
+		resource_uri : resource_uri
+	})
+};
 
 // constantes de dirección
 mcm.direction = {

@@ -19,6 +19,14 @@ app.views = {
 	      })
 	    })
 	  }
+	  
+	  tabset.push({
+	      title : "Tag cloud",
+	      pane : isc.TagCloud.create({
+	    	  resource_uri: record.tagcloud_uri,
+	    	  opener: "showDataTab"
+	      })
+	  })
 
 	  return isc.TabSet.create({
 	    tabs : tabset
@@ -30,7 +38,7 @@ app.views = {
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
 	    title : "Sistema",
 	    data : system,
-	    fields : [ mcm.fields.Description, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation ],
+	    fields : [ mcm.fields.Description, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Tags ],
 	    additionalInfo : [ {
 	      title : "M&oacute;dulos ",
 	      pane : isc.DetailGrid.create({
@@ -81,7 +89,7 @@ app.views = {
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
 	    title : "M&oacute;dulo",
 	    data : module,
-	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation ],
+	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Tags ],
 	    additionalInfo : [ {
 	      title : "Interfaces",
 	      pane : isc.DetailGrid.create({
@@ -120,7 +128,7 @@ app.views = {
 	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
 	    title : "Interface",
 	    data : interface,
-	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology, mcm.fields.Published ],
+	    fields : [ mcm.fields.Goal, mcm.fields.FunctionalReferents, mcm.fields.ImplementationReferents, mcm.fields.Documentation, mcm.fields.Technology, mcm.fields.Published, mcm.fields.Tags ],
 	    additionalInfo : [ {
 	        title : "Dependencias inversas",
 	        pane : isc.DetailGrid.create({

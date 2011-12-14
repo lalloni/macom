@@ -18,11 +18,23 @@ mcm.fields = {
     title : "Nombre"
   },
 
+  Kind : {
+	name : "kind",
+	title : "Clase",
+	width: "90px",	
+	valueMap: { system: "Sistema", module: "Módulo", interface: "Interface" }
+  },
+  
   Description : {
     name : "description",
     title : "Descripci&oacute;n"
   },
 
+  Tags : {
+	name : "tags",
+	title : "Tags"
+  },
+  
   Goal : {
     name : "goal",
     title : "Objetivo"
