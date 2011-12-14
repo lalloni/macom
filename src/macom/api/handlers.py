@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.db.models.aggregates import Count
 from macom.api.helpers import callee_name
 from macom.diagrama.models import System, Module, Interface, Dependency, \
@@ -152,7 +152,7 @@ class TagHandler(Defaults):
         if slug:
             return map(lambda i: i.content_object, TaggedItem.objects.select_related().filter(tag=Tag.objects.get(slug=slug)))
         else:
-            return Tag.objects.annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
+            return map(lambda i: dict(name=i['name'], count=i['count'], resource_uri=reverse('api_tag', args=[i['slug']])), Tag.objects.values('name', 'slug').annotate(count=Count('taggit_taggeditem_items')).order_by('-count'))
 
 class ModelHandler(BaseHandler):
     def read(self, request):
