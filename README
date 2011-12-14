@@ -6,3 +6,9 @@ Requerimientos:
  - south:0.7.3
  - python-markdown:2.0.3
  - python-pydot:1.0.2
+
+
+Opcionales:
+
+ - python-yaml:3.10
+
