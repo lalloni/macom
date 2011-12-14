@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url, include
-from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, \
-    ModelHandler, DependencyHandler, ReverseDependencyHandler, TagHandler
+from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler, \
+    ReverseDependencyHandler, TagHandler, ArchitecturalPatternHandler, ArchitecturalPatternCaseHandler
 from macom.api.helpers import CSVEmitter
 from piston.emitters import Emitter
 from piston.resource import Resource
@@ -13,6 +13,8 @@ module_resource = Resource(ModuleHandler)
 interface_resource = Resource(InterfaceHandler)
 dependency_resource = Resource(DependencyHandler)
 reverse_dependency_resource = Resource(ReverseDependencyHandler)
+architecturalpattern_resource = Resource(ArchitecturalPatternHandler)
+architecturalpatterncase_resource = Resource(ArchitecturalPatternCaseHandler)
 tag_resource = Resource(TagHandler)
 
 reverse_dependencies = patterns('',
@@ -50,6 +52,16 @@ systems = patterns('',
     url(r'^system/(?P<system>\d+)/', include(reverse_dependencies)),
 )
 
+architecturalpatterns = patterns('',
+    url(r'^architecturalpatterns?/?$', architecturalpattern_resource, name='api_architecturalpattern_list'),
+    url(r'^architecturalpattern/(?P<pattern>\d+)/?$', architecturalpattern_resource, name='api_architecturalpattern')
+)
+
+architecturalpatterncases = patterns('',
+    url(r'^architecturalpatterncases?/?$', architecturalpatterncase_resource, name='api_architecturalpatterncase_list'),
+    url(r'^architecturalpatterncase/(?P<id>\d+)/?$', architecturalpatterncase_resource, name='api_architecturalpatterncase')
+)
+
 tags = patterns('',
     url(r'^tags?/?$', tag_resource),
     url(r'^tag/(?P<slug>\w+)$', tag_resource, name='api_tag')
@@ -61,6 +73,8 @@ urlpatterns = patterns('',
     ('', include(modules)),
     ('', include(interfaces)),
     ('', include(dependencies)),
+    ('', include(architecturalpatterns)),
+    ('', include(architecturalpatterncases)),
     ('', include(tags)),
 
     url(r'^model$', Resource(ModelHandler), name='api_model'),

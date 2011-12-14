@@ -150,7 +150,7 @@ class ModuleType(Base):
 
 class ArchitecturalPatternCase(Annotation):
     module = models.ForeignKey(Module)
-    architecturalpattern = models.ForeignKey(ArchitecturalPattern, verbose_name=_('Architectural Pattern'))
+    architecturalpattern = models.ForeignKey(ArchitecturalPattern, verbose_name=_('Architectural Pattern'), related_name='cases')
     class Meta:
         verbose_name = _('architectural pattern case')
         verbose_name_plural = _('architectural pattern cases')

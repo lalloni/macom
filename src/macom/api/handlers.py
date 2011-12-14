@@ -1,9 +1,8 @@
-# -*- coding: UTF-8 -*-
-from django.core.urlresolvers import reverse, resolve
+# -*- encoding: utf-8 -*-
+from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Count
 from macom.api.helpers import callee_name
-from macom.diagrama.models import System, Module, Interface, Dependency, \
-    ArchitecturalPattern
+from macom.diagrama.models import System, Module, Interface, Dependency, ArchitecturalPattern, ArchitecturalPatternCase
 from piston.handler import BaseHandler
 from taggit.models import Tag, TaggedItem
 
@@ -70,13 +69,16 @@ class Defaults(BaseHandler):
     def tags(cls, m):
         return map(lambda tag: tag.name, m.tags.all())
 
-generic_fields = ('kind', 'name', 'full_name', 'external', 'goal', 'description', 'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri', 'published', 'edit_url', 'history_url') + query_fields('dependencies') + query_fields('reverse_dependencies')
-
-interface_fields = ('published', 'technology', 'direction', 'loadestimate')
-
 class SystemHandler(Defaults):
     model = System
-    fields = generic_fields + collection_fields('modules') + collection_fields('interfaces') + ('tags',)
+    fields = ('kind', 'name', 'full_name', 'external', 'description',
+              'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri',
+              ('tags', ()),
+              'edit_url', 'history_url') \
+             + collection_fields('modules') \
+             + collection_fields('interfaces') \
+             + query_fields('dependencies') \
+             + query_fields('reverse_dependencies')
     @classmethod
     def dependencies(cls, system):
         return map(cls.short_of, Dependency.objects.filter(module__system=system).exclude(interface__module__system=system))
@@ -86,7 +88,13 @@ class SystemHandler(Defaults):
 
 class ModuleHandler(Defaults):
     model = Module
-    fields = generic_fields + (model_field('system', 'full_name'),) + collection_fields('interfaces') + ('tags',)
+    fields = ('kind', 'name', 'full_name', 'external', 'goal',
+              'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri',
+              ('tags', ()), model_field('system', 'full_name'),
+              'edit_url', 'history_url') \
+             + collection_fields('interfaces') \
+             + query_fields('dependencies') \
+             + query_fields('reverse_dependencies')
     @classmethod
     def dependencies(cls, module):
         return map(cls.short_of, module.dependency_objects())
@@ -96,7 +104,12 @@ class ModuleHandler(Defaults):
 
 class InterfaceHandler(Defaults):
     model = Interface
-    fields = generic_fields + interface_fields + (model_field('module', model_field('system')),) + collection_fields('reverse_dependencies') + ('tags',)
+    fields = ('kind', 'name', 'full_name', 'external', 'goal',
+              'published', 'technology', 'direction', 'loadestimate',
+              'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri',
+              ('tags', ()), model_field('module', model_field('system')),
+              'edit_url', 'history_url') \
+             + query_fields('reverse_dependencies')
     @classmethod
     def read(cls, req, interface=None, system=None, module=None):
         if interface:
@@ -113,7 +126,11 @@ class InterfaceHandler(Defaults):
 
 class DependencyHandler(Defaults):
     model = Dependency
-    fields = generic_fields + interface_fields + (model_field('module', model_field('system')), model_field('interface', model_field('module', model_field('system'))))
+    fields = ('kind', 'full_name', 'goal',
+              'technology', 'direction', 'loadestimate',
+              'functional_referents', 'implementation_referents', 'documentation', 'diagram_uri',
+              model_field('module', model_field('system')), model_field('interface', model_field('module', model_field('system'))),
+              'edit_url', 'history_url')
     @classmethod
     def read(cls, req, dependency=None, system=None, module=None, interface=None):
         if dependency:
@@ -136,6 +153,20 @@ class ReverseDependencyHandler(DependencyHandler):
             return Dependency.objects.filter(interface__module=module).exclude(module=module)
         if system:
             return Dependency.objects.filter(interface__module__system=system).exclude(module__system=system)
+
+class ArchitecturalPatternHandler(Defaults):
+    model = ArchitecturalPattern
+    fields = ('kind', 'name', 'description', ('tags', ())) + collection_fields('cases')
+    @classmethod
+    def read(cls, request, pattern=None):
+        if pattern:
+            return ArchitecturalPattern.objects.get(id=pattern)
+        else:
+            return ArchitecturalPattern.objects.all()
+
+class ArchitecturalPatternCaseHandler(Defaults):
+    model = ArchitecturalPatternCase
+    fields = ('annotation', model_field('architecturalpattern'))
 
 class TagHandler(Defaults):
     model = Tag
