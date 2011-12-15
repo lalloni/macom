@@ -54,9 +54,9 @@ mcm.fields = {
   
   Tags : {
 	name : "tags",
-	title : "Tags",
+	title : "Etiquetas",
 	formatCellValue : function (value, record, rowNum, colNum, grid) {
-		return mcm.util.map(function(tag) { return tag.name }, value);
+		return mcm.util.map(function(t) { return mcm.util.sprintf('<a href="#" onclick=\'mcm.showTag("%s","%s","%s")\'>%s</a> ', t.name, t.resource_uri, "showDataTab", t.name) }, value);
 	}
   },
   
