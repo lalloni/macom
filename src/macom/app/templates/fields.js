@@ -1,11 +1,11 @@
 // Formateadores de fields
 mcm.format = {
-	InterfaceFullName : function ( value ){
-		return value.module.system.name + ":" + value.module.name + ":" + value.name;
+	InterfaceFullName : function ( record ){
+		return record.module.system.name + ":" + record.module.name + ":" + record.name;
 	},
 
-	DependencyFullName : function ( value ){
-		return mcm.format.InterfaceFullName( value.interface );
+	DependencyFullName : function ( record ){
+		return mcm.format.InterfaceFullName( record.interface );
 	}
 }
 
@@ -15,24 +15,49 @@ mcm.fields = {
 
   FullName : {
     name : "full_name",
-    title : "Nombre"
+    title : "Nombre",
+    autoFitWidth: true,
   },
 
   Kind : {
 	name : "kind",
-	title : "Clase",
-	width: "90px",	
+	title : "Tipo",
+	autoFitWidth: true,	
 	valueMap: { system: "Sistema", module: "Módulo", interface: "Interface" }
   },
+  
+  KindIcon : {
+		name : "kindicon",
+		title : " ",
+		autoFitWidth: true,
+		type: "text",
+		formatCellValue : function  (value, record, rowNum, colNum, grid) {
+			var icons = new mcm.IconsFactory(record);
+			return icons.get("kind"); 
+		}
+   },
   
   Description : {
     name : "description",
     title : "Descripci&oacute;n"
   },
 
+  DescriptionAndGoal : {
+	  title: "Descripción / Objetivo",
+	  formatCellValue: function (value, record, rowNum, colNum, grid) {
+		  var desc = "";
+		  if ( record.description ) desc += record.description; 
+		  if ( record.goal ) desc += (desc.length > 0? "<br>":"") + record.goal;
+		  return desc;
+	  }
+  },
+  
   Tags : {
 	name : "tags",
-	title : "Tags"
+	title : "Tags",
+	formatCellValue : function (value, record, rowNum, colNum, grid) {
+		return mcm.util.map(function(tag) { return tag.name }, value);
+	}
   },
   
   Goal : {

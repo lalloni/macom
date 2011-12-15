@@ -10,11 +10,12 @@ isc.defineClass("JSONDataSource", "DataSource").addProperties({
   dataProtocol : "getParams"
 });
 
-isc.defineClass("TagCloud", "HTMLFlow").addProperties({
-	height : "*",
+isc.defineClass("TagCloud", "HTMLPane").addProperties({
+	height : "100%",
+	width : "100%",
 	resource_uri : "",
-	width : "*",
 	maxFontSizeDelta: 5,
+	maxtags: 100, // numero maximo de items a mostrar en la nuve
 	styleName :"tagCloud",
 	opener: "",
 	initWidget : function() {
@@ -24,19 +25,31 @@ isc.defineClass("TagCloud", "HTMLFlow").addProperties({
 		isc.JSONDataSource.create({
             dataURL : this.resource_uri
         }).fetchData( null, function (data) {
-        	var d = data.data;
-        	if ( d && d.length > 0){
+        	var dt = data.data;
+        	if ( dt && dt.length > 0){
 	        	var html = "";
+
+	        	// Recortar el array de datos a los "this.maxtags" y
+	        	// Ordenar tags resultantes alfabeticamente
+	        	var d  = dt.slice(0, self.maxtags).sort(function(a, b){
+	        		 var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase()
+	        		 if (nameA < nameB) //sort string ascending
+	        		  return -1
+	        		 if (nameA > nameB)
+	        		  return 1
+	        		 return 0 //default return value (no sorting)
+	        		}
+	        	);
 	        	
 	        	counts = mcm.util.map(function(tag) { return tag.count }, d);
-	            mincount = mcm.util.min(counts);
-	            amplitude = mcm.util.max(counts) - mincount;
-	            scale = 2 * self.maxFontSizeDelta / amplitude;
+				mincount = mcm.util.min(counts);
+				amplitude = mcm.util.max(counts) - mincount;
+				scale = 2 * self.maxFontSizeDelta / amplitude;
 
 	        	for ( var i =0; i < d.length; i++ ){
 	        		var t = d[i];
 	        		var size = ((t.count - mincount) * scale - self.maxFontSizeDelta);
-	        		html += mcm.util.sprintf('<a href="#" onclick=\'mcm.showCloud("%s","%s","%s")\'><font size="%s">%s</font></a>', t.name, t.resource_uri, self.opener, (size>0?"+":"")+size, t.name)
+	        		html += mcm.util.sprintf('<a href="#" onclick=\'mcm.showTag("%s","%s","%s")\'><font size="%s">%s</font></a> ', t.name, t.resource_uri, self.opener, (size>0?"+":"")+size, t.name)
 	        	}
 	        	self.contents = html;
         	}
@@ -47,25 +60,39 @@ isc.defineClass("TagCloud", "HTMLFlow").addProperties({
 
 isc.defineClass("TagDetailViewer", "Window").addProperties({
   autoCenter : true,
-  title: "Tag",
+  title: "Etiqueta",
   isModal : true,
   showModalMask : true,
   showMinimizeButton : false,
+  showHeaderIcon: false,
   resource_uri : "",
   width : "90%",
   height : "90%",
-  items : isc.Layout.create({
+  items : isc.VLayout.create({
 	  hPolicy : "fill",
-	  vPolicy : "fill"
+	  vPolicy : "fill",
+	  layoutMargin: 5
   }),
   opener : null, // Funcion de apertura de tabs
   initWidget : function() {
 	  var self = this;
 	  
+	  var title = isc.Label.create({
+		  styleName: "windowTitle",
+		  contents: self.title,
+		  height: "25px"
+	  });
+	  
+	  var desc = isc.Label.create({
+		  styleName: "windowDescription",
+		  contents: "Lista de items relacionados con la etiqueta seleccionada",
+		  height: "15px"
+	  });
+	  
 	  var ds = isc.JSONDataSource.create({
 		  dataURL : this.resource_uri,
 		  autoFetchData : true,
-		  fields: [ mcm.fields.Kind, mcm.fields.FullName ]
+		  fields: [ mcm.fields.KindIcon, mcm.fields.Kind, mcm.fields.FullName, mcm.fields.DescriptionAndGoal ]
 	  });
 	  
 	  if (this.items.members && this.items.members.length > 0){
@@ -80,7 +107,7 @@ isc.defineClass("TagDetailViewer", "Window").addProperties({
 		  }
 	  });
 	  
-	  this.items.addMember(grid);
+	  this.items.addMembers([title, desc, grid]);
 	  grid.setDataSource(ds);
 	  grid.fetchData();
 
@@ -228,6 +255,7 @@ isc.defineClass("SourceViewer", "Window").addProperties({
   isModal : true,
   showModalMask : true,
   showMinimizeButton : false,
+  showHeaderIcon: false,
   width : "90%",
   height : "90%",
   items : isc.Layout.create({
@@ -250,10 +278,10 @@ mcm.showSource = function(title, sourceURL) {
   })
 };
 
-mcm.showCloud = function(name, resource_uri, opener) {
+mcm.showTag = function(name, resource_uri, opener) {
 	isc.TagDetailViewer.create ({
 		opener: eval(opener),
-		title: "Tag " + name, 
+		title: "Etiqueta " + name, 
 		resource_uri : resource_uri
 	})
 };

@@ -21,7 +21,7 @@ app.views = {
 	  }
 	  
 	  tabset.push({
-	      title : "Tag cloud",
+	      title : "Etiquetas",
 	      pane : isc.TagCloud.create({
 	    	  resource_uri: record.tagcloud_uri,
 	    	  opener: "showDataTab"
