@@ -65,9 +65,6 @@ class Defaults(BaseHandler):
     @classmethod
     def history_url(cls, m):
         return reverse('admin:%s_%s_history' % (m._meta.app_label, m._meta.module_name), args=[m.pk])
-    @classmethod
-    def tags(cls, m):
-        return map(lambda tag: tag.name, m.tags.all())
 
 class SystemHandler(Defaults):
     model = System
