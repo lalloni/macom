@@ -1,15 +1,26 @@
 # -*- coding: utf-8 -*-
 
-from os.path import dirname, abspath, isdir, split, join
+from os.path import dirname, abspath, isdir, split, join, isfile
 
 DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+def find_db(path, name):
+    db = join(path, name)
+    if isfile(db):
+        return db
+    else:
+        parent, _ = split(path)
+        if parent == '/':
+            raise Exception('Database %s not found' % name)
+        else:
+            return find_db(parent, name)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'sqlite.db', # Or path to database file if using sqlite3.
+        'NAME': find_db(abspath(dirname(__file__)), 'sqlite.db'),
         'USER': '', # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
