@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 from django.db import models
 from django.db.models import permalink
 from django.forms.widgets import Textarea
