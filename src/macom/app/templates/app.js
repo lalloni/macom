@@ -8,6 +8,56 @@ app.fields = {
 };
 
 app.views = {
+	show: function (viewer, record, recordNum, field, fieldNum, value, rawValue) {
+	  var tab = ContentTabSet.getTab(record.resource_uri);
+
+	  // si no se encuentra generar uno nuevo con titulo = record.name
+	  if (tab == null || typeof (tab) == 'undefined') {
+
+		var name = record.name;
+		if ( record.full_name ) name = record.full_name;
+		  
+	  	var functionTabCallback = "app.views.show";
+		switch ( record.kind ){
+			case "root": functionTabCallback += "Root"; break;
+			case "system": functionTabCallback += "System"; break;
+			case "module": functionTabCallback += "Module"; break;
+			case "interface": functionTabCallback += "Interface"; break;
+			case "dependency":
+				functionTabCallback += "Dependency";
+				name = mcm.format.DependencyFullName( record );
+			break;
+		}
+
+		// Recorda a 40 caracteres maximo
+		name = (name.length > 40 ? "... " + name.substring(name.length - 40) : name);
+		
+		// Agrega un nuevo tab
+		ContentTabSet.addTab({
+	      ID : record.resource_uri,
+	      title : new mcm.IconsFactory(record).getNodeIcon() + " " + name,
+	      record : record
+	    });
+
+	    // Busca el tab recien creado
+	    tab = ContentTabSet.getTab(record.resource_uri);
+
+	    // Se fija el record.kind
+	    if (record.kind == 'root') {
+	        tab.setPane(app.views.showRoot(record));
+	    } else {
+	    	// DATASOURCE
+	        isc.JSONDataSource.create({
+	          ID : record.resource_uri,
+	          dataURL : record.resource_uri
+	        }).fetchData(
+	            null, functionTabCallback + "(data, \"" + record.resource_uri + "\")" // Callback
+	        );
+	    }
+	  }
+	  ContentTabSet.selectTab(tab);
+	},
+			
 	showRoot: function (record) {
 	  var tabset = new Array();
 
@@ -24,7 +74,7 @@ app.views = {
 	      title : "Etiquetas",
 	      pane : isc.TagCloud.create({
 	    	  resource_uri: record.tagcloud_uri,
-	    	  opener: "showDataTab"
+	    	  opener: "app.views.show"
 	      })
 	  });
 
@@ -164,66 +214,16 @@ app.views = {
 	}
 }
 
-// APPLICATION
-function showDataTab(viewer, record, recordNum, field, fieldNum, value, rawValue) {
-  var tab = ContentTabSet.getTab(record.resource_uri);
-
-  // si no se encuentra generar uno nuevo con titulo = record.name
-  if (tab == null || typeof (tab) == 'undefined') {
-
-	var name = record.name;
-	if ( record.full_name ) name = record.full_name;
-	  
-  	var functionTabCallback = "app.views.show";
-	switch ( record.kind ){
-		case "root": functionTabCallback += "Root"; break;
-		case "system": functionTabCallback += "System"; break;
-		case "module": functionTabCallback += "Module"; break;
-		case "interface": functionTabCallback += "Interface"; break;
-		case "dependency":
-			functionTabCallback += "Dependency";
-			name = mcm.format.DependencyFullName( record );
-		break;
-	}
-
-	// Recorda a 40 caracteres maximo
-	name = (name.length > 40 ? "... " + name.substring(name.length - 40) : name);
-	
-	// Agrega un nuevo tab
-	ContentTabSet.addTab({
-      ID : record.resource_uri,
-      title : new mcm.IconsFactory(record).getNodeIcon() + " " + name,
-      record : record
-    });
-
-    // Busca el tab recien creado
-    tab = ContentTabSet.getTab(record.resource_uri);
-
-    // Se fija el record.kind
-    if (record.kind == 'root') {
-        tab.setPane(app.views.showRoot(record));
-    } else {
-    	// DATASOURCE
-        isc.JSONDataSource.create({
-          ID : record.resource_uri,
-          dataURL : record.resource_uri
-        }).fetchData(
-            null, functionTabCallback + "(data, \"" + record.resource_uri + "\")" // Callback
-        );
-    }
-  }
-  ContentTabSet.selectTab(tab);
-}
 
 isc.DetailGrid.addProperties({
-  recordDoubleClick : showDataTab
+  recordDoubleClick : app.views.show
 });
 
 isc.ItemViewer.addProperties({
-  opener: "showDataTab"	
+  opener: "app.views.show"	
 })
 
-// Layout principal
+//Layout principal
 isc.VLayout.create({
   width : "100%",
   height : "100%",
@@ -269,11 +269,11 @@ isc.VLayout.create({
         } ]
       }),
       dataArrived : function(p) {
-        showDataTab(null, p.children[0]);
+    	  app.views.show(null, p.children[0]);
       },
       fields : [ {
         name : "name",
-        recordDoubleClick : showDataTab
+        recordDoubleClick : app.views.show
       } ],
       recordDoubleClick : function() {
         // Elimina el evento de dobleClick por default
