@@ -7,16 +7,15 @@ mcm.format = {
 	DependencyFullName : function ( record ){
 		return mcm.format.InterfaceFullName( record.interface );
 	}
-}
+};
 
 // Fields Predefinidos
-
 mcm.fields = {
 
   FullName : {
     name : "full_name",
     title : "Nombre",
-    autoFitWidth: true,
+    autoFitWidth: true
   },
 
   Kind : {
@@ -108,7 +107,7 @@ mcm.fields = {
 	name : "published",
 	title : "Publicada",
 	width: "90px",
-	valueMap: { true: "Si", false: "No" }
+	valueMap: { "true": "Si", "false": "No" }
   },
   
   External : {
@@ -136,4 +135,4 @@ mcm.fields = {
 	name: "interface",
 	formatCellValue: mcm.format.InterfaceFullName
   }
-}
+};

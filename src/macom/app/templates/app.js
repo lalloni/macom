@@ -5,7 +5,7 @@ app.fields = {
 	InterfaceGridFields : [ mcm.fields.FormatedDirection, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal, mcm.fields.Published ],
 	DependencyGridFields: [ mcm.fields.FormatedDirection, mcm.fields.Interface, mcm.fields.Technology, mcm.fields.Goal ],
 	DependencyDatasourceFields: [ mcm.fields.InterfaceFullName ]
-}
+};
 
 app.views = {
 	showRoot: function (record) {
@@ -26,7 +26,7 @@ app.views = {
 	    	  resource_uri: record.tagcloud_uri,
 	    	  opener: "showDataTab"
 	      })
-	  })
+	  });
 
 	  return isc.TabSet.create({
 	    tabs : tabset
@@ -46,7 +46,7 @@ app.views = {
 	          dataURL : system.modules_uri,
 	          autoFetchData : true,
 	          fields : [ mcm.fields.FormatedExternal, mcm.fields.FullName, mcm.fields.Goal ]
-	        }),
+	        })
 	      })
 	    }, {
 	      title : "Interfaces",
@@ -223,9 +223,7 @@ isc.ItemViewer.addProperties({
   opener: "showDataTab"	
 })
 
-
 // Layout principal
-
 isc.VLayout.create({
   width : "100%",
   height : "100%",
@@ -241,7 +239,7 @@ isc.VLayout.create({
     }), isc.Img.create({
       doubleClick: function() { isc.showConsole(); },
       imageType : "natural",
-      src : "grass.png",
+      src : "grass.png"
     }) ]
   }), isc.HLayout.create({
     ID : "ContentSection",
