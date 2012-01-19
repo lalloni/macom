@@ -30,7 +30,9 @@ app.views = {
 		}
 
 		// Recorda a 40 caracteres maximo
-		name = (name.length > 40 ? "... " + name.substring(name.length - 40) : name);
+		//if( name && name.length ) {
+			// name = (name.length > 40 ? "... " + name.substring(name.length - 40) : name);
+		//}
 		
 		// Agrega un nuevo tab
 		ContentTabSet.addTab({
@@ -248,13 +250,12 @@ isc.VLayout.create({
     members : [ isc.TreeGrid.create({
       ID : "NavigationTree",
       width : 300,
-      autoFetchData : true,
-      loadDataOnDemand : false,
-      defaultIsFolder : false,
       showResizeBar : true,
       generateClickOnEnter : true,
       showHeader: false,
-        
+      showOpenIcons:false,
+      showDropIcons:false,	
+      closedIconSuffix:"",
       dataProperties : {
         openProperty : "isOpen"
       },
@@ -262,15 +263,62 @@ isc.VLayout.create({
     	  // todo: implementar IconsFactory
     	  return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
       },
-      dataSource : isc.JSONDataSource.create({
-        dataURL : "{% url api_model %}",
-        fields : [ {
-          name : "name"
-        } ]
+      dataSource : isc.JSONDataSource.create ({
+          dataURL : "{% url api_system_list %}",
+          fields : [ {
+        	  name : "name"
+          } ],
+          transformRequest: function (dsRequest){
+        	  if ( dsRequest.parentNode.childs_uri ){
+        		  this.dataURL = dsRequest.parentNode.childs_uri;
+        	  }
+          },
+          transformResponse: function (dsResponse, dsRequest, data){
+        	  dsResponse.data = mcm.util.map( function (d){
+    			  var isfolder = true;
+    			  var childs_uri = "";
+            	  
+    			  switch ( d.kind ){
+	       	  	 	case "root": childs_uri = d.resource_uri; break;
+	       	  	 	case "system": childs_uri = d.modules_uri; break;
+	       	  	 	case "module": childs_uri = d.interfaces_uri; break;
+	       	  	 	case "interface":
+	       	  	 		isfolder = false;
+	       	  	 		break;
+	       	  	 	case "dependency":
+	       	  	 		break;
+	          	  }
+
+        		  return {Id:d.resource_uri,
+				  	  resource_uri: d.resource_uri,
+				  	  childs_uri : childs_uri,
+				  	  name: d.name,
+				  	  full_name: d.full_name,
+				  	  kind: d.kind,
+				  	  isFolder: isfolder};
+    		  }, data );
+          }
       }),
-      dataArrived : function(p) {
-    	  app.views.show(null, p.children[0]);
-      },
+      initialData: isc.Tree.create({
+          nameProperty: "Name",
+          idField: "Id",
+          data: [{
+          	Id:"sistema",
+          	resource_uri:
+          	"/api/systems",
+          	name:"Sistemas",
+          	full_name: "Sistemas",
+          	kind: "root",
+            tagcloud_uri : "{% url api_tag_list %}",
+            diagrams: [{
+            	name: "Dependencias entre sistemas",
+                diagram_uri: "{% url web:systems_dependencies_diagram %}"
+				},{
+	            name: "Dependencias entre sistemas (excluyendo externos)",
+	            diagram_uri: "{% url web:systems_no_thirdparty_dependencies_diagram %}"
+	        }]
+          }]
+      }),
       fields : [ {
         name : "name",
         recordDoubleClick : app.views.show
@@ -285,3 +333,9 @@ isc.VLayout.create({
     }) ]
   }) ]
 });
+
+// INITIAL STRIPT
+
+// Abre el primer item de NavigationTree 
+app.views.show(null, NavigationTree.initialData.root.children[0]);
+NavigationTree.getData().openAll();
