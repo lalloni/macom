@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url, include
-from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, ModelHandler, DependencyHandler, \
+from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, DependencyHandler, \
     ReverseDependencyHandler, TagHandler, ArchitecturalPatternHandler, ArchitecturalPatternCaseHandler
 from macom.api.helpers import CSVEmitter
 from piston.emitters import Emitter
@@ -76,7 +76,5 @@ urlpatterns = patterns('',
     ('', include(architecturalpatterns)),
     ('', include(architecturalpatterncases)),
     ('', include(tags)),
-
-    url(r'^model$', Resource(ModelHandler), name='api_model'),
 
 )
