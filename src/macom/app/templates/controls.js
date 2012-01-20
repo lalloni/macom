@@ -157,7 +157,11 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
     additionalInfo : false,
     height : "*",
     formatTitleValue: function (data) {
-    	return data.full_name; 
+    	if ( data.full_name ){
+    		return data.full_name; 
+    	} else {
+    		return data.name;
+    	}
     },
     getOpenerLink : function (title, obj){
     	return isc.Canvas.linkHTML("javascript:" + this.opener + "(null," + 
@@ -340,7 +344,8 @@ mcm.IconsFactory = function (node){
 		var tooltip = "";
 
 		switch (this.node.kind){
-			case "root": title = "Sistema"; break;
+			case "rootsystem": title = "Sistema"; break;
+			case "rootpattern": title = "Patrón"; break;
 			case "system": title = "Sistema"; break;
 			case "module": title = "Módulo"; break;
 			case "interface": title = "Interfáz"; break;

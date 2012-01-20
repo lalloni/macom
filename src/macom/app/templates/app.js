@@ -9,7 +9,9 @@ app.fields = {
 
 app.views = {
 	show: function (viewer, record, recordNum, field, fieldNum, value, rawValue) {
-	  var tab = ContentTabSet.getTab(record.resource_uri);
+	  
+	  var idtab = "id" + record.resource_uri.replaceAll("/","");
+	  var tab = ContentTabSet.getTab(idtab);
 
 	  // si no se encuentra generar uno nuevo con titulo = record.name
 	  if (tab == null || typeof (tab) == 'undefined') {
@@ -17,50 +19,59 @@ app.views = {
 		var name = record.name;
 		if ( record.full_name ) name = record.full_name;
 		  
-	  	var functionTabCallback = "app.views.show";
+	  	var functionTabCallback = "";
 		switch ( record.kind ){
-			case "root": functionTabCallback += "Root"; break;
-			case "system": functionTabCallback += "System"; break;
-			case "module": functionTabCallback += "Module"; break;
-			case "interface": functionTabCallback += "Interface"; break;
+			case "system":
+				functionTabCallback = "app.views.showSystem";
+				break;
+			case "module":
+				functionTabCallback = "app.views.showModule";
+				break;
+			case "interface":
+				functionTabCallback = "app.views.showInterface";
+				break;
+			case "architecturalpattern":
+				functionTabCallback = "app.views.showActhitecturalPattern";
+				break;
+			case "moduletype":
+				functionTabCallback = "app.views.showModuleType";
+				break;
 			case "dependency":
-				functionTabCallback += "Dependency";
+				functionTabCallback = "app.views.showDependency";
 				name = mcm.format.DependencyFullName( record );
-			break;
+				break;
 		}
-
-		// Recorda a 40 caracteres maximo
-		//if( name && name.length ) {
-			// name = (name.length > 40 ? "... " + name.substring(name.length - 40) : name);
-		//}
 		
 		// Agrega un nuevo tab
 		ContentTabSet.addTab({
-	      ID : record.resource_uri,
-	      title : new mcm.IconsFactory(record).getNodeIcon() + " " + name,
-	      record : record
+			ID : idtab,
+			title : new mcm.IconsFactory(record).getNodeIcon() + " " + name,
+	      	record : record
 	    });
 
 	    // Busca el tab recien creado
-	    tab = ContentTabSet.getTab(record.resource_uri);
+	    tab = ContentTabSet.getTab(idtab);
 
 	    // Se fija el record.kind
-	    if (record.kind == 'root') {
-	        tab.setPane(app.views.showRoot(record));
+	    if (record.kind == 'rootsystem') {
+	        tab.setPane(app.views.getRootSystem(record));
+	    } else if (record.kind == 'rootpattern') { 
+	    	tab.setPane(app.views.getRootArchitecturalPattern(record));
+	    } else if (record.kind == 'rootmoduletype') { 
+	    	tab.setPane(app.views.getRootModuleType(record));
 	    } else {
 	    	// DATASOURCE
 	        isc.JSONDataSource.create({
-	          ID : record.resource_uri,
 	          dataURL : record.resource_uri
 	        }).fetchData(
-	            null, functionTabCallback + "(data, \"" + record.resource_uri + "\")" // Callback
+	            null, functionTabCallback + "(data, \"" + idtab + "\")" // Callback
 	        );
 	    }
 	  }
 	  ContentTabSet.selectTab(tab);
 	},
 			
-	showRoot: function (record) {
+	getRootSystem: function (record) {
 	  var tabset = new Array();
 
 	  for ( var i = 0; i < record.diagrams.length; i++) {
@@ -83,6 +94,34 @@ app.views = {
 	  return isc.TabSet.create({
 	    tabs : tabset
 	  });
+	},
+	
+	getRootArchitecturalPattern: function (record) {
+		return isc.DetailGrid.create({
+	        dataSource : isc.JSONDataSource.create({
+		          dataURL : record.resource_uri,
+		          autoFetchData : true,
+		          fields : [ mcm.fields.Name, mcm.fields.CasesCount, mcm.fields.Description ],
+		          transformResponse: function (dsResponse, dsRequest, data){
+		        	  // Transforma propiedades de los items del menu a un formato unico
+		        	  dsResponse.data = mcm.util.map( function (d){
+		        		  // Cuenta de la cantidad de casos existentes por patrón
+		        		  d.cases_count = (d.cases.length > 0?d.cases.length:"");
+
+		        		  // Acordar descripciones largas
+		        		  if ( d.description && d.description.length > 130 ){
+		        			d.description = d.description.substr(0,130) + " ...";  
+		        		  }
+		        		  
+		        		  return d;
+		    		  }, data );
+		          }
+	        })
+		})
+	},
+
+	getRootModuleType: function (record) {
+		return this.getRootArchitecturalPattern(record);
 	},
 	
 	showSystem: function (data, id) {
@@ -213,6 +252,38 @@ app.views = {
 	      })
 	    } ]
 	  }));
+	},
+	
+	showActhitecturalPattern: function (data, id) {
+	  var pattern = data[0];
+	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
+	    title : "Patrón",
+	    data : pattern,
+	    fields : [ mcm.fields.Name, mcm.fields.Description, mcm.fields.Tags ],
+	    additionalInfo : [{
+	      title : "Casos",
+	      pane : isc.DetailGrid.create({
+	    	  fields : [ mcm.fields.FormatedExternal, mcm.fields.ModuleFullName, mcm.fields.Goal ],
+	          data: mcm.util.map( function (c){ return c.module; }, pattern.cases)
+	      })
+	    }]
+	  }));
+	},
+
+	showModuleType: function (data, id) {
+	  var moduletype = data[0];
+	  ContentTabSet.getTab(id).setPane(isc.ItemViewer.create({
+	    title : "Típo de Módulo",
+	    data : moduletype,
+	    fields : [ mcm.fields.Name, mcm.fields.Description],
+	    additionalInfo : [{
+	      title : "Casos",
+	      pane : isc.DetailGrid.create({
+	    	  fields : [ mcm.fields.FormatedExternal, mcm.fields.ModuleFullName, mcm.fields.Goal ],
+	          data: mcm.util.map( function (c){ return c.module; }, moduletype.cases)
+	      })
+	    }]
+	  }));
 	}
 }
 
@@ -264,29 +335,40 @@ isc.VLayout.create({
     	  return "/media/img/" + node.kind + (node.external ? "-external" : "") + ".png";
       },
       dataSource : isc.JSONDataSource.create ({
-          dataURL : "{% url api_system_list %}",
+          dataURL : "",
           fields : [ {
         	  name : "name"
           } ],
           transformRequest: function (dsRequest){
         	  if ( dsRequest.parentNode.childs_uri ){
         		  this.dataURL = dsRequest.parentNode.childs_uri;
+        	  } else {
+        	  	this.dataURL = dsRequest.parentNode.resource_uri;
         	  }
           },
           transformResponse: function (dsResponse, dsRequest, data){
+        	  // Transforma propiedades de los items del menu a un formato unico
         	  dsResponse.data = mcm.util.map( function (d){
     			  var isfolder = true;
     			  var childs_uri = "";
             	  
     			  switch ( d.kind ){
-	       	  	 	case "root": childs_uri = d.resource_uri; break;
-	       	  	 	case "system": childs_uri = d.modules_uri; break;
-	       	  	 	case "module": childs_uri = d.interfaces_uri; break;
+	       	  	 	case "rootsystem":
+	       	  	 		childs_uri = d.resource_uri;
+	       	  	 		break;
+	       	  	 	case "system":
+	       	  	 		childs_uri = d.modules_uri;
+	       	  	 		break;
+	       	  	 	case "module": childs_uri = d.interfaces_uri;
+	       	  	 		break;
+	       	  	 	case "architecturalpatterncase":
+	       	  	 	case "architecturalpattern":
+	       	  	 		d.full_name = d.name;
 	       	  	 	case "interface":
+	       	  	 	case "moduletype":
 	       	  	 		isfolder = false;
 	       	  	 		break;
-	       	  	 	case "dependency":
-	       	  	 		break;
+	       	  	 	case "rootpatterns":
 	          	  }
 
         		  return {Id:d.resource_uri,
@@ -295,6 +377,7 @@ isc.VLayout.create({
 				  	  name: d.name,
 				  	  full_name: d.full_name,
 				  	  kind: d.kind,
+				  	  external: d.external,
 				  	  isFolder: isfolder};
     		  }, data );
           }
@@ -303,12 +386,11 @@ isc.VLayout.create({
           nameProperty: "Name",
           idField: "Id",
           data: [{
-          	Id:"sistema",
-          	resource_uri:
-          	"/api/systems",
-          	name:"Sistemas",
+          	Id:"system",
+          	resource_uri: "{% url api_system_list %}",
+          	name: "Sistemas",
           	full_name: "Sistemas",
-          	kind: "root",
+          	kind: "rootsystem",
             tagcloud_uri : "{% url api_tag_list %}",
             diagrams: [{
             	name: "Dependencias entre sistemas",
@@ -317,6 +399,18 @@ isc.VLayout.create({
 	            name: "Dependencias entre sistemas (excluyendo externos)",
 	            diagram_uri: "{% url web:systems_no_thirdparty_dependencies_diagram %}"
 	        }]
+          },{
+          	Id:"pattern",
+          	resource_uri: "{% url api_architecturalpattern_list %}",
+          	name:"Patrones",
+          	full_name: "Patrones",
+          	kind: "rootpattern"
+          },{
+            Id:"moduletype",
+            resource_uri: "{% url api_moduletype_list %}",
+            name:"Típos de Módulo",
+            full_name: "Típos de Módulo",
+            kind: "rootmoduletype"
           }]
       }),
       fields : [ {
@@ -334,8 +428,8 @@ isc.VLayout.create({
   }) ]
 });
 
-// INITIAL STRIPT
+// INIT
 
 // Abre el primer item de NavigationTree 
-app.views.show(null, NavigationTree.initialData.root.children[0]);
-NavigationTree.getData().openAll();
+//app.views.show(null, NavigationTree.initialData.root.children[0]);
+//NavigationTree.getData().openAll();

@@ -11,6 +11,11 @@ mcm.format = {
 
 // Fields Predefinidos
 mcm.fields = {
+  Name : {
+    name : "name",
+    title : "Nombre",
+    autoFitWidth: true
+  },
 
   FullName : {
     name : "full_name",
@@ -134,5 +139,15 @@ mcm.fields = {
   InterfaceFullName: {
 	name: "interface",
 	formatCellValue: mcm.format.InterfaceFullName
+  },
+  ModuleFullName : {
+	name : "full_name",
+	title : "Módulo",
+	autoFitWidth: true
+  },
+  CasesCount : {
+	name : "cases_count",
+	title : "# de casos",
+	width: "70px"
   }
 };
