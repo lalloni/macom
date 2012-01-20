@@ -153,7 +153,8 @@ class ReverseDependencyHandler(DependencyHandler):
 
 class ArchitecturalPatternHandler(Defaults):
     model = ArchitecturalPattern
-    fields = ('kind', 'name', 'description', ('tags', ())) + collection_fields('cases')
+    fields = ('kind', 'name', 'description', ('tags', ()), ('cases', ('kind','annotation', ('module', ('kind', 'full_name', 'external', 'goal')) ) ),
+              'edit_url', 'history_url' )
     @classmethod
     def read(cls, request, pattern=None):
         if pattern:
@@ -163,7 +164,7 @@ class ArchitecturalPatternHandler(Defaults):
 
 class ArchitecturalPatternCaseHandler(Defaults):
     model = ArchitecturalPatternCase
-    fields = ('annotation', model_field('architecturalpattern'))
+    fields = ('kind', 'annotation', model_field('architecturalpattern'))
 
 class ModuleTypeHandler(Defaults):
     model = ModuleType
