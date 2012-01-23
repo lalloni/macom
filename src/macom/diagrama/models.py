@@ -160,7 +160,7 @@ class ArchitecturalPatternCase(Annotation):
 
 class ModuleTypeCase(Annotation):
     module = models.ForeignKey(Module)
-    moduletype = models.ForeignKey(ModuleType, verbose_name=_('Module Type'))
+    moduletype = models.ForeignKey(ModuleType, verbose_name=_('Module Type'), related_name='cases')
     class Meta:
         verbose_name = _('module type case')
         verbose_name_plural = _('module type cases')

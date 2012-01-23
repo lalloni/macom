@@ -2,7 +2,7 @@
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Count
 from macom.api.helpers import callee_name
-from macom.diagrama.models import System, Module, Interface, Dependency, ArchitecturalPattern, ArchitecturalPatternCase
+from macom.diagrama.models import System, Module, Interface, Dependency, ArchitecturalPattern, ArchitecturalPatternCase, ModuleType, ModuleTypeCase
 from piston.handler import BaseHandler
 from taggit.models import Tag, TaggedItem
 
@@ -164,6 +164,21 @@ class ArchitecturalPatternHandler(Defaults):
 class ArchitecturalPatternCaseHandler(Defaults):
     model = ArchitecturalPatternCase
     fields = ('annotation', model_field('architecturalpattern'))
+
+class ModuleTypeHandler(Defaults):
+    model = ModuleType
+    fields = ('kind', 'name', 'description', ('cases', ('kind','annotation', ('module', ('kind', 'full_name', 'external', 'goal')) ) ),
+              'edit_url', 'history_url' )
+    @classmethod
+    def read(cls, request, moduletype=None):
+        if moduletype:
+            return ModuleType.objects.get(id=moduletype)
+        else:
+            return ModuleType.objects.all()
+
+class ModuleTypeCaseHandler(Defaults):
+    model = ModuleTypeCase
+    fields = ('kind', 'annotation', ('module', ('kind', 'full_name', 'external', 'goal')), model_field('moduletype'))
 
 class TagHandler(Defaults):
     model = Tag

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url, include
 from macom.api.handlers import SystemHandler, ModuleHandler, InterfaceHandler, DependencyHandler, \
-    ReverseDependencyHandler, TagHandler, ArchitecturalPatternHandler, ArchitecturalPatternCaseHandler
+    ReverseDependencyHandler, TagHandler, ArchitecturalPatternHandler, ArchitecturalPatternCaseHandler, ModuleTypeHandler, ModuleTypeCaseHandler
 from macom.api.helpers import CSVEmitter
 from piston.emitters import Emitter
 from piston.resource import Resource
@@ -15,6 +15,8 @@ dependency_resource = Resource(DependencyHandler)
 reverse_dependency_resource = Resource(ReverseDependencyHandler)
 architecturalpattern_resource = Resource(ArchitecturalPatternHandler)
 architecturalpatterncase_resource = Resource(ArchitecturalPatternCaseHandler)
+moduletype_resource = Resource(ModuleTypeHandler)
+moduletypecase_resource = Resource(ModuleTypeCaseHandler)
 tag_resource = Resource(TagHandler)
 
 reverse_dependencies = patterns('',
@@ -62,6 +64,16 @@ architecturalpatterncases = patterns('',
     url(r'^architecturalpatterncase/(?P<id>\d+)/?$', architecturalpatterncase_resource, name='api_architecturalpatterncase')
 )
 
+moduletype = patterns('',
+    url(r'^moduletype?/?$', moduletype_resource, name='api_moduletype_list'),
+    url(r'^moduletype/(?P<moduletype>\d+)/?$', moduletype_resource, name='api_moduletype')
+)
+
+moduletypecase = patterns('',
+    url(r'^moduletypecase?/?$', moduletypecase_resource, name='api_moduletypecase_list'),
+    url(r'^moduletypecase/(?P<moduletypecase>\d+)/?$', moduletypecase_resource, name='api_moduletypecase')
+)
+
 tags = patterns('',
     url(r'^tags?/?$', tag_resource, name='api_tag_list'),
     url(r'^tag/(?P<slug>\w+)$', tag_resource, name='api_tag')
@@ -75,6 +87,8 @@ urlpatterns = patterns('',
     ('', include(dependencies)),
     ('', include(architecturalpatterns)),
     ('', include(architecturalpatterncases)),
+    ('', include(moduletype)),
+    ('', include(moduletypecase)),
     ('', include(tags)),
 
 )
