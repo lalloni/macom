@@ -149,7 +149,8 @@ isc.defineClass("Diagram", "VLayout").addProperties({
 
 
 isc.defineClass("ItemViewer", "VLayout").addProperties({
-    title : false,
+	height : "100%",
+	title : false,
     data : false, // Datos a mostrar del item
     fields : false, // Definicion de los fields de la informacion del item
     opener: null,
@@ -215,6 +216,7 @@ isc.defineClass("ItemViewer", "VLayout").addProperties({
             infoFields = infoFields.concat(this.fields); // Definicion de datos
         }
         this.detail = isc.DetailViewer.create({
+          height: "1px",
           autoFetchData : true,
           fields : infoFields,
           data : this.data
