@@ -69,7 +69,7 @@ def unique_systems_dependencies(exclude_external=False):
     for system in systems:
         for module in system.modules.all():
             for dependency in module.dependencies.all():
-                other = dependency.module.system
+                other = dependency.interface.module.system
                 if system != other and not (exclude_external and other.external):
                     dependencies += [(system, other)]
     return (systems, set(dependencies))

@@ -66,7 +66,6 @@ class Module(Base):
     implementation_referents = models.TextField(_('implementation_referents'), help_text=_('implementation_referents-help'), blank=True)
     documentation = models.TextField(_('documentation'), help_text=_('documentation-help'), blank=True)
     criticity = models.CharField(_('criticity'), help_text=_('criticity-help'), max_length=2, choices=CRITICITY)
-    dependencies = models.ManyToManyField('Interface', through='Dependency', related_name='dependants')
     moduletypecases = models.ManyToManyField('ModuleType', through='ModuleTypeCase', related_name='moduletypecases')
     architecturalpatterncases = models.ManyToManyField('ArchitecturalPattern', through='ArchitecturalPatternCase', related_name='architecturalpatterncases')
     tags = TaggableManager(blank=True)
@@ -110,7 +109,7 @@ class Interface(Base, Directionality):
         return "%s:%s" % (unicode(self.module), self.name)
 
 class Dependency(Base, Directionality):
-    module = models.ForeignKey(Module, verbose_name=_('module'))
+    module = models.ForeignKey(Module, verbose_name=_('module'), related_name='dependencies')
     interface = models.ForeignKey(Interface, verbose_name=_('interface'))
     goal = models.TextField(_('goal'), help_text=_('dependency-goal-help') , blank=True)
     direction_inbound = models.BooleanField(_('Inbound'), help_text=_('dependency-inbound-help'))
