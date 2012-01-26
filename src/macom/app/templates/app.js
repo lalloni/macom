@@ -431,5 +431,5 @@ isc.VLayout.create({
 // INIT
 
 // Abre el primer item de NavigationTree 
-//app.views.show(null, NavigationTree.initialData.root.children[0]);
-//NavigationTree.getData().openAll();
+app.views.show(null, NavigationTree.initialData.root.children[0]);
+NavigationTree.getData().openAll();
