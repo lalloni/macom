@@ -1,11 +1,11 @@
 // Formateadores de fields
 mcm.format = {
-	InterfaceFullName : function ( record ){
-		return record.module.system.name + ":" + record.module.name + ":" + record.name;
+	InterfaceFullName : function (value, record, rowNum, colNum, grid) {
+		return value.module.system.name + ":" + value.module.name + ":" + value.name;
 	},
 
-	DependencyFullName : function ( record ){
-		return mcm.format.InterfaceFullName( record.interface );
+	DependencyFullName : function (value, record, rowNum, colNum, grid) {
+		return value.interface.module.system.name + ":" + value.interface.module.name + ":" + value.interface.name;
 	}
 };
 
