@@ -6,7 +6,12 @@ mcm.format = {
 
 	DependencyFullName : function (value, record, rowNum, colNum, grid) {
 		return value.interface.module.system.name + ":" + value.interface.module.name + ":" + value.interface.name;
+	},
+	
+	ReverseDependencyFullName : function  (value, record, rowNum, colNum, grid) {
+		return record.module.system.name + ":" + record.module.name;
 	}
+
 };
 
 // Fields Predefinidos
@@ -140,6 +145,7 @@ mcm.fields = {
 	name: "interface",
 	formatCellValue: mcm.format.InterfaceFullName
   },
+
   ModuleFullName : {
 	name : "full_name",
 	title : "Módulo",
@@ -149,5 +155,12 @@ mcm.fields = {
 	name : "cases_count",
 	title : "# de casos",
 	width: "70px"
+  },
+  
+  ReverseDependencyFullName: {
+	name: "reverseDependency",
+	title : "Referenciado por",
+	formatCellValue: mcm.format.ReverseDependencyFullName
   }
+  
 };

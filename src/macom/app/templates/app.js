@@ -4,8 +4,10 @@ var app = {};
 app.fields = {
 	InterfaceGridFields : [ mcm.fields.FormatedDirection, mcm.fields.FullName, mcm.fields.Technology, mcm.fields.Goal, mcm.fields.Published ],
 	DependencyGridFields: [ mcm.fields.FormatedDirection, mcm.fields.Interface, mcm.fields.Technology, mcm.fields.Goal ],
+	ReverseDependencyGridFields: [ mcm.fields.FormatedDirection, mcm.fields.ReverseDependencyFullName, mcm.fields.Technology, mcm.fields.Goal ],
 	DependencyDatasourceFields: [ mcm.fields.InterfaceFullName ]
 };
+
 
 app.views = {
 	show: function (viewer, record, recordNum, field, fieldNum, value, rawValue) {
@@ -164,7 +166,7 @@ app.views = {
 	    }, {
 	      title : "Dependencias inversas",
 	      pane : isc.DetailGrid.create({
-	    	fields : app.fields.DependencyGridFields,
+	    	fields : app.fields.ReverseDependencyGridFields,
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : system.reverse_dependencies_uri,
 	          autoFetchData : true,
@@ -203,7 +205,7 @@ app.views = {
 	    }, {
 	      title : "Dependencias inversas",
 	      pane : isc.DetailGrid.create({
-	    	fields : app.fields.DependencyGridFields,
+	    	fields : app.fields.ReverseDependencyGridFields,
 	    	dataSource : isc.JSONDataSource.create({
 	          dataURL : module.reverse_dependencies_uri,
 	          autoFetchData : true,
@@ -223,7 +225,7 @@ app.views = {
 	    additionalInfo : [ {
 	        title : "Dependencias inversas",
 	        pane : isc.DetailGrid.create({
-	          fields : app.fields.DependencyGridFields,
+	          fields : app.fields.ReverseDependencyGridFields,
 	          dataSource : isc.JSONDataSource.create({
 	            dataURL : interface.reverse_dependencies_uri,
 	            autoFetchData : true,
